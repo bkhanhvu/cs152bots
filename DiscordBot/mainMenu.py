@@ -5,7 +5,8 @@ import time
 import dataclasses
 
 # TODO: some of these fields can be changed to enums
-# TODO: determine if all of these fields are truly necessary
+# TODO: determine if all of these fields are truly necessary. I have just copied
+# the keys used but this is much redundancy, at least judging from field names.
 @dataclasses.dataclass
 class Ticket:
         harassment_type    : str = ""
