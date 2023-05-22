@@ -2,8 +2,33 @@ import discord
 from myModal import MyModal
 import uuid
 import time
+import dataclasses
 
-tickets = {}
+# TODO: some of these fields can be changed to enums
+# TODO: determine if all of these fields are truly necessary
+@dataclasses.dataclass
+class Ticket:
+        harassment_type    : str = ""
+        image_owner        : str = ""
+        know_image         : str = ""
+        know_other         : str = ""
+        know_responsible   : str = ""
+        message_link       : str = ""
+        msg_user_id        : str = ""
+        other_username     : str = ""
+        post_explicit      : str = ""
+        reason             : str = ""
+        sextortion_content : str = ""
+        shared_explicit    : str = ""
+        status             : str = ""
+        user_id_requester  : str = ""
+
+        def __iter__(self):
+                return iter([(f.name, getattr(self, f.name)) \
+                        for f in dataclasses.fields(self) \
+                        if getattr(self, f.name) != ""])
+
+tickets : dict[int, Ticket] = {}
 
 def get_drop_down_options(elems : dict[str, str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description=d) for l, d in elems.items()]
@@ -21,18 +46,19 @@ async def send_completionEmbed(interaction, bot, tid):
 async def create_completionEmbed(bot, tid):
     embed = CompletionEmbed(bot, tid)
 
-    if 'message_link' in tickets[tid].keys():
+    # TODO: change this to something better
+    if tickets[tid].message_link != "":
         # link = 'https://discord.com/channels/1103033282779676743/1103033287250804838/1109919564701126787'
-        link = tickets[tid]['message_link'].split('/')
+        link = tickets[tid].message_link.split('/')
         try:
             # FIXME This indexes out of bounds.
             message = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
-            tickets[tid]['message'] = message.content
-            tickets[tid]['msg_user_id'] = message.author
+            tickets[tid].message = message.content
+            tickets[tid].msg_user_id = message.author
         except:
             message = 'Could not identify.'
 
-    for key, value in tickets[tid].items():
+    for key, value in tickets[tid]:
         embed.add_field(name=key, value=value)
     
     return embed
@@ -72,7 +98,9 @@ class ReportSelection(discord.ui.View):
         selection : discord.ui.Select):
         # await interaction.response.send_message(f'You chose {selection.values[0]}',  ephemeral=True)
 
-        tickets[self.tid] = {'user_id_requester' : interaction.user, 'reason': selection.values[0]}
+        tickets.update({self.tid : Ticket()})
+        tickets[self.tid].user_id_requester = interaction.user
+        tickets[self.tid].reason = selection.values[0]
         reason = ExplanationModal(selection.values[0], self.tid)
         await interaction.response.send_modal(reason)
         await reason.wait()
@@ -93,8 +121,8 @@ class ExplanationModal(discord.ui.Modal):
         self.add_item(discord.ui.TextInput(label="Please explain your reasoning", style=discord.TextStyle.long))
 
     async def on_submit(self, interaction: discord.Interaction):
-        tickets[self.tid]['message_link'] = self.children[0].value
-        tickets[self.tid]['reason'] = self.children[1].value
+        tickets[self.tid].message_link = self.children[0].value
+        tickets[self.tid].reason = self.children[1].value
         await interaction.response.send_message("Thank you for your response!", ephemeral=True)
         self.stop()
 """
@@ -116,7 +144,7 @@ class HarassmentSelection(discord.ui.View):
         })
     )
     async def selection_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
-        tickets[self.tid]['harassment_type'] = selection.values[0]
+        tickets[self.tid].harassment_type = selection.values[0]
 
         await interaction.response.send_message(f'You responded: {selection.values[0]}',  ephemeral=True)
 
@@ -141,7 +169,7 @@ class SextortionTypeSelection(discord.ui.View):
         })
     )
     async def sextortype_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
-        tickets[self.tid]['sextortion_content'] = selection.values[0]
+        tickets[self.tid].sextortion_content = selection.values[0]
         await interaction.response.send_message(f'You responded: {selection.values[0]}',  ephemeral=True)
         await interaction.followup.send('Are these images of you or someone else?', view=ImageOwnerSelection(self.bot, self.tid),  ephemeral=True)
 
@@ -176,14 +204,14 @@ YesNoOption = BinaryOption("Yes", "No")
 
 # TODO type hints
 async def ImageOwnerCallback1(bot, tid : int, interaction : Interaction, button : Button):
-        tickets[tid]['image_owner'] = 'Me'
+        tickets[tid].image_owner = 'Me'
         await interaction.response.send_message(f'You responded: {button.label}', ephemeral=True)
         await interaction.followup.send("Do you know the user responsible?",
                 view=UserResponsibleSelection(bot, tid), ephemeral=True)
 
 # TODO type hints
 async def ImageOwnerCallback2(bot, tid : int, interaction : Interaction, button : Button):
-        tickets[tid]['image_owner'] = 'Other'
+        tickets[tid].image_owner = 'Other'
         await interaction.response.send_message(f'You responded: {button.label}')
         await interaction.followup.send("Do you know this other person?", 
         view=KnowOtherSelection(bot, tid), ephemeral=True)
@@ -198,7 +226,7 @@ async def owner_choice_callback(bot, tid : int, interaction : Interaction, butto
         await interaction.response.send_message(f'You responded: {button.label}',  ephemeral=True)
         await interaction.followup.send("Have you shared explicit images with this user?",
                 view=SharedExplicitSelection(bot, tid), ephemeral=True)
-        tickets[tid]['know_responsible'] = button.label
+        tickets[tid].know_responsible = button.label
 
 """
 Prompt: Do you know this other person?
@@ -207,13 +235,13 @@ def UserResponsibleSelection(bot, tid : int):
         return YesNoOption(bot, tid, owner_choice_callback, owner_choice_callback)
 
 async def my_images_callback(bot, tid : int, interaction : Interaction, button : Button):
-        tickets[tid]['shared_explicit'] = 'Yes'
+        tickets[tid].shared_explicit = 'Yes'
         await interaction.response.send_message('You responded: Yes.',  ephemeral=True)
         await interaction.followup.send("Do you know what images this user has?",
                 view=KnowImageSelection(bot, tid), ephemeral=True)
 
 async def others_images_callback(bot, tid : int, interaction : Interaction, button : Button):
-        tickets[tid]['shared_explicit'] = 'No'
+        tickets[tid].shared_explicit = 'No'
         # await interaction.response.send_message(embed=await create_completionEmbed(self.bot, self.tid), ephemeral=True)
         await interaction.response.send_message('You responded: No.',  ephemeral=True)
         await send_completionEmbed(interaction, bot, tid)
@@ -225,7 +253,7 @@ def SharedExplicitSelection(bot, tid : int):
         return YesNoOption(bot, tid, my_images_callback, others_images_callback)
 
 async def know_image_callback(bot, tid : int, interaction:Interaction, button:Button):
-        tickets[tid]['know_image'] = button.label
+        tickets[tid].know_image = button.label
         await send_completionEmbed(interaction, bot, tid)
 
 async def handle_know_image(bot, tid : int, interaction : Interaction, button : Button):
@@ -246,7 +274,7 @@ def KnowImageSelection(bot, tid : int):
 async def know_other_choice_callback(bot, tid : int, interaction:Interaction, button:Button):
         await interaction.followup.send("Did the user post an explicit image?",
                 view=PostExplicitSelection(bot, tid), ephemeral=True)
-        tickets[tid]['know_other'] = button.label
+        tickets[tid].know_other = button.label
 
 async def handle_know_other(bot, tid : int, interaction : Interaction, button : Button):
         UsernameModal = UsernameInputModal(tid)
@@ -277,13 +305,13 @@ class UsernameInputModal(discord.ui.Modal, title='Enter Username'):
         self.add_item(discord.ui.TextInput(label="Username", style=discord.TextStyle.short))
 
     async def on_submit(self, interaction: Interaction):
-        tickets[self.tid]['other_username'] = self.children[0].value
+        tickets[self.tid].other_username = self.children[0].value
         await interaction.response.send_message("Thank you for filling out the form!", ephemeral=True)
         self.stop()
 
 async def post_explicit_callback(bot, tid : int, interaction : Interaction, button : Button):
         await send_completionEmbed(interaction, bot, tid)
-        tickets[tid]['post_explicit'] = button.label
+        tickets[tid].post_explicit = button.label
 
 async def handle_post_explicit(bot, tid : int, interaction : Interaction, button : Button):
         await interaction.response.send_message('You responded: Yes.', embed=ImageRemovalEmbed(),
