@@ -64,6 +64,9 @@ async def create_completionEmbed(bot, tid):
     
     return embed
 
+async def response_message(word : str, interaction : discord.Interaction):
+        await interaction.response.send_message(f'You responded: {word}', ephemeral=True)
+
 class CompletionEmbed(discord.Embed):
     def __init__(self, bot, tid : int):
         super().__init__()
@@ -147,10 +150,11 @@ class HarassmentSelection(discord.ui.View):
     async def selection_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
         tickets[self.tid].harassment_type = selection.values[0]
 
-        await interaction.response.send_message(f'You responded: {selection.values[0]}',  ephemeral=True)
+        await response_message(selection.values[0], interaction)
 
         if selection.values[0] == 'Sextortion':
-            await interaction.followup.send(view=SextortionTypeSelection(self.bot, self.tid),  ephemeral=True)
+            await interaction.followup.send(view=SextortionTypeSelection(self.bot, self.tid),
+                    ephemeral=True)
         else:
             await send_completionEmbed(interaction, self.bot, self.tid)
 
@@ -171,7 +175,7 @@ class SextortionTypeSelection(discord.ui.View):
     )
     async def sextortype_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
         tickets[self.tid].sextortion_content = selection.values[0]
-        await interaction.response.send_message(f'You responded: {selection.values[0]}',  ephemeral=True)
+        await response_message(selection.values[0], interaction)
         await interaction.followup.send('Are these images of you or someone else?', view=ImageOwnerSelection(self.bot, self.tid),  ephemeral=True)
 
 # =========== TYPE ALIASES ==============
@@ -206,14 +210,14 @@ YesNoOption = BinaryOption("Yes", "No")
 # TODO type hints
 async def ImageOwnerCallback1(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].image_owner = 'Me'
-        await interaction.response.send_message(f'You responded: {button.label}', ephemeral=True)
+        await response_message(button.label, interaction)
         await interaction.followup.send("Do you know the user responsible?",
                 view=UserResponsibleSelection(bot, tid), ephemeral=True)
 
 # TODO type hints
 async def ImageOwnerCallback2(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].image_owner = 'Other'
-        await interaction.response.send_message(f'You responded: {button.label}')
+        await response_message(button.label, interaction)
         await interaction.followup.send("Do you know this other person?", 
         view=KnowOtherSelection(bot, tid), ephemeral=True)
 
@@ -224,7 +228,7 @@ def ImageOwnerSelection(bot, tid : int):
         return BinaryOption("Me", "Other")(bot, tid, ImageOwnerCallback1, ImageOwnerCallback2)
 
 async def owner_choice_callback(bot, tid : int, interaction : Interaction, button : Button):
-        await interaction.response.send_message(f'You responded: {button.label}',  ephemeral=True)
+        await response_message(button.label, interaction)
         await interaction.followup.send("Have you shared explicit images with this user?",
                 view=SharedExplicitSelection(bot, tid), ephemeral=True)
         tickets[tid].know_responsible = button.label
@@ -237,14 +241,14 @@ def UserResponsibleSelection(bot, tid : int):
 
 async def my_images_callback(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].shared_explicit = 'Yes'
-        await interaction.response.send_message('You responded: Yes.',  ephemeral=True)
+        await response_message("Yes.", interaction)
         await interaction.followup.send("Do you know what images this user has?",
                 view=KnowImageSelection(bot, tid), ephemeral=True)
 
 async def others_images_callback(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].shared_explicit = 'No'
         # await interaction.response.send_message(embed=await create_completionEmbed(self.bot, self.tid), ephemeral=True)
-        await interaction.response.send_message('You responded: No.',  ephemeral=True)
+        await response_message("No.", interaction)
         await send_completionEmbed(interaction, bot, tid)
 
 """
@@ -258,12 +262,13 @@ async def know_image_callback(bot, tid : int, interaction:Interaction, button:Bu
         await send_completionEmbed(interaction, bot, tid)
 
 async def handle_know_image(bot, tid : int, interaction : Interaction, button : Button):
+        # await response_message("Yes.", interaction)
         await interaction.response.send_message('You responded: Yes.', embed=ImageRemovalEmbed())
         time.sleep(5)
         await know_image_callback(bot, tid, interaction, button)
 
 async def handle_dont_know_image(bot, tid : int, interaction : Interaction, button : Button):
-        await interaction.response.send_message('You responded: No.', ephemeral=True)
+        await response_message("No.", interaction)
         await know_image_callback(bot, tid, interaction, button)
 
 """
@@ -320,7 +325,7 @@ async def handle_post_explicit(bot, tid : int, interaction : Interaction, button
         await post_explicit_callback(bot, tid, interaction, button)
 
 async def handle_didnt_post_explicit(bot, tid : int, interaction : Interaction, button : Button):
-        await interaction.response.send_message('You responded: No.',  ephemeral=True)
+        await response_message("No.", interaction)
         await post_explicit_callback(bot, tid, interaction, button)
 
 """
@@ -336,6 +341,7 @@ class ImageRemovalEmbed(discord.Embed):
     def __init__(self):
         super().__init__(title='Removal/Prevention Resources', url='https://takeitdown.ncmec.org/')
         self.add_field(name="Please click on the link above.", value="These instructions will help get your image removed and stop their spread", inline=False)
+
 class MainMenuEmbed(discord.Embed):
     def __init__(self):
         super().__init__()
