@@ -161,11 +161,11 @@ def BinaryOption(label_1 : str, label_2 : str):
                         self.opt_2 = opt_2
 
                 @discord.ui.button(label=label_1, style=discord.ButtonStyle.red)
-                async def Opt1Button(self, interaction : discord.Interaction, button : discord.ui.Button):
+                async def Opt1Button(self, interaction : Interaction, button : Button):
                         await self.opt_1(self.bot, self.tid, interaction, button)
 
                 @discord.ui.button(label=label_2, style=discord.ButtonStyle.red)
-                async def Opt2Button(self, interaction : discord.Interaction, button : discord.ui.Button):
+                async def Opt2Button(self, interaction : Interaction, button : Button):
                         await self.opt_2(self.bot, self.tid, interaction, button)
 
         return Impl
