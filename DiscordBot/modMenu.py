@@ -1,5 +1,6 @@
 import discord
 from ticket import Ticket, tickets
+from userStatus import UserStatus, userStatuses
 
 blacklist = set()
 
@@ -75,8 +76,25 @@ class ConsequenceActionButtons(discord.ui.View):
                                                 view=None)
         
     @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
-    # TODO: Implement sending user a warning message and (possibly) creating a strike counter to track previous infringement
     async def callback3Btn(self, interaction: Interaction, button:Button):
+        guild_id = interaction.client.guilds[0].id
+        guild = interaction.client.get_guild(guild_id)
+
+        username = str(tickets[self.tid].msg_user_id)
+        usernameParts = username.split('#')
+        user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
+
+        if user is not None:
+            if username not in userStatuses:
+                userStatuses.update({username : UserStatus()})
+
+            strikeCount = userStatuses[username].strikeCounter + 1
+
+            # TODO: write real message
+            message = "[WARNING] You did a bad :( You now have " + str(strikeCount) + " strikes."
+            await user.send(content=message)
+            userStatuses[username].strikeCounter = strikeCount
+
         await interaction.response.send_message("\n",
                                                 view=None)
     

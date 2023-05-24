@@ -32,6 +32,7 @@ with open(token_path) as f:
 class ModBot(commands.Bot):
     def __init__(self): 
         intents = discord.Intents.default()
+        intents.members = True # Need this to be able to send DMs to users in the guild
         intents.message_content = True
         super().__init__(command_prefix='.', intents=intents)
         self.group_num = None

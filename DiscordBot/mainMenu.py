@@ -336,7 +336,7 @@ class MainMenuButtons(discord.ui.View):
     async def reportBtn(self, interaction: Interaction, button:Button):
         # await interaction.response.send_modal(MyModal())
         tid = uuid.uuid4()
-        await interaction.response.send_message(view=ReportSelection(self.bot, tid))
+        await interaction.response.send_message(view=ReportSelection(self.bot, tid), ephemeral=True)
     
     # @discord.ui.button(label="Help", style=discord.ButtonStyle.red)
     # async def helpBtn(self, interaction: Interaction, button:Button):
@@ -346,7 +346,7 @@ class MainMenuButtons(discord.ui.View):
     @discord.ui.button(label="Talk to Mod", style=discord.ButtonStyle.red)
     async def talkBtn(self, interaction: Interaction, button:Button):
         await self.mod_channel.send(f'Forwarded message:\n{interaction.user.display_name}: Help!')
-        await interaction.response.send_message("You clicked the help button. We've sent your request to the mod-team", ephemeral=True)
+        await interaction.response.send_message("You clicked the talk to mod button. We've sent your request to the mod-team", ephemeral=True)
 
 	# async def reportBtn(self, interaction: Interaction, button:Button):
     #     await interaction.response.send_modal(MyModal())
