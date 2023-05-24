@@ -66,8 +66,19 @@ class ConsequenceActionButtons(discord.ui.View):
 
     
     @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
-    # TODO: Add filler message since we are not actually implementing banning
     async def callbackBtn(self, interaction: Interaction, button:Button):
+        username = str(tickets[self.tid].msg_user_id)
+        user = self.getUserFromTicket(interaction)
+        if user is not None:
+            if username not in userStatuses:
+                userStatuses.update({username : UserStatus()})
+            # Instead of actually banning the user, log that they've been banned...
+            userStatuses[username].isBanned = True
+            # ...and send them a message
+            message = "This message being sent to you indicates that you've been banned."
+            await user.send(content=message)
+            await interaction.response.send_message("Banned " + username + ".", view=None)
+
         await interaction.response.send_message("\n")
     
     # Temporarily revoke all permissions 
