@@ -54,6 +54,16 @@ class ConsequenceActionButtons(discord.ui.View):
         super().__init__()
         self.bot = bot
         self.tid = tid
+
+    def getUserFromTicket(self, interaction: Interaction):
+        guild_id = interaction.client.guilds[0].id
+        guild = interaction.client.get_guild(guild_id)
+
+        username = str(tickets[self.tid].msg_user_id)
+        usernameParts = username.split('#')
+        user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
+        return user
+
     
     @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
     # TODO: Add filler message since we are not actually implementing banning
@@ -77,12 +87,8 @@ class ConsequenceActionButtons(discord.ui.View):
         
     @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
     async def callback3Btn(self, interaction: Interaction, button:Button):
-        guild_id = interaction.client.guilds[0].id
-        guild = interaction.client.get_guild(guild_id)
-
         username = str(tickets[self.tid].msg_user_id)
-        usernameParts = username.split('#')
-        user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
+        user = self.getUserFromTicket(interaction)
 
         if user is not None:
             if username not in userStatuses:
@@ -94,6 +100,8 @@ class ConsequenceActionButtons(discord.ui.View):
             message = "[WARNING] You did a bad :( You now have " + str(strikeCount) + " strikes."
             await user.send(content=message)
             userStatuses[username].strikeCounter = strikeCount
+            await interaction.response.send_message("Warning message sent to " + username + ".", view=None)
+            return
 
         await interaction.response.send_message("\n",
                                                 view=None)
