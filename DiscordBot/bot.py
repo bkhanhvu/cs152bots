@@ -36,13 +36,14 @@ class ModBot(commands.Bot):
         super().__init__(command_prefix='.', intents=intents)
         self.group_num = None
         self.mod_channels = {} # Map from guild to the mod channel id for that guild
+        self.non_mod_text_channels = {}
         self.reports = {} # Map from user IDs to the state of their report
     
     async def on_ready(self,):
         print(f'{self.user.name} has connected to Discord! It is these guilds:')
         for guild in self.guilds:
             print(f' - {guild.name}')
-        print('Press Ctrl-C to quit.')      
+        print('Press Ctrl-C to quit.')   
         
 
         # Parse the group number out of the bot's name
@@ -57,8 +58,11 @@ class ModBot(commands.Bot):
             for channel in guild.text_channels:
                 if channel.name == f'group-{self.group_num}-mod':
                     self.mod_channels[guild.id] = channel
+                if channel.name == f'group-{self.group_num}':
+                    self.non_mod_text_channels[guild.id] = channel
+                
         
-        print(self.guilds[0].id)
+        # print(self.guilds[0].id)
         print(f"mod channels = {self.mod_channels}")
         
 
