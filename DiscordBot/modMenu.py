@@ -27,7 +27,7 @@ class ModMenuButtons(discord.ui.View):
         action_embed = discord.Embed(title=f'Approved label for ticket: {self.tid}.',
                               description='Please proceed by choosing action toward reported user.')
         action_embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild', inline=False)
-        action_embed.add_field(name='Mute User', value='User will temporarily have all permissions revoked.', inline=False)
+        # action_embed.add_field(name='Mute User', value='User will temporarily have all permissions revoked.', inline=False)
         action_embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
         action_embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
 
@@ -70,15 +70,27 @@ class ConsequenceActionButtons(discord.ui.View):
         username = str(tickets[self.tid].msg_user_id)
         user = self.getUserFromTicket(interaction)
         if user is not None:
+            alreadyComplete = (tickets[self.tid].status == 'Complete')
             if username not in userStatuses:
                 userStatuses.update({username : UserStatus()})
+            elif userStatuses[username].isBanned == True:
+                # Relevant in case multiple reports come in about the same user
+                tickets[self.tid].status = 'Complete'
+                message = f"Banned {username} from server."
+                if not alreadyComplete:
+                    message += f"\nTicket {self.tid} is marked as: Complete."
+                await interaction.response.send_message(message)
+                return
             # Instead of actually banning the user, log that they've been banned...
             userStatuses[username].isBanned = True
             # ...and send them a message
             message = "This message being sent to you indicates that you've been banned."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
-            await interaction.response.send_message(f"Banned {username} from server.\n Ticket {self.tid} is marked as: Complete.")
+            message = f"User {username} is already banned."
+            if not alreadyComplete:
+                message += f"\nTicket {self.tid} is marked as: Complete."
+            await interaction.response.send_message(message)
         else:
             await interaction.response.send_message("No User Specified.")
     
@@ -97,6 +109,7 @@ class ConsequenceActionButtons(discord.ui.View):
         username = str(tickets[self.tid].msg_user_id)
         user = self.getUserFromTicket(interaction)
 
+        alreadyComplete = (tickets[self.tid].status == 'Complete')
         message = "[ATTENTION] You have been kicked from the channel for an inappropriate action/behavior."
         tickets[self.tid].status = 'Complete'
         await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
@@ -104,15 +117,27 @@ class ConsequenceActionButtons(discord.ui.View):
         if user is not None:
             if username not in userStatuses:
                 status = UserStatus()
-                status.prevKicked = True
-                userStatuses.update({username : status})
-        await interaction.response.send_message(f"{tickets[self.tid].msg_user_id} has been kicked from server.\n Ticket {self.tid} is marked as: Complete.")
+            else:
+                status = userStatuses[username]
+            status.prevKicked = True
+            userStatuses.update({username : status})
+            message = f"{tickets[self.tid].msg_user_id} has been kicked from server."
+            if not alreadyComplete:
+                message += f"\n Ticket {self.tid} is marked as: Complete."
+            await interaction.response.send_message(message)
+        else:
+            message = f"{tickets[self.tid].msg_user_id} not found in server. Were they kicked previously?"
+            if not alreadyComplete:
+                message += f"\n Ticket {self.tid} is marked as: Complete."
+            await interaction.response.send_message(message)
         
         
     @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
     async def callback3Btn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
         user = self.getUserFromTicket(interaction)
+
+        alreadyComplete = (tickets[self.tid].status == 'Complete')
 
         if user is not None:
             if username not in userStatuses:
@@ -124,8 +149,12 @@ class ConsequenceActionButtons(discord.ui.View):
             message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
+            print(userStatuses[username])
             userStatuses[username].strikeCounter = strikeCount
-            await interaction.response.send_message(f"Warning message sent to {username}. \n Ticket {self.tid} is marked as: Complete. ")
+            message = f"Warning message sent to {username}."
+            if not alreadyComplete:
+                message += f"\nTicket {self.tid} is marked as: Complete."
+            await interaction.response.send_message(message)
             return
 
         await interaction.response.send_message("\n",
