@@ -7,6 +7,7 @@ class UserStatus:
   # Since we aren't really implementing bans, a flag seems good enough
   # In the real world we'd probably have a ban expiry time (instead?)
   isBanned : bool = False
+  prevKicked : bool = False
   strikeCounter : int = 0
 
 # User id to status

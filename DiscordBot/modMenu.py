@@ -76,25 +76,38 @@ class ConsequenceActionButtons(discord.ui.View):
             userStatuses[username].isBanned = True
             # ...and send them a message
             message = "This message being sent to you indicates that you've been banned."
-            await user.send(content=message)
-            await interaction.response.send_message("Banned " + username + ".", view=None)
-
-        await interaction.response.send_message("\n")
+            tickets[self.tid].status = 'Complete'
+            await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
+            await interaction.response.send_message(f"Banned {username} from server.\n Ticket {self.tid} is marked as: Complete.")
+        else:
+            await interaction.response.send_message("No User Specified.")
     
-    # Temporarily revoke all permissions 
-    @discord.ui.button(label="Mute User", style=discord.ButtonStyle.red)
-    async def callback1Btn(self, interaction: Interaction, button:Button):
-        # TODO: Implement button to revoke all channels permission for user
-        # Use msg_user_id field of Ticket()
+    # # Temporarily revoke all permissions 
+    # @discord.ui.button(label="Mute User", style=discord.ButtonStyle.red)
+    # async def callback1Btn(self, interaction: Interaction, button:Button):
+    #     # TODO: Implement button to revoke all channels permission for user
+    #     # Use msg_user_id field of Ticket()
 
-        await interaction.response.send_message("\n",
-                                                view=None)
+    #     await interaction.response.send_message("\n",
+    #                                             view=None)
     
     @discord.ui.button(label="Kick User", style=discord.ButtonStyle.red)
     # TODO: Kick user from channel -- don't need to actually 
     async def callback2Btn(self, interaction: Interaction, button:Button):
-        await interaction.response.send_message("\n",
-                                                view=None)
+        username = str(tickets[self.tid].msg_user_id)
+        user = self.getUserFromTicket(interaction)
+
+        message = "[ATTENTION] You have been kicked from the channel for an inappropriate action/behavior."
+        tickets[self.tid].status = 'Complete'
+        await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
+
+        if user is not None:
+            if username not in userStatuses:
+                status = UserStatus()
+                status.prevKicked = True
+                userStatuses.update({username : status})
+        await interaction.response.send_message(f"{tickets[self.tid].msg_user_id} has been kicked from server.\n Ticket {self.tid} is marked as: Complete.")
+        
         
     @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
     async def callback3Btn(self, interaction: Interaction, button:Button):
@@ -108,13 +121,31 @@ class ConsequenceActionButtons(discord.ui.View):
             strikeCount = userStatuses[username].strikeCounter + 1
 
             # TODO: write real message
-            message = "[WARNING] You did a bad :( You now have " + str(strikeCount) + " strikes."
-            await user.send(content=message)
+            message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
+            tickets[self.tid].status = 'Complete'
+            await user.send(content=message, embed=AbuserSummaryEmbed(self.tid, button))
             userStatuses[username].strikeCounter = strikeCount
-            await interaction.response.send_message("Warning message sent to " + username + ".", view=None)
+            await interaction.response.send_message(f"Warning message sent to {username}. \n Ticket {self.tid} is marked as: Complete. ")
             return
 
         await interaction.response.send_message("\n",
                                                 view=None)
+        
+abuser_fields = ['reason', 'sextortion_content', 'message_link', 'post_explicit', 'message']
+class AbuserSummaryEmbed(discord.Embed):
+    def __init__(self, tid, button:discord.Button):
+        super().__init__(title=f'Summary of Report Ticket {tid}', description=f"We have received a report about your engagement in a prohibited action/behavior. This message is serves as confirmation for the completion of investigation and verdict. \nPlease see the report summary below for more details. \n \
+                         If you would like to petition this ticket, please contact one of our channel moderators for help.")
+        self.add_field(name='Status', value=tickets[tid].status, inline=False)
+        tickets[tid].verdict = button.label
+        self.add_field(name='Verdict', value=tickets[tid].verdict, inline=False)
+        for key, value in tickets[tid]:
+            if key in abuser_fields:
+                self.add_field(name=key, value=value)
+
+
+
+
+
     
 

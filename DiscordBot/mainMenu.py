@@ -39,6 +39,8 @@ async def create_completionEmbed(bot, tid):
             tickets[tid].message = 'Could not identify.'
 
     for key, value in tickets[tid]:
+        if key == 'status':
+              continue
         embed.add_field(name=key, value=value)
     
     return embed
@@ -57,6 +59,7 @@ class CompletionEmbed(discord.Embed):
                 Please expect a response within the next 36 hours."'
         self.add_field(name='Ticket ID', value=tid)
         self.add_field(name='Status', value='In Progress', inline=False)
+        tickets[tid].status = 'In Progress'
 
 """
 Prompt: "Please select reason for reporting this content"
