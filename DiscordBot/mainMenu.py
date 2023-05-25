@@ -21,6 +21,11 @@ async def send_completionEmbed(interaction, bot, tid):
     embed = await create_completionEmbed(bot, tid)
     embed.title = f"Report Ticket ID: {tid}"
     embed.description = None
+    # ! TODO: unclear to me if the correct subfield in Ticket to read from is sextortion_content or post_explicit
+    if tickets[tid].sextortion_content == "Content includes explicit images":
+        # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
+        explicitTips = "This content is explicit! Please act with caution."
+        embed.add_field(name='Explicit Warning!', value=explicitTips)
     await mod_channel.send(embed=embed, view=ModMenuButtons(bot, tid))
 
 
