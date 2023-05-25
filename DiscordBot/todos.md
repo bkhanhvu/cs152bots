@@ -10,4 +10,5 @@
         and "do you know what images this user has - no"
 7. Add ban, kick, warning, and dismiss options for final moderator action. - Done (Matthew)
 8. \* Change message to reporter on mod action completion
+9. Replace dropdown menu descriptions with non-placeholder text
 
