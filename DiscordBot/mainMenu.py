@@ -15,30 +15,30 @@ def get_drop_down_options(elems : dict[str, str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description=d) for l, d in elems.items()]
 
 async def send_completionEmbed(interaction, bot, tid):
-    await interaction.followup.send(embed=await create_completionEmbed(bot, tid))
+    await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid), \
+                                           await create_BlockingHelpEmbed(bot, tid)])
 
     mod_channel = bot.mod_channels[bot.guilds[0].id]
     embed = await create_completionEmbed(bot, tid)
-    embed.title = f"Report Ticket ID: {tid}"
-    embed.description = None
-
-    embed.add_field(name='Next Steps', value="Please proceed by choosing action toward reported user.", inline=False)
-    embed.add_field(name='Disapprove User Label', value='Dismiss the report and take no action against the user.', inline=False)
-    embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
-    embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
-    embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
-
-    # ! TODO: unclear to me if the correct subfield in Ticket to read from is sextortion_content or post_explicit
+    embed.title = f"** Report Ticket ID: {tid} **"
+    
+    # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
     if tickets[tid].sextortion_content == "Content includes explicit images":
-        # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
-        explicitTips = "This content is explicit! Please act with caution."
-        embed.add_field(name='Explicit Warning!', value=explicitTips)
-    await mod_channel.send(embed=embed, view=ConsequenceActionButtons(bot, tid))
+        explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
+        embed.description = explicit_warning
+        embed.color = discord.Color.red()   
+
+    next_step_embed = discord.Embed(title = ' **__Next Steps__**', description='### Please proceed by choosing action toward reported user.')
+    
+    next_step_embed.add_field(name='Disapprove User Label', value='Dismiss the report and take no action against the user.', inline=False)
+    next_step_embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
+    next_step_embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
+    next_step_embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
+    await mod_channel.send(embeds=[embed, next_step_embed], view=ConsequenceActionButtons(bot, tid))
 
 
 async def create_completionEmbed(bot, tid):
     embed = CompletionEmbed(bot, tid)
-
     # TODO: change this to something better
     if tickets[tid].message_link != "":
         # link = 'https://discord.com/channels/1103033282779676743/1103033287250804838/1109919564701126787'
@@ -54,6 +54,15 @@ async def create_completionEmbed(bot, tid):
         if key == 'status':
               continue
         embed.add_field(name=key, value=value)
+    
+    return embed
+
+async def create_BlockingHelpEmbed(bot, tid):
+    embed = discord.Embed(title='__Instruction on How to Block User__', \
+                          description='_If you would like to block this user, \
+                                please refer to the information in the link above._ \
+                                        ', \
+                                                url='https://support.discord.com/hc/en-us/articles/217916488-Blocking-Privacy-Settings-#:~:text=In%20your%20DM%20chat%2C%20clicking,let%20you%20block%20the%20user.')
     
     return embed
 
