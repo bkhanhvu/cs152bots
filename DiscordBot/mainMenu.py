@@ -1,35 +1,15 @@
+from __future__ import annotations
 import discord
 from myModal import MyModal
 import uuid
 import time
-import dataclasses
+from modMenu import ModMenuButtons
+from ticket import Ticket, tickets, Interaction, Button
 
-# TODO: some of these fields can be changed to enums
-# TODO: determine if all of these fields are truly necessary. I have just copied
-# the keys used but this is much redundancy, at least judging from field names.
-@dataclasses.dataclass
-class Ticket:
-        harassment_type    : str = ""
-        image_owner        : str = ""
-        know_image         : str = ""
-        know_other         : str = ""
-        know_responsible   : str = ""
-        message_link       : str = ""
-        msg_user_id        : str = ""
-        other_username     : str = ""
-        post_explicit      : str = ""
-        reason             : str = ""
-        sextortion_content : str = ""
-        shared_explicit    : str = ""
-        status             : str = ""
-        user_id_requester  : str = ""
-
-        def __iter__(self):
-                return iter([(f.name, getattr(self, f.name)) \
-                        for f in dataclasses.fields(self) \
-                        if getattr(self, f.name) != ""])
-
-tickets : dict[int, Ticket] = {}
+# =========== TYPE ALIASES ==============
+Interaction = discord.Interaction
+Button = discord.ui.Button
+# ========= END TYPE ALIASES ===========
 
 def get_drop_down_options(elems : dict[str, str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description=d) for l, d in elems.items()]
@@ -41,7 +21,7 @@ async def send_completionEmbed(interaction, bot, tid):
     embed = await create_completionEmbed(bot, tid)
     embed.title = f"Report Ticket ID: {tid}"
     embed.description = None
-    await mod_channel.send(embed=embed)
+    await mod_channel.send(embed=embed, view=ModMenuButtons(bot, tid))
 
 
 async def create_completionEmbed(bot, tid):
@@ -50,14 +30,13 @@ async def create_completionEmbed(bot, tid):
     # TODO: change this to something better
     if tickets[tid].message_link != "":
         # link = 'https://discord.com/channels/1103033282779676743/1103033287250804838/1109919564701126787'
-        link = tickets[tid].message_link.split('/')
         try:
-            # FIXME This indexes out of bounds.
+            link = tickets[tid].message_link.split('/')
             message = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
             tickets[tid].message = message.content
             tickets[tid].msg_user_id = message.author
         except:
-            message = 'Could not identify.'
+            tickets[tid].message = 'Could not identify.'
 
     for key, value in tickets[tid]:
         embed.add_field(name=key, value=value)
@@ -177,11 +156,6 @@ class SextortionTypeSelection(discord.ui.View):
         tickets[self.tid].sextortion_content = selection.values[0]
         await response_message(selection.values[0], interaction)
         await interaction.followup.send('Are these images of you or someone else?', view=ImageOwnerSelection(self.bot, self.tid),  ephemeral=True)
-
-# =========== TYPE ALIASES ==============
-Interaction = discord.Interaction
-Button = discord.ui.Button
-# ========= END TYPE ALIASES ===========
 
 def BinaryOption(label_1 : str, label_2 : str):
         class Impl(discord.ui.View):
@@ -362,7 +336,7 @@ class MainMenuButtons(discord.ui.View):
     async def reportBtn(self, interaction: Interaction, button:Button):
         # await interaction.response.send_modal(MyModal())
         tid = uuid.uuid4()
-        await interaction.response.send_message(view=ReportSelection(self.bot, tid))
+        await interaction.response.send_message(view=ReportSelection(self.bot, tid), ephemeral=True)
     
     # @discord.ui.button(label="Help", style=discord.ButtonStyle.red)
     # async def helpBtn(self, interaction: Interaction, button:Button):
@@ -372,7 +346,7 @@ class MainMenuButtons(discord.ui.View):
     @discord.ui.button(label="Talk to Mod", style=discord.ButtonStyle.red)
     async def talkBtn(self, interaction: Interaction, button:Button):
         await self.mod_channel.send(f'Forwarded message:\n{interaction.user.display_name}: Help!')
-        await interaction.response.send_message("You clicked the help button. We've sent your request to the mod-team", ephemeral=True)
+        await interaction.response.send_message("You clicked the talk to mod button. We've sent your request to the mod-team", ephemeral=True)
 
 	# async def reportBtn(self, interaction: Interaction, button:Button):
     #     await interaction.response.send_modal(MyModal())
