@@ -8,6 +8,6 @@
 5. Move "do you know the user responsible" ahead of "are these images of you or someone else"
 6. \* Update completion message following "have you shared explicit images - no"
         and "do you know what images this user has - no"
-7. Add ban, kick, warning, and dismiss options for final moderator action.
+7. Add ban, kick, warning, and dismiss options for final moderator action. - Done (Matthew)
 8. \* Change message to reporter on mod action completion
 

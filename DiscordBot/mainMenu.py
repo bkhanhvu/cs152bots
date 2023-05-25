@@ -3,7 +3,7 @@ import discord
 from myModal import MyModal
 import uuid
 import time
-from modMenu import ModMenuButtons
+from modMenu import ConsequenceActionButtons
 from ticket import Ticket, tickets, Interaction, Button
 
 # =========== TYPE ALIASES ==============
@@ -21,12 +21,19 @@ async def send_completionEmbed(interaction, bot, tid):
     embed = await create_completionEmbed(bot, tid)
     embed.title = f"Report Ticket ID: {tid}"
     embed.description = None
+
+    embed.add_field(name='Next Steps', value="Please proceed by choosing action toward reported user.", inline=False)
+    embed.add_field(name='Disapprove User Label', value='Dismiss the report and take no action against the user.', inline=False)
+    embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
+    embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
+    embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
+
     # ! TODO: unclear to me if the correct subfield in Ticket to read from is sextortion_content or post_explicit
     if tickets[tid].sextortion_content == "Content includes explicit images":
         # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
         explicitTips = "This content is explicit! Please act with caution."
         embed.add_field(name='Explicit Warning!', value=explicitTips)
-    await mod_channel.send(embed=embed, view=ModMenuButtons(bot, tid))
+    await mod_channel.send(embed=embed, view=ConsequenceActionButtons(bot, tid))
 
 
 async def create_completionEmbed(bot, tid):
