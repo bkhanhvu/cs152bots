@@ -144,7 +144,7 @@ class HarassmentSelection(discord.ui.View):
             'Hate Speech'               : 'Targeted attack toward a group or individual',
             'Encouraging Self-harm'     : 'Prompting other user to harm themselves',
             # TODO fill this description out
-            'Threats'                   : '',
+            'Threats'                   : 'User is threatening violence or doxxing',
             'Other'                     : 'Abuse type not listed'
         })
     )
