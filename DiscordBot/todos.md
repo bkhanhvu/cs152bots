@@ -10,5 +10,5 @@
         and "do you know what images this user has - no" - Done(Ron): **NOTE**: the flowchart indicated that this completion message would be added after "have you shared explicit images" regardless of the answer and not after "do you know what images this user has." I have done my best to be faithful to the flowchart.
 7. Add ban, kick, warning, and dismiss options for final moderator action. - Done (Matthew)
 8. \* Change message to reporter on mod action completion - Done
-9. Replace dropdown menu descriptions with non-placeholder text
+9. Replace dropdown menu descriptions with non-placeholder text - Done(Emily)
 

@@ -93,11 +93,11 @@ class ReportSelection(discord.ui.View):
     
     @discord.ui.select(placeholder='Please select reason for reporting this content', \
         options=get_drop_down_options({
-                'Harassment'         : 'description1',
-                'Spam'               : 'description2',
-                'Offensive Content'  : 'description3',
-                'Imminent Danger'    : 'description4',
-                'Other'              : 'description5'
+                'Harassment'         : 'User is repetitively making unwanted contact and sending threatening or unuwanted sexual messages.',
+                'Spam'               : 'Message promotes suspicious or fraudulent activity',
+                'Offensive Content'  : 'Displays disturbing content',
+                'Imminent Danger'    : 'Threatening self-harm or harm to others',
+                'Other'              : 'Unlisted abusive behavior'
         })
     )
     async def selection_callback(self, interaction : Interaction, selection : discord.ui.Select):
@@ -140,11 +140,12 @@ class HarassmentSelection(discord.ui.View):
 
     @discord.ui.select(placeholder='Select Type',
          options=get_drop_down_options({
-            'Sextortion'                : 'description1',
-            'Hate Speech'               : 'description2',
-            'Encouraging Self-harm'     : 'description3',
-            'Threats'                   : 'description4',
-            'Other'                     : 'description5'
+            'Sextortion'                : 'The user is threatening to spread or has spread sexually explicit images.',
+            'Hate Speech'               : 'Targeted attack toward a group or individual',
+            'Encouraging Self-harm'     : 'Prompting other user to harm themselves',
+            # TODO fill this description out
+            'Threats'                   : '',
+            'Other'                     : 'Abuse type not listed'
         })
     )
     async def selection_callback(self, interaction : Interaction, selection:discord.ui.Select):
@@ -193,8 +194,8 @@ class SextortionTypeSelection(discord.ui.View):
         self.bot = bot
 
     @discord.ui.select(placeholder='Select Type of Content', options=get_drop_down_options({
-            'Content includes explicit images'                  : 'description1',
-            'Content is a threat to spread explicit images'     : 'description2',
+            'Content includes explicit images'                  : 'Depicts sexually explicit imagery',
+            'Content is a threat to spread explicit images'     : 'Threatening to send or post explicit images of another individual',
         })
     )
     async def sextortype_callback(self, interaction : Interaction, selection:discord.ui.Select):
