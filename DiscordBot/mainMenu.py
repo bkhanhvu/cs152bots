@@ -162,25 +162,6 @@ class HarassmentSelection(discord.ui.View):
             await send_completionEmbed(interaction, self.bot, self.tid)
 
 
-"""
-Prompt: Sextortion - Select Type of Content
-"""
-class SextortionTypeSelection(discord.ui.View):
-    def __init__(self, bot, tid):
-        super().__init__()
-        self.tid = tid
-        self.bot = bot
-
-    @discord.ui.select(placeholder='Select Type of Content', options=get_drop_down_options({
-            'Content includes explicit images'                  : 'description1',
-            'Content is a threat to spread explicit images'     : 'description2',
-        })
-    )
-    async def sextortype_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
-        tickets[self.tid].sextortion_content = selection.values[0]
-        await response_message(selection.values[0], interaction)
-        await interaction.followup.send('Are these images of you or someone else?', view=ImageOwnerSelection(self.bot, self.tid),  ephemeral=True)
-
 def BinaryOption(label_1 : str, label_2 : str):
         class Impl(discord.ui.View):
                 # TODO: tighten up argument types on these callables
@@ -205,14 +186,34 @@ def BinaryOption(label_1 : str, label_2 : str):
 YesNoOption = BinaryOption("Yes", "No")
 # ========= END TYPE ALIASES ===========
 
-# TODO type hints
+"""
+Prompt: Sextortion - Select Type of Content
+"""
+class SextortionTypeSelection(discord.ui.View):
+    def __init__(self, bot, tid):
+        super().__init__()
+        self.tid = tid
+        self.bot = bot
+
+    @discord.ui.select(placeholder='Select Type of Content', options=get_drop_down_options({
+            'Content includes explicit images'                  : 'description1',
+            'Content is a threat to spread explicit images'     : 'description2',
+        })
+    )
+    async def sextortype_callback(self, interaction:discord.Interaction, selection:discord.ui.Select):
+        tickets[self.tid].sextortion_content = selection.values[0]
+        await response_message(selection.values[0], interaction)
+        await interaction.followup.send('Do you personally know the user responsible?',
+                # 'Are these images of you or someone else?',
+                view=UserResponsibleSelection(self.bot, self.tid), ephemeral=True)
+                # view=ImageOwnerSelection(self.bot, self.tid), ephemeral=True)
+
 async def ImageOwnerCallback1(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].image_owner = 'Me'
         await response_message(button.label, interaction)
-        await interaction.followup.send("Do you know the user responsible?",
-                view=UserResponsibleSelection(bot, tid), ephemeral=True)
+        await interaction.followup.send("Have you shared explicit images with this user?",
+                view=SharedExplicitSelection(bot, tid), ephemeral=True)
 
-# TODO type hints
 async def ImageOwnerCallback2(bot, tid : int, interaction : Interaction, button : Button):
         tickets[tid].image_owner = 'Other'
         await response_message(button.label, interaction)
@@ -227,8 +228,8 @@ def ImageOwnerSelection(bot, tid : int):
 
 async def owner_choice_callback(bot, tid : int, interaction : Interaction, button : Button):
         await response_message(button.label, interaction)
-        await interaction.followup.send("Have you shared explicit images with this user?",
-                view=SharedExplicitSelection(bot, tid), ephemeral=True)
+        await interaction.followup.send("Are these images of you or someone else?",
+                view=ImageOwnerSelection(bot, tid), ephemeral=True)
         tickets[tid].know_responsible = button.label
 
 """
