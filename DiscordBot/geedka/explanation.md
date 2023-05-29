@@ -41,10 +41,12 @@ Note that the brackets are merely for ease of reading
 
 ### Selections
 `s|[number of options]|[selection description]`
+
 `       option1|option2|` and so on
 
 ### Switches
 `w|[number of options]|[switch description]`
+
 `       option1|option2|` and so on
 
 ### Data collections
