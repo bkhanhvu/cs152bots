@@ -1,13 +1,15 @@
-# NameTBD
+# Geedka
 
 ## What is this?
 
-NameTBD is a basic language in which you can specify the structure of a moderation flow.
+Geedka is a basic language in which you can specify the structure of a moderation flow.
 It is minimal, and intentionally as simple as possible.
 
-## NameTBD syntax
+The name *Geedka* comes from the Somali word for "tree".
 
-NameTBD statements are one line (TODO: allow multiline and comments),
+## Geedka syntax
+
+Geedka statements are one line (TODO: allow multiline and comments),
 with a separate part per each section of a moderation flow node.
 
 There are several kinds of supported nodes:
@@ -29,7 +31,7 @@ There are also two special features:
         All reporting flows must end in a terminal
 
 
-## NameTBD syntax
+## Geedka syntax
 
 Note that the brackets are merely for ease of reading
 -- they are not part of the language syntax.
@@ -50,7 +52,7 @@ Note that the brackets are merely for ease of reading
 `t`
 
 ### Ordering
-The description file for NameTBD should be ordered such that the children of a node
+The description file for Geedka should be ordered such that the children of a node
 follow the description of a node in the order in which they should appear,
 excepting the children of the children.
 
@@ -80,7 +82,7 @@ Suppose we want to represent the following moderation flow:
    +--------+   +----------+  +----------------------+
 ```
 
-We would represent this in NameTBD as follows:
+We would represent this in Geedka as follows:
 
 ```
 m|      Let's play a guessing game
