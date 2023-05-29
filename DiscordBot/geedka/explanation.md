@@ -41,9 +41,11 @@ Note that the brackets are merely for ease of reading
 
 ### Selections
 `s|[number of options]|[selection description]`
+`       option1|option2|` and so on
 
 ### Switches
 `w|[number of options]|[switch description]`
+`       option1|option2|` and so on
 
 ### Data collections
 `d|[normal node description]`
@@ -87,11 +89,12 @@ We would represent this in Geedka as follows:
 ```
 m|      Let's play a guessing game
 w|3|    What is my favorite color?
-        Red  |    m|Wrong!
+        Red | Green | Blue
+        m|Wrong!
                 t
-        Green|    m|Correct!
+        m|Correct!
                 t
-        Blue |    m|Close, but no cigar.
+        m|Close, but no cigar.
                 t
 ```
 
