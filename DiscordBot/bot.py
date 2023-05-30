@@ -6,6 +6,7 @@ import json
 import logging
 import re
 import requests
+from googleapiclient import discovery
 from report import Report
 import pdb
 import mainMenu
@@ -28,6 +29,7 @@ with open(token_path) as f:
     # If you get an error here, it means your token is formatted incorrectly. Did you put it in quotes?
     tokens = json.load(f)
     discord_token = tokens['discord']
+    perspective_token = tokens['perspective']
 
 class ModBot(commands.Bot):
     def __init__(self): 
@@ -39,6 +41,7 @@ class ModBot(commands.Bot):
         self.mod_channels = {} # Map from guild to the mod channel id for that guild
         self.non_mod_text_channels = {}
         self.reports = {} # Map from user IDs to the state of their report
+        self.client = discovery.build("commentanalyzer", "v1alpha1", developerKey=perspective_token, discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1", static_discovery=False)
     
     async def on_ready(self,):
         print(f'{self.user.name} has connected to Discord! It is these guilds:')
@@ -121,7 +124,7 @@ class ModBot(commands.Bot):
         # Only handle messages sent in the "group-#" channel
         if not message.channel.name == f'group-{self.group_num}':
             return
-
+        print(message.content[0:15]) #!
         if message.content == "trigger":
             print("Tripped the message detector!")
             view = mainMenu.MainMenuButtons(self, self.mod_channels[message.guild.id])
@@ -131,6 +134,16 @@ class ModBot(commands.Bot):
             await message.channel.send(embed=embed, view=view)
             return
             # await interaction.response.send_modal(MyModal())
+        elif message.content[0:15] == "perspectivetest":
+            remainingMessage = message.content[16:]
+            print("Tripped the perspective tester")
+            print(remainingMessage)
+            analyze_request = { 'comment': { 'text': remainingMessage }, 'requestedAttributes': {'THREAT': {}, 'SEXUALLY_EXPLICIT': {}, 'THREAT_EXPERIMENTAL': {}}}
+            response = self.client.comments().analyze(body=analyze_request).execute()
+            result = json.dumps(response, indent=2)
+            print(result)
+            await message.channel.send(result)
+            return
 
         # Forward the message to the mod channel
         mod_channel = self.mod_channels[message.guild.id]
