@@ -100,3 +100,14 @@ w|3|    What is my favorite color?
                 t
 ```
 
+## How to use the Geedka tool
+
+There are a small number of steps
+that need to be carried out to use to the tool.
+1. Once you have written a config file (it should be called `config.geedka`),
+navigate to the `geedka` directory in terminal.
+2. Then, run `make` to generate the necessary files.
+3. Finally, run `make run` to run the program.
+
+Additionally, you can run `make clean` to remove all the generated files.
+
