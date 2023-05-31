@@ -11,6 +11,11 @@ import pdb
 import mainMenu
 from myModal import MyModal
 from reportButton import ReportButton
+import os
+import openai
+import requests
+import json
+from apikeys import TISANE_KEY, OPENAI_KEY, OPENAI_ORGANIZATION
 
 # const { EmbedBuilder } = require.('discord.js')
 # Set up logging to the console
@@ -64,7 +69,7 @@ class ModBot(commands.Bot):
                 
         
         # print(self.guilds[0].id)
-        print(f"mod channels = {self.mod_channels}")
+        # print(f"mod channels = {self.mod_channels}")
         
 
     async def on_message(self, message):
@@ -134,27 +139,117 @@ class ModBot(commands.Bot):
 
         # Forward the message to the mod channel
         mod_channel = self.mod_channels[message.guild.id]
-        await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
-        scores = self.eval_text(message.content)
-        await mod_channel.send(self.code_format(scores))
+        # await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
+        # response = self.process_text_tisane(message.content) if 'tisane' in message.content else self.eval_text(message.content)
+        # print(response)
+        if 'tisane' in message.content:
+            response = self.process_text_tisane(message.content)
+            await self.code_format(response, message, tisane=True)
+        else:
+            self.eval_text(message.content)
+            response = self.eval_text(message.content)
+            await self.code_format(response, message, tisane=False)
+        # print(response_formatted)
+        # await message.channel.send(response_formatted['verdict'], embed=response_formatted['embed'])
 
-    
+    def process_text_tisane(self, message):
+        url = "https://api.tisane.ai/parse"
+        msg_content = message[(message).find('tisane') + len('tisane') + 1:]
+        # print(msg_content)
+        payload = json.dumps({
+        "language": "en",
+        "content": msg_content,
+        "settings": {'abuse': True, 'snippets': True, 'tags': True, 'explain': True}
+        })
+        headers = {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': TISANE_KEY
+        }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        response_dict = json.loads(response.text)
+        for key, value in response_dict.items():
+            print(f"key={key}\nvalue={value}")
+
+        return response_dict
+
     def eval_text(self, message):
         ''''
         TODO: Once you know how you want to evaluate messages in your channel, 
         insert your code here! This will primarily be used in Milestone 3. 
         '''
-        return message
+        openai.organization = OPENAI_ORGANIZATION
+        openai.api_key = OPENAI_KEY
+
+        response = openai.Moderation.create(
+            input=message,
+)
+        output = response["results"][0]
+        return output
 
     
-    def code_format(self, text):
+    async def code_format(self, response, message:discord.Message, tisane:bool):
         ''''
         TODO: Once you know how you want to show that a message has been 
         evaluated, insert your code here for formatting the string to be 
         shown in the mod channel. 
         '''
-        return "Evaluated: '" + text+ "'"
+        flagged = False
+        title = 'Tisane Abuse Report' if tisane else 'OpenAI Abuse Report'
+        embed = discord.Embed(title=title)
 
+        if tisane:
+            flagged = True if 'abuse' in response else False
+            embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/926300904399220737/JXJgzUm5_400x400.jpg')
+        else:
+            flagged = True if response['flagged'] else False
+            embed.set_thumbnail(url='https://static.thenounproject.com/png/2486994-200.png')
+
+        if flagged:
+            embed.color = discord.Color.red()
+            embed.description = str("```diff\n- This message has been flagged for abuse.```")
+        else:
+            embed.color = discord.Color.green()
+            embed.description = str("```diff\n+ No abuse detected.```")
+
+        embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=False)
+
+        if tisane == False:
+            embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
+            for category, score  in response['category_scores'].items():
+
+                # temporary threshold of 0.5
+                score_str = str(f'__**{str(score)}**__') if (score > 0.5) else str(score)
+                
+                embed.add_field(name=category, value=score_str)
+                
+        else:
+            embed.add_field(name='message_content', value=str(f"`{response['text']}`"), inline=False)
+    
+
+                    # print(f"type={abuse['type']}, severity={abuse['severity']}, text={abuse['text']}, explanation={abuse['text'] if 'text' in abuse else ''}")
+            if 'tags' in response:
+                embed.add_field(name='tags', value=response['tags'].join(', '))
+
+            expi = 1
+            if 'sentiment_expressions' in response:
+                for sentiment_expression in response['sentiment_expressions']:
+                    embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
+                                    value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {sentiment_expression['explanation']}"), inline=False)
+
+            if flagged:
+                for abuse in response['abuse']:
+                    abuse_type = abuse['type']
+                    abuse_tags = ', '.join(abuse['tags']) if 'tags' in abuse else ''
+                    abuse_explanation= abuse['explanation'] if 'explanation' in abuse else ''
+                    abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse['text']}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
+                    embed.add_field(name=abuse_type, value=abuse_value, inline=False)
+        
+        await message.channel.send("Abuse Detected:" "'" + str(flagged) + "'", embed=embed)
+        # return {'verdict': "Abuse Detected:" "'" + str(flagged) + "'", 'embed': embed}
+
+    
 
 client = ModBot()
 
