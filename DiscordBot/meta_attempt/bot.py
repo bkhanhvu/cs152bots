@@ -115,7 +115,8 @@ class ModBot(commands.Bot):
 
         if message.content == "trigger":
             print("Tripped the message detector!")
-            await message.channel.send(embed=get_bot(self, "config.geedka"))
+            # if geedka_bot is discord.ui.View:
+            await get_bot(self, message)
             return
 
         # Forward the message to the mod channel
