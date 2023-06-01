@@ -1,8 +1,16 @@
 w|3|What is my favorite color?
-        Red|Green|Blue
+        Red|Orange|Yellow|Green|Blue|Indigo|Violet
         m|Wrong!
+                t
+        m|Nope!
+                t
+        m|Nah
                 t
         m|Correct!
                 t
         m|Close, but no cigar.
+                t
+        m|Interesting but incorrect
+                t
+        m|Not quite
                 t

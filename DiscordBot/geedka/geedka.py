@@ -132,7 +132,7 @@ def geedka_frontend(config : File, label : int = -1):
                 case 't':
                         return terminal_gen(label)
                 case _:
-                        raise Exception("Unknown node type passed")
+                        raise Exception(f"Unknown node type {tokens[0]} passed")
 
 
 def main():
