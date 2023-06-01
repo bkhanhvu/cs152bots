@@ -116,7 +116,7 @@ class ModBot(commands.Bot):
         if message.content == "trigger":
             print("Tripped the message detector!")
             # if geedka_bot is discord.ui.View:
-            await message.channel.send(content="Welcome to Geedka", \
+            await message.channel.send(content="`Welcome to Geedka`", \
                 view=geedka_impl_class0(message.channel))
             return
 
