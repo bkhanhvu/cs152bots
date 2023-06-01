@@ -40,12 +40,12 @@ Note that the brackets are merely for ease of reading
 `m|[your message here]`
 
 ### Selections
-`s|[number of options]|[selection description]`
+`s|[selection description]`
 
 `       option1|option2|` and so on
 
 ### Switches
-`w|[number of options]|[switch description]`
+`w|[switch description]`
 
 `       option1|option2|` and so on
 
@@ -90,7 +90,7 @@ We would represent this in Geedka as follows:
 
 ```
 m|      Let's play a guessing game
-w|3|    What is my favorite color?
+w|      What is my favorite color?
         Red | Green | Blue
         m|Wrong!
                 t
