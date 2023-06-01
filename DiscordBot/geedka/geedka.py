@@ -100,7 +100,7 @@ import asyncio
 {''.join(get_imports(child_labels))} 
 
 async def send_message_impl(tc : discord.TextChannel):
-        await tc.send(\"{tokens[1]}\")
+        await tc.send(\"{tokens[0]}\")
 
 class {classname}(discord.ui.View):
         def __init__(self, tc : discord.TextChannel): 
