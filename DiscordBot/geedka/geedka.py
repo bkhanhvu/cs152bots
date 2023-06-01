@@ -29,14 +29,14 @@ def terminal_gen(label : int) -> None:
         classname, filename = class_and_filename(label)
 
         write_class_def_to_file(filename, \
-        f"\
-import discord\n\
-\n\
-class {classname}(discord.ui.View):\n\
-        def __init__(self):\n\
-                super().__init__()\n\
-                self.description = \"This Geedka moderation flow has been completed\"\
-")
+        f"""
+import discord
+
+class {classname}(discord.ui.View):
+        def __init__(self, tc : discord.TextChannel):
+                super().__init__()
+                tc.send(\"This Geedka moderation flow has been completed\")
+""")
 
 def message_gen(config : File, tokens : list[str], label : int) -> None:
         classname, filename = class_and_filename(label)
@@ -45,20 +45,25 @@ def message_gen(config : File, tokens : list[str], label : int) -> None:
                 class_and_filename(child_label)
 
         write_class_def_to_file(filename, \
-        f"\
-import discord\n\
-from {child_classname} import {child_classname} \n\
-\n\
-class {classname}(discord.ui.View):\n\
-        def __init__(self):\n\
-                super().__init__()\n\
-                self.title = \"{tokens[0]}\"\n\
-\n\
-        @discord.ui.button(label=\"Continue reporting\", style = discord.ButtonStyle.red)\n\
-        async def callback(self, interaction : discord.Interaction, button): \n\
-                await interaction.response.send_message(\"\", \\\n\
-                view={child_classname}())\
-        ")
+        f"""
+import discord
+import asyncio
+from {child_classname} import {child_classname}
+
+async def send_message_impl(tc : discord.TextChannel):
+        await tc.send(\"{tokens[0]}\")
+
+class {classname}(discord.ui.View):
+        def __init__(self, tc : discord.TextChannel):
+                super().__init__()
+                t : Task = asyncio.create_task(send_message_impl(tc)) 
+                asyncio.wait_for(t, None)
+
+        @discord.ui.button(label=\"Continue reporting\", style = discord.ButtonStyle.red)
+        async def callback(self, interaction : discord.Interaction, button):
+                await interaction.response.send_message(\"Continuing moderation.\", \\
+                view={child_classname}(interaction.channel))
+        """)
 
         # Continue recursion
         geedka_frontend(config, child_label)
@@ -74,11 +79,11 @@ def get_imports(children : list[int]) -> list[str]:
         return [f"{get_import_statement(i)}\n" for i in children]
 
 def get_button_def(text : str, label : int) -> str:
-        return f"\
-        @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)\n\
-        async def callback{label}(self, interaction : discord.Interaction, button): \n\
-                await interaction.response.send_message(\"You selected {text}\", \\\n\
-                        view={classname_from_label(label)}())\n\n"
+        return f"""
+        @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
+        async def callback{label}(self, interaction : discord.Interaction, button):
+                await interaction.response.send_message(\"You selected {text}\",
+                        view={classname_from_label(label)}(interaction.channel))\n\n"""
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
         classname, filename = class_and_filename(label)
@@ -87,19 +92,23 @@ def switch_gen(config : File, tokens : list[str], label : int) -> None:
         child_buttons : list[str] = [get_button_def(n, l) for n, l \
                 in zip(child_names, child_labels)]
         
-        print(tokens[1])
         write_class_def_to_file(filename, \
-        f"\
-import discord \n\
-{''.join(get_imports(child_labels))} \
-\n\
-class {classname}(discord.ui.View):\n\
-        def __init__(self): \n\
-                super().__init__() \n\
-                self.title = \"{tokens[1]}\" \n\n\
-\
-{''.join(child_buttons)} \n\
-")
+        f"""
+import discord 
+import asyncio 
+{''.join(get_imports(child_labels))} 
+
+async def send_message_impl(tc : discord.TextChannel):
+        await tc.send(\"{tokens[1]}\")
+
+class {classname}(discord.ui.View):
+        def __init__(self, tc : discord.TextChannel): 
+                super().__init__() 
+                t : Task = asyncio.create_task(send_message_impl(tc)) 
+                asyncio.wait_for(t, None)
+
+{''.join(child_buttons)} 
+""")
 
         for l in child_labels:
                 geedka_frontend(config, l)
