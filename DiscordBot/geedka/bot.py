@@ -117,7 +117,7 @@ class ModBot(commands.Bot):
             print("Tripped the message detector!")
             # if geedka_bot is discord.ui.View:
             await message.channel.send(content="Welcome to Geedka", \
-                view=geedka_impl_class0())
+                view=geedka_impl_class0(message.channel))
             return
 
         # Forward the message to the mod channel
