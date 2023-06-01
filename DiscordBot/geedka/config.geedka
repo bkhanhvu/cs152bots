@@ -1,5 +1,8 @@
-s|3|What is my favorite color?
+w|3|What is my favorite color?
         Red|Green|Blue
         m|Wrong!
+                t
         m|Correct!
+                t
         m|Close, but no cigar.
+                t
