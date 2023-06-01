@@ -40,7 +40,7 @@ class {classname}(discord.ui.View):
         def __init__(self, tc : discord.TextChannel):
                 super().__init__()
                 t : Task = asyncio.create_task(send_message(tc))
-""")
+        """)
 
 def message_gen(config : File, tokens : list[str], label : int) -> None:
         classname, filename = class_and_filename(label)
@@ -62,11 +62,8 @@ class {classname}(discord.ui.View):
                 super().__init__()
                 t : Task = asyncio.create_task(send_message_impl(tc)) 
                 asyncio.wait_for(t, None)
-
-        @discord.ui.button(label=\"Continue reporting\", style = discord.ButtonStyle.red)
-        async def callback(self, interaction : discord.Interaction, button):
-                await interaction.response.send_message(\"Continuing moderation.\", \\
-                view={child_classname}(interaction.channel))
+                child = asyncio.create_task(tc.send(\"Continuing moderation.\", \\
+                        view={child_classname}(tc)))
         """)
 
         # Continue recursion
