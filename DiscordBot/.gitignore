@@ -1,2 +1,4 @@
 tokens.json
-__pycache__
+testapi.py
+apikeys.py
+__pycache

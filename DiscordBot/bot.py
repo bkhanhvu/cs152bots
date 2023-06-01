@@ -16,6 +16,7 @@ import openai
 import requests
 import json
 from apikeys import TISANE_KEY, OPENAI_KEY, OPENAI_ORGANIZATION
+from googleapi_detection import detect_label_safe_search_uri 
 
 # const { EmbedBuilder } = require.('discord.js')
 # Set up logging to the console
@@ -127,6 +128,46 @@ class ModBot(commands.Bot):
         if not message.channel.name == f'group-{self.group_num}':
             return
 
+        if message.attachments:
+            url = message.attachments[0].url
+            print(f"url={url}")
+            embed = discord.Embed(title = ' __Image Abuse Detection__', description='*### Reporting image labels and abuse detection.*')
+
+            safe_search, labels = await detect_label_safe_search_uri(url)
+            print(f"url={url}")
+            print('Labels:')
+            label_str = ''
+            for label in labels:
+                label_str += f'> description = {label.description}, score = {label.score}\n'
+                print(label.description)
+
+            safe_search_str = ''
+            flagged = False
+            print('Safe search:')
+            for key, value in safe_search.items():
+                if value not in ['UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY'] and not flagged:
+                    embed.color = discord.Color.red() 
+                    flagged = True
+                    safe_search_str += f'> content = __{key}__, likelihood = **{value}**\n'
+                else:
+                    safe_search_str += f'> content = {key}, likelihood = {value}\n'
+
+                print(f"{key}: {value}")
+            
+            if not flagged:
+                embed.color = discord.Color.green()
+            
+            embed.set_image(url=url)
+            embed.set_thumbnail(url='https://community.appinventor.mit.edu/uploads/default/2ad031bc25a55c4d3f55ff5ead8b2de63cdf28bf')
+
+            embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=True)
+            embed.add_field(name='flagged', value=str(f'`{flagged}`'), inline=False)
+            embed.add_field(name='Labels', value=label_str)
+            embed.add_field(name='Safe Search', value=safe_search_str)
+            await message.channel.send(embed=embed)
+            return 
+
+            
         if message.content == "trigger":
             print("Tripped the message detector!")
             view = mainMenu.MainMenuButtons(self, self.mod_channels[message.guild.id])
@@ -230,19 +271,21 @@ class ModBot(commands.Bot):
 
                     # print(f"type={abuse['type']}, severity={abuse['severity']}, text={abuse['text']}, explanation={abuse['text'] if 'text' in abuse else ''}")
             if 'tags' in response:
+                print(f"tags= {response['tags']}")
                 embed.add_field(name='tags', value=response['tags'].join(', '))
 
             expi = 1
             if 'sentiment_expressions' in response:
                 for sentiment_expression in response['sentiment_expressions']:
+                    explanation = sentiment_expression['explanation'] if 'explanation' in sentiment_expression else ''
                     embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
-                                    value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {sentiment_expression['explanation']}"), inline=False)
+                                    value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {explanation}"), inline=False)
 
             if flagged:
                 for abuse in response['abuse']:
                     abuse_type = abuse['type']
-                    abuse_tags = ', '.join(abuse['tags']) if 'tags' in abuse else ''
-                    abuse_explanation= abuse['explanation'] if 'explanation' in abuse else ''
+                    abuse_tags = ', '.join(abuse['tags']) if 'tags' in abuse else 'None'
+                    abuse_explanation= abuse['explanation'] if 'explanation' in abuse else 'None'
                     abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse['text']}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
                     embed.add_field(name=abuse_type, value=abuse_value, inline=False)
         
