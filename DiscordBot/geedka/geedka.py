@@ -31,11 +31,15 @@ def terminal_gen(label : int) -> None:
         write_class_def_to_file(filename, \
         f"""
 import discord
+import asyncio
+
+async def send_message(tc : discord.TextChannel):
+        await tc.send(\"`This Geedka moderation flow has been completed`\")
 
 class {classname}(discord.ui.View):
         def __init__(self, tc : discord.TextChannel):
                 super().__init__()
-                tc.send(\"This Geedka moderation flow has been completed\")
+                t : Task = asyncio.create_task(send_message(tc))
 """)
 
 def message_gen(config : File, tokens : list[str], label : int) -> None:
