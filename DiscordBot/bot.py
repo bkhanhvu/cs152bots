@@ -1,5 +1,7 @@
 # bot.py
 import discord
+import imagehash
+from PIL import Image
 from discord.ext import commands
 import os
 import json
@@ -78,6 +80,12 @@ class ModBot(commands.Bot):
         This function is called whenever a message is sent in a channel that the bot can see (including DMs). 
         Currently the bot is configured to only handle messages that are sent over DMs or in your group's "group-#" channel. 
         '''
+
+        # Need to check whether message contains an image and compare to anything stored in hash database - Emily
+        if message.attachment:
+            attach = message.attachments[0]
+            hash = imagehash.average_hash(Image.open(attach.fp))
+
         # Ignore messages from the bot 
         if message.content.startswith('.'):
             await self.process_commands(message)
