@@ -82,13 +82,17 @@ class ModBot(commands.Bot):
         '''
 
         # Need to check whether message contains an image and compare to anything stored in hash database - Emily
-        if message.attachment:
+        if False and message.attachment: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
             attach = message.attachments[0]
             hash = imagehash.average_hash(Image.open(attach.fp))
 
         # Ignore messages from the bot 
         if message.content.startswith('.'):
             await self.process_commands(message)
+
+        # Ignore any messages that start with !
+        if message.content[0] == "!":
+            return
 
         if message.author.id == self.user.id:
             return
@@ -191,13 +195,19 @@ class ModBot(commands.Bot):
         # await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
         # response = self.process_text_tisane(message.content) if 'tisane' in message.content else self.eval_text(message.content)
         # print(response)
+        openaiCheck = message.content[0:6]
         if 'tisane' in message.content:
             response = self.process_text_tisane(message.content)
-            await self.code_format(response, message, tisane=True)
+            await self.code_format(response, message, tisane=True, openAiChatCompletion=False)
+        elif openaiCheck == 'openai':
+            # Misleading -- this is chatgpt, not the openai API
+            realMessage = message.content[7:]
+            response = self.openai_completion_eval_text(realMessage)
+            await self.code_format(response, message, tisane=False, openAiChatCompletion=True)
         else:
-            self.eval_text(message.content)
+            # self.eval_text(message.content)
             response = self.eval_text(message.content)
-            await self.code_format(response, message, tisane=False)
+            await self.code_format(response, message, tisane=False, openAiChatCompletion=False)
         # print(response_formatted)
         # await message.channel.send(response_formatted['verdict'], embed=response_formatted['embed'])
 
@@ -222,6 +232,27 @@ class ModBot(commands.Bot):
             print(f"key={key}\nvalue={value}")
 
         return response_dict
+    
+    def openai_completion_eval_text(self, message):
+        # Misleading -- this is chatgpt
+        openai.organization = OPENAI_ORGANIZATION
+        openai.api_key = OPENAI_KEY
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a content moderation system tasked with moderating sextortion. Classify each input as either being a risk for sextortion or benign. Inputs tagged as being a sextortion risk will be forwarded to a human moderator team. Please respond only with a number: 0 if you are certain the content is benign, 100 if you are certain it is a risk, and numbers between scaling linearly with riskiness. Be sure not to flag conversations that only talk about sextortion, and only to flag conversations that indicate that the user sending the message is likely to be sextorting its recipient"},
+                {"role": "user", "content": message}
+            ]
+        )
+        output = response["choices"][0]["message"]["content"]
+        # ChatGPT can't be trusted to always give an answer that only has a number, so find the number
+        listNums = re.findall(r'\d+', output)
+        if len(listNums) == 0:
+            print("Couldn't find a number...")
+            return 101 # For now just assume it's bad 
+        else:
+            print(listNums[0])
+            return listNums[0]
 
     def eval_text(self, message):
         ''''
@@ -233,12 +264,12 @@ class ModBot(commands.Bot):
 
         response = openai.Moderation.create(
             input=message,
-)
+        )
         output = response["results"][0]
         return output
 
     
-    async def code_format(self, response, message:discord.Message, tisane:bool):
+    async def code_format(self, response, message:discord.Message, tisane:bool, openAiChatCompletion:bool):
         ''''
         TODO: Once you know how you want to show that a message has been 
         evaluated, insert your code here for formatting the string to be 
@@ -251,6 +282,9 @@ class ModBot(commands.Bot):
         if tisane:
             flagged = True if 'abuse' in response else False
             embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/926300904399220737/JXJgzUm5_400x400.jpg')
+        elif openAiChatCompletion:
+            flagged = True if int(response) > 80 else False
+            embed.set_thumbnail(url='https://static.thenounproject.com/png/2486994-200.png')
         else:
             flagged = True if response['flagged'] else False
             embed.set_thumbnail(url='https://static.thenounproject.com/png/2486994-200.png')
@@ -265,13 +299,17 @@ class ModBot(commands.Bot):
         embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=False)
 
         if tisane == False:
-            embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
-            for category, score  in response['category_scores'].items():
+            if openAiChatCompletion == False:
+                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
+                for category, score  in response['category_scores'].items():
 
-                # temporary threshold of 0.5
-                score_str = str(f'__**{str(score)}**__') if (score > 0.5) else str(score)
-                
-                embed.add_field(name=category, value=score_str)
+                    # temporary threshold of 0.5
+                    score_str = str(f'__**{str(score)}**__') if (score > 0.5) else str(score)
+                    
+                    embed.add_field(name=category, value=score_str)
+            else:
+                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
+                embed.add_field(name="Sextortion", value=response)
                 
         else:
             embed.add_field(name='message_content', value=str(f"`{response['text']}`"), inline=False)
