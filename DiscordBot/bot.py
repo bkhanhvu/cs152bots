@@ -82,7 +82,7 @@ class ModBot(commands.Bot):
         '''
 
         # Need to check whether message contains an image and compare to anything stored in hash database - Emily
-        if False and message.attachment: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
+        if message.attachments: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
             attach = message.attachments[0]
             hash = imagehash.average_hash(Image.open(attach.fp))
 
