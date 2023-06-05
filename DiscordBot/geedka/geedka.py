@@ -140,7 +140,6 @@ def geedka_frontend(config : File, label : int = -1):
                 case _:
                         raise Exception(f"Unknown node type {tokens[0]} passed")
 
-
 def main():
         print("Hello world")
         config_filename : str = 'config.geedka'
