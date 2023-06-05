@@ -33,13 +33,11 @@ def terminal_gen(label : int) -> None:
 import discord
 import asyncio
 
-async def send_message(tc : discord.TextChannel):
-        await tc.send(\"`This Geedka moderation flow has been completed`\")
-
 class {classname}(discord.ui.View):
-        def __init__(self, tc : discord.TextChannel):
-                super().__init__()
-                t : Task = asyncio.create_task(send_message(tc))
+        @classmethod
+        async def create(cls, tc : discord.TextChannel):
+                await tc.send(\"`This Geedka moderation flow has been completed`\")
+                return None
         """)
 
 def message_gen(config : File, tokens : list[str], label : int) -> None:
@@ -54,15 +52,14 @@ import discord
 import asyncio
 from {child_classname} import {child_classname}
 
-async def send_message_impl(tc : discord.TextChannel):
-        await tc.send(\"{tokens[0]}\")
-
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, tc :discord.TextChannel):
-                await send_message_impl(tc)
-                self = {classname}()
-                return self
+        async def create(cls, tc : discord.TextChannel):
+                print(\"Sending message\")
+                await tc.send(\"{tokens[0]}\")
+                child = await {child_classname}.create(tc)
+                if (child != None):
+                        await tc.send(view = child)
 
         def __init__(self):
                 super().__init__()
@@ -101,13 +98,10 @@ import discord
 import asyncio 
 {''.join(get_imports(child_labels))} 
 
-async def send_message_impl(tc : discord.TextChannel):
-        await tc.send(\"{tokens[0]}\")
-
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, tc : discord.TextChannel): 
-                await send_message_impl(tc)
+                await tc.send(\"{tokens[0]}\")
                 self = {classname}()
                 return self
 
@@ -120,8 +114,57 @@ class {classname}(discord.ui.View):
         for l in child_labels:
                 geedka_frontend(config, l)
         
-def get_dropdown_options(elems : list[str]) -> list[Selection]:
-        return [Selection(label=l) for l in elems]
+def get_case(name : str, label : int) -> str:
+        return f"""
+                        case \"{name}\":
+                                child = await geedka_impl_class{label}.create( \\
+                                        interaction.channel)
+                                if (child != None):
+                                        await interaction.channel.send(view=child)
+        """
+
+def get_cases(child_names : list[str], child_labels : list[int]) -> str:
+        return "\n".join([get_case(n, l) for n, l in \
+                zip(child_names, child_labels)])
+
+def select_gen(config : File, tokens : list[str], label : int) -> None:
+        classname, filename = class_and_filename(label)
+        child_names : list[str] = get_child_names(config)
+        child_labels : list[int] = [lp.get_label() for _ in child_names]
+        
+        write_class_def_to_file(filename, \
+        f"""
+import discord 
+import asyncio 
+{''.join(get_imports(child_labels))} 
+
+def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
+        return [discord.SelectOption(label=l, description="Description") \\
+                for l in elems]
+
+class {classname}(discord.ui.View):
+        @classmethod
+        async def create(cls, tc : discord.TextChannel): 
+                await tc.send(\"{tokens[0]}\")
+                self = {classname}()
+                return self
+
+        def __init__(self):
+                super().__init__()
+        
+        @discord.ui.select(placeholder=\"Select one\", \\
+                options=get_dropdown_options({child_names}))
+        async def select_callback(self, interaction : discord.Interaction,
+                selection : discord.ui.Select):
+                await interaction.response.send_message( \\
+                        f\"You selected {{selection.values[0]}}\")
+                match selection.values[0]:
+{get_cases(child_names, child_labels)}
+                        
+        """)
+
+        for l in child_labels:
+                geedka_frontend(config, l)
 
 def geedka_frontend(config : File, label : int = -1):
 # TODO: figure out a way to render multiple elements that aren't directly connected
@@ -132,7 +175,7 @@ def geedka_frontend(config : File, label : int = -1):
                 case 'm':
                         return message_gen(config, tokens[1:], label)
                 case 's':
-                        raise Exception("Not implemented")
+                        return select_gen(config, tokens[1:], label)
                 case 'w':
                         return switch_gen(config, tokens[1:], label)
                 case 't':
