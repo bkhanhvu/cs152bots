@@ -91,8 +91,15 @@ def get_button_def(text : str, label : int) -> str:
         """
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
-        classname, filename = class_and_filename(label)
         child_names : list[str] = get_child_names(config)
+        button_impl(config, tokens, label, child_names)
+
+def yn_gen(config : File, tokens : list[str], label : int) -> None:
+        button_impl(config, tokens, label, ["Yes", "No"])
+
+def button_impl(config : File, tokens : list[str], label : int, \
+        child_names : list[str]) -> None:
+        classname, filename = class_and_filename(label)
         child_labels : list[int] = [lp.get_label() for _ in child_names]
         child_buttons : list[str] = [get_button_def(n, l) for n, l \
                 in zip(child_names, child_labels)]
@@ -176,6 +183,7 @@ def geedka_frontend(config : File, label : int = -1):
         if (label == -1):
                 label = lp.get_label()
         tokens : list[str] = config.readline().strip().split('|')
+        print(f"Got token of type {tokens[0]}")
         match tokens[0]:
                 case 'm':
                         return message_gen(config, tokens[1:], label)
@@ -183,10 +191,13 @@ def geedka_frontend(config : File, label : int = -1):
                         return select_gen(config, tokens[1:], label)
                 case 'w':
                         return switch_gen(config, tokens[1:], label)
+                case 'y':
+                        return yn_gen(config, tokens[1:], label)
                 case 't':
                         return terminal_gen(label)
                 case _:
-                        raise Exception(f"Unknown node type {tokens[0]} passed")
+                        error_message = f"Unknown node type {tokens[0]} passed"
+                        raise Exception(error_message)
 
 def main():
         print("Hello world")
