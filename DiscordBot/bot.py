@@ -82,17 +82,17 @@ class ModBot(commands.Bot):
         '''
 
         # Need to check whether message contains an image and compare to anything stored in hash database - Emily
-        if message.attachments: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
-            attach = message.attachments[0]
-            hash = imagehash.average_hash(Image.open(attach.fp))
+        # if message.attachments: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
+        #     attach = message.attachments[0]
+        #     hash = imagehash.average_hash(Image.open(attach.fp))
 
         # Ignore messages from the bot 
         if message.content.startswith('.'):
             await self.process_commands(message)
 
         # Ignore any messages that start with !
-        if message.content[0] == "!":
-            return
+        # if message.content[0] == "!":
+        #     return
 
         if message.author.id == self.user.id:
             return
@@ -298,9 +298,11 @@ class ModBot(commands.Bot):
 
         embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=False)
 
+        message_content = message.content if len(message.content) < 500 else (message.content[:500] + '....')
+        print(message_content)
         if tisane == False:
             if openAiChatCompletion == False:
-                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
+                embed.add_field(name='message_content', value=str(f'`{message_content}`'), inline=False)
                 for category, score  in response['category_scores'].items():
 
                     # temporary threshold of 0.5
@@ -308,11 +310,12 @@ class ModBot(commands.Bot):
                     
                     embed.add_field(name=category, value=score_str)
             else:
-                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
+                
+                embed.add_field(name='message_content', value=str(f'`{message_content}`'), inline=False)
                 embed.add_field(name="Sextortion", value=response)
                 
         else:
-            embed.add_field(name='message_content', value=str(f"`{response['text']}`"), inline=False)
+            embed.add_field(name='message_content', value=str(f"`{message_content}`"), inline=False)
     
 
                     # print(f"type={abuse['type']}, severity={abuse['severity']}, text={abuse['text']}, explanation={abuse['text'] if 'text' in abuse else ''}")
@@ -323,16 +326,18 @@ class ModBot(commands.Bot):
             expi = 1
             if 'sentiment_expressions' in response:
                 for sentiment_expression in response['sentiment_expressions']:
-                    explanation = sentiment_expression['explanation'] if 'explanation' in sentiment_expression else ''
-                    embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
-                                    value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {explanation}"), inline=False)
+                    if sentiment_expression['polarity'] == 'negative':
+                        explanation = sentiment_expression['explanation'] if 'explanation' in sentiment_expression else ''
+                        embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
+                                        value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {explanation}"), inline=False)
 
             if flagged:
                 for abuse in response['abuse']:
                     abuse_type = abuse['type']
                     abuse_tags = ', '.join(abuse['tags']) if 'tags' in abuse else 'None'
                     abuse_explanation= abuse['explanation'] if 'explanation' in abuse else 'None'
-                    abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse['text']}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
+                    abuse_text = abuse['text'] if len(abuse['text']) < 1024 else (abuse['text'][:500] + '....')
+                    abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse_text}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
                     embed.add_field(name=abuse_type, value=abuse_value, inline=False)
         
         await message.channel.send("Abuse Detected:" "'" + str(flagged) + "'", embed=embed)
