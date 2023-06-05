@@ -65,6 +65,11 @@ and so on
 Note that the options for a yes/no selection do not need to be enumerated,
 so all of its children follow immediately after it.
 
+### Input boxes (modals)
+`i|[question]`
+
+`       input box name1|input box name2|` and so on
+
 ### Terminals
 `t`
 
