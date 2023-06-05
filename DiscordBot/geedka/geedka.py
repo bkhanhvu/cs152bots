@@ -58,12 +58,14 @@ async def send_message_impl(tc : discord.TextChannel):
         await tc.send(\"{tokens[0]}\")
 
 class {classname}(discord.ui.View):
-        def __init__(self, tc : discord.TextChannel):
+        @classmethod
+        async def create(cls, tc :discord.TextChannel):
+                await send_message_impl(tc)
+                self = {classname}()
+                return self
+
+        def __init__(self):
                 super().__init__()
-                t : Task = asyncio.create_task(send_message_impl(tc)) 
-                asyncio.wait_for(t, None)
-                child = asyncio.create_task(tc.send(\"Continuing moderation.\", \\
-                        view={child_classname}(tc)))
         """)
 
         # Continue recursion
@@ -83,8 +85,8 @@ def get_button_def(text : str, label : int) -> str:
         return f"""
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
         async def callback{label}(self, interaction : discord.Interaction, button):
-                await interaction.response.send_message(\"You selected {text}\",
-                        view={classname_from_label(label)}(interaction.channel))\n\n"""
+                await interaction.response.send_message(\"You selected {text}\")
+                child = await {classname_from_label(label)}.create(interaction.channel)"""
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
         classname, filename = class_and_filename(label)
@@ -103,10 +105,14 @@ async def send_message_impl(tc : discord.TextChannel):
         await tc.send(\"{tokens[0]}\")
 
 class {classname}(discord.ui.View):
-        def __init__(self, tc : discord.TextChannel): 
-                super().__init__() 
-                t : Task = asyncio.create_task(send_message_impl(tc)) 
-                asyncio.wait_for(t, None)
+        @classmethod
+        async def create(cls, tc : discord.TextChannel): 
+                await send_message_impl(tc)
+                self = {classname}()
+                return self
+
+        def __init__(self):
+                super().__init__()
 
 {''.join(child_buttons)} 
 """)
