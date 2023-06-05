@@ -18,9 +18,7 @@ There are several kinds of supported nodes:
 * Selections -- a dropdown with several options
 * Switches -- a message with several buttons
 * Yes/No -- a message with yes/no options (shorthand for a binary)
-
-TODO:
-* User input boxes (modals)
+* User input boxes (modals) -- a popup that asks for user input
 
 There is also one special feature:
 * Terminals -- the end of a reporting flow.
@@ -69,6 +67,8 @@ so all of its children follow immediately after it.
 `i|[question]`
 
 `       input box name1|input box name2|` and so on
+
+Note that modals cannot be the first node in a Geedka moderation flow.
 
 ### Terminals
 `t`
