@@ -83,7 +83,12 @@ def get_button_def(text : str, label : int) -> str:
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
         async def callback{label}(self, interaction : discord.Interaction, button):
                 await interaction.response.send_message(\"You selected {text}\")
-                child = await {classname_from_label(label)}.create(interaction.channel)"""
+                child = await {classname_from_label(label)}.create( \\
+                        interaction.channel)
+
+                if (child != None):
+                        await interaction.channel.send(view = child)
+        """
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
         classname, filename = class_and_filename(label)
