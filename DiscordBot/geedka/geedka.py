@@ -204,10 +204,11 @@ class ModalImpl(discord.ui.Modal):
 {get_input_labels(options)}
 
         async def on_submit(self, interaction : discord.Interaction):
-                self.stop()
+                await interaction.response.send_message(f\"Name: {{self.children[0].value}}\")
                 child = await {child_classname}.create(interaction)
                 if child != None:
                         await interaction.channel.send(view = child)
+                self.stop()
                 
 class {classname}(discord.ui.View):
         @classmethod
@@ -215,7 +216,6 @@ class {classname}(discord.ui.View):
                 child = ModalImpl()
                 await i.response.send_modal(child)
                 await child.wait()
-                print(\"Done sending\")
 
         def __init__(self):
                 super().__init__()
