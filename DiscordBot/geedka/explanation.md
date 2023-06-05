@@ -17,9 +17,9 @@ There are several kinds of supported nodes:
 * Messages -- a simple message with text shown to the user
 * Selections -- a dropdown with several options
 * Switches -- a message with several buttons
-
-Lower priority to implement:
 * Yes/No -- a message with yes/no options (shorthand for a binary)
+
+TODO:
 * User input boxes (modals)
 
 There is also one special feature:
@@ -33,6 +33,12 @@ There is also one special feature:
 Note that the brackets are merely for ease of reading
 -- they are not part of the language syntax.
 
+Geedka is not sensitive to whitespace,
+so you can indent however much or little you would like.
+However, it is likely bad style to not indent.
+Additionally, Geedka is sensitive to newlines --
+multiline node specifications are on the TODO list but low priority.
+
 ### Messages
 `m|[your message here]`
 
@@ -41,10 +47,23 @@ Note that the brackets are merely for ease of reading
 
 `       option1|option2|` and so on
 
+`               [node specification for child generated at option1] `
+and so on
+
 ### Switches
 `w|[switch description]`
 
 `       option1|option2|` and so on
+
+`               [node specification for child generated at option1] `
+and so on
+
+
+### Yes/No Selections
+`y|[question]`
+
+Note that the options for a yes/no selection do not need to be enumerated,
+so all of its children follow immediately after it.
 
 ### Terminals
 `t`
