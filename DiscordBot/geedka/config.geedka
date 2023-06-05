@@ -1,17 +1,5 @@
-s|What is my favorite color?
-        Red|Orange|Yellow|Green|Blue|Indigo|Violet
-        m|Wrong!
-                t
-        m|Nope!
-                t
-        m|Nah
-                t
-        y|Are you stalking me?!
-                t
-                t
-        m|Close, but no cigar.
-                t
-        m|Interesting but incorrect
-                t
-        m|Not quite
+w|Would you like to begin reporting?
+        Report
+        i|What is your name?
+                name
                 t

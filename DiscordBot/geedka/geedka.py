@@ -35,8 +35,8 @@ import asyncio
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, tc : discord.TextChannel):
-                await tc.send(\"`This Geedka moderation flow has been completed`\")
+        async def create(cls, i : discord.Interaction):
+                await i.channel.send(\"`This Geedka moderation flow has been completed`\")
                 return None
         """)
 
@@ -54,12 +54,11 @@ from {child_classname} import {child_classname}
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, tc : discord.TextChannel):
-                print(\"Sending message\")
-                await tc.send(\"{tokens[0]}\")
-                child = await {child_classname}.create(tc)
+        async def create(cls, i : discord.Interaction):
+                await i.channel.send(\"{tokens[0]}\")
+                child = await {child_classname}.create(i)
                 if (child != None):
-                        await tc.send(view = child)
+                        await i.send(view = child)
 
         def __init__(self):
                 super().__init__()
@@ -82,9 +81,8 @@ def get_button_def(text : str, label : int) -> str:
         return f"""
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
         async def callback{label}(self, interaction : discord.Interaction, button):
-                await interaction.response.send_message(\"You selected {text}\")
-                child = await {classname_from_label(label)}.create( \\
-                        interaction.channel)
+                await interaction.channel.send(\"You selected {text}\")
+                child = await {classname_from_label(label)}.create(interaction)
 
                 if (child != None):
                         await interaction.channel.send(view = child)
@@ -112,8 +110,8 @@ import asyncio
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, tc : discord.TextChannel): 
-                await tc.send(\"{tokens[0]}\")
+        async def create(cls, i : discord.Interaction): 
+                await i.channel.send(\"{tokens[0]}\")
                 self = {classname}()
                 return self
 
@@ -129,8 +127,7 @@ class {classname}(discord.ui.View):
 def get_case(name : str, label : int) -> str:
         return f"""
                         case \"{name}\":
-                                child = await geedka_impl_class{label}.create( \\
-                                        interaction.channel)
+                                child = await geedka_impl_class{label}.create(interaction)
                                 if (child != None):
                                         await interaction.channel.send(view=child)
         """
@@ -156,8 +153,8 @@ def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, tc : discord.TextChannel): 
-                await tc.send(\"{tokens[0]}\")
+        async def create(cls, i : discord.Interaction): 
+                await i.channel.send(\"{tokens[0]}\")
                 self = {classname}()
                 return self
 
@@ -178,6 +175,54 @@ class {classname}(discord.ui.View):
         for l in child_labels:
                 geedka_frontend(config, l)
 
+def get_input_label(name : str) -> str:
+        return f"""
+                self.add_item(discord.ui.TextInput(label=\"{name}\"))
+        """
+
+def get_input_labels(options : list[str]) -> str:
+        return "\n".join([get_input_label(o) for o in options])
+        
+
+def modal_gen(config : File, tokens : list[str], label) -> None:
+        options : list[str] = get_child_names(config)
+        classname, filename = class_and_filename(label)
+        child_label : int = lp.get_label()
+        child_classname : str = classname_from_label(child_label)
+        
+        geedka_frontend(config, child_label)
+
+        write_class_def_to_file(filename, \
+        f"""
+import discord 
+import asyncio 
+from {child_classname} import {child_classname}
+
+class ModalImpl(discord.ui.Modal):
+        def __init__(self):
+                super().__init__(title = \"{tokens[0]}\")
+{get_input_labels(options)}
+
+        async def on_submit(self, interaction : discord.Interaction):
+                self.stop()
+                child = await {child_classname}.create(interaction)
+                if child != None:
+                        await interaction.channel.send(view = child)
+                
+class {classname}(discord.ui.View):
+        @classmethod
+        async def create(cls, i : discord.Interaction): 
+                child = ModalImpl()
+                await i.response.send_modal(child)
+                await child.wait()
+                print(\"Done sending\")
+
+        def __init__(self):
+                super().__init__()
+
+""")
+
+
 def geedka_frontend(config : File, label : int = -1):
 # TODO: figure out a way to render multiple elements that aren't directly connected
         if (label == -1):
@@ -193,6 +238,8 @@ def geedka_frontend(config : File, label : int = -1):
                         return switch_gen(config, tokens[1:], label)
                 case 'y':
                         return yn_gen(config, tokens[1:], label)
+                case 'i':
+                        return modal_gen(config, tokens[1:], label)
                 case 't':
                         return terminal_gen(label)
                 case _:
