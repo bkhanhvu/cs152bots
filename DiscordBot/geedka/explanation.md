@@ -19,15 +19,12 @@ There are several kinds of supported nodes:
 * Switches -- a message with several buttons
 
 Lower priority to implement:
-* Binaries -- a message with two buttons (effectively shorthand for a switch)
 * Yes/No -- a message with yes/no options (shorthand for a binary)
-* User input boxes
+* User input boxes (modals)
 
-There are also two special features:
-* Data collections --
-        a description added to a node which states that the user's choices are
-        added to the ticket for the report.
-* Terminals -- the end of a reporting flow. This must be manually implemented.
+There is also one special feature:
+* Terminals -- the end of a reporting flow.
+        This is manually implemented by the technical team.
         All reporting flows must end in a terminal
 
 
@@ -48,9 +45,6 @@ Note that the brackets are merely for ease of reading
 `w|[switch description]`
 
 `       option1|option2|` and so on
-
-### Data collections
-`d|[normal node description]`
 
 ### Terminals
 `t`
