@@ -1,17 +1,17 @@
-s|What is my favorite color?
+s|Guessed Favorite Color|What is my favorite color?
         Red|Orange|Yellow|Green|Blue|Indigo|Violet
-        m|Wrong!
+        m|Wrong!^Dumbass
                 t
-        m|Nope!
+        m|Nope!^Lol
                 t
-        m|Nah
+        m|Nah^Gottem
                 t
-        y|Are you stalking me?!
+        y|Stalking|Are you stalking me?!
                 t
                 t
-        m|Close, but no cigar.
+        m|Close, but no cigar.^How did you know?
                 t
-        m|Interesting but incorrect
+        m|Interesting but incorrect^I'll have to consider it
                 t
-        m|Not quite
+        m|Not quite^Keep trying
                 t

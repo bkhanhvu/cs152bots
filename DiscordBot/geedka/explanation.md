@@ -41,7 +41,7 @@ multiline node specifications are on the TODO list but low priority.
 `m|[your message here]`
 
 ### Selections
-`s|[selection description]`
+`s|[tag]|[selection description]`
 
 `       option1|option2|` and so on
 
@@ -49,7 +49,7 @@ multiline node specifications are on the TODO list but low priority.
 and so on
 
 ### Switches
-`w|[switch description]`
+`w|[tag]|[switch description]`
 
 `       option1|option2|` and so on
 
@@ -58,7 +58,7 @@ and so on
 
 
 ### Yes/No Selections
-`y|[question]`
+`y|[tag]|[question]`
 
 Note that the options for a yes/no selection do not need to be enumerated,
 so all of its children follow immediately after it.
