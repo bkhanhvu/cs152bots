@@ -50,6 +50,7 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
     embeds.append(next_step_embed)
     if autoBanned:
         await mod_channel.send(embeds=embeds, view=ConsequenceActionButtonsAutoBanned(bot, tid))
+        await tickets[tid].bot_msg.delete()
     elif autoKicked:
         await mod_channel.send(embeds=embeds, view=ConsequenceActionButtonsAutoKicked(bot, tid))  
     else:
