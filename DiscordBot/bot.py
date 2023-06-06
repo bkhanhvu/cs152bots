@@ -75,6 +75,11 @@ class ModBot(commands.Bot):
                     self.mod_channels[guild.id] = channel
                 if channel.name == f'group-{self.group_num}':
                     self.non_mod_text_channels[guild.id] = channel
+
+        print("Syncing commands...")
+        synced = await client.tree.sync()
+        print("Commands synced")
+        print(synced)
                 
         
         # print(self.guilds[0].id)
@@ -195,15 +200,13 @@ class ModBot(commands.Bot):
                 # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
 
             
-        if message.content == "trigger":
-            print("Tripped the message detector!")
-            view = mainMenu.MainMenuButtons(self, self.mod_channels[message.guild.id])
-            embed = mainMenu.MainMenuEmbed()
+        # if message.content == "trigger":
+        #     print("Tripped the message detector!")
+        #     view = mainMenu.MainMenuButtons(self, self.mod_channels[message.guild.id])
+        #     embed = mainMenu.MainMenuEmbed()
 
-            # await message.channel.send("Click this button to report the message above", view=ReportButton())
-            await message.channel.send(embed=embed, view=view)
-            return
-            # await interaction.response.send_modal(MyModal())
+        #     await message.channel.send(embed=embed, view=view)
+        #     return
         # Forward the message to the mod channel
         mod_channel = self.mod_channels[message.guild.id]
         # await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
@@ -443,9 +446,17 @@ class ModBot(commands.Bot):
 
 client = ModBot()
 
-@client.command()
-async def hello(ctx):
-    await ctx.reply("Hello!!!")
+# @client.tree.command(name="hello", description="test")
+# async def hello(interaction: discord.Interaction):
+#     await interaction.response.send_message("Hello!!!")
+
+@client.tree.command(name = "report", description = "Use this command to report a message sent in this channel. Only moderators will be able to see.")
+async def report(interaction: discord.Interaction):
+    print("Tripped the message detector!")
+    view = mainMenu.MainMenuButtons(client, client.mod_channels[interaction.guild.id])
+    embed = mainMenu.MainMenuEmbed()
+
+    await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
 client.run(discord_token)
 

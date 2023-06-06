@@ -19,7 +19,7 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
     mod_channel = bot.mod_channels[bot.guilds[0].id]
 
     if interaction:
-        await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid)])
+        await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid)], ephemeral=True) # Is this the right place?
     if embeds is None:
         mod_channel = bot.mod_channels[bot.guilds[0].id]
         embed = await create_completionEmbed(bot, tid)
