@@ -106,7 +106,7 @@ def get_imports(children : list[int]) -> list[str]:
 def get_button_def(tag : str, text : str, label : int) -> str:
         return f"""
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
-        async def callback{label}(self, interaction : discord.Interaction, button):
+        async def callback{text}{label}(self, interaction : discord.Interaction, button):
                 self.ticket[\"{tag}\"] = \"{text}\"
                 await interaction.channel.send(\"You selected {text}\")
                 child = await {classname_from_label(label)}.create(interaction, self.ticket)
@@ -129,21 +129,35 @@ def yn_gen(config : File, tokens : list[str], label : int) -> None:
 
 def button_impl(config : File, tokens : list[str], label : int, \
         child_names : list[str]) -> None:
+
+        response_tag : str = tokens[0]
+        message_spec : str = tokens[2]
+        data_collect : bool = tokens[1] == 'd'
+
         classname, filename = class_and_filename(label)
-        child_labels : list[int] = [lp.get_label() for _ in child_names]
-        child_buttons : list[str] = [get_button_def(tokens[0], n, l) for n, l \
+
+        child_labels : list[int] =  [lp.get_label()] * len(child_names) \
+                if data_collect else [lp.get_label() for _ in child_names]
+        print(child_labels)
+
+        child_buttons : list[str] = [get_button_def(response_tag, n, l) for n, l \
                 in zip(child_names, child_labels)]
+
+        import_statement : str = get_import_statement(child_labels[0]) \
+                if data_collect else ''.join(get_imports(child_labels)) 
+
+        print(child_names)
         
         write_class_def_to_file(filename, \
         f"""
 import discord 
 import asyncio 
-{''.join(get_imports(child_labels))} 
+{import_statement} 
 
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-{get_embed_gen(tokens[1])}
+{get_embed_gen(message_spec)}
                 await i.channel.send(embed=impl_embed)
                 self = {classname}(ticket)
                 return self
@@ -155,8 +169,11 @@ class {classname}(discord.ui.View):
 {''.join(child_buttons)} 
 """)
 
-        for l in child_labels:
-                geedka_frontend(config, l)
+        if data_collect:
+                geedka_frontend(config, child_labels[0])
+        else:
+                [geedka_frontend(config, l) for l in child_labels]
+
         
 def get_case(name : str, label : int) -> str:
         return f"""
@@ -171,6 +188,7 @@ def get_cases(child_names : list[str], child_labels : list[int]) -> str:
                 zip(child_names, child_labels)])
 
 def select_gen(config : File, tokens : list[str], label : int) -> None:
+
         classname, filename = class_and_filename(label)
         child_names : list[str] = get_child_names(config)
         child_labels : list[int] = [lp.get_label() for _ in child_names]
@@ -298,7 +316,7 @@ def geedka_frontend(config : File, label : int = -1):
 
 def main():
         print("Hello world")
-        config_filename : str = 'config.geedka'
+        config_filename : str = 'data_test.geedka'
         if not os.path.isfile(config_filename):
                 raise Exception(f"{config_filename} not found!")
 
