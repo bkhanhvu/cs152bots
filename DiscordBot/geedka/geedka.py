@@ -106,7 +106,7 @@ def get_imports(children : list[int]) -> list[str]:
 def get_button_def(tag : str, text : str, label : int) -> str:
         return f"""
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
-        async def callback{text}{label}(self, interaction : discord.Interaction, button):
+        async def callback{text.replace(" ", "_")}{label}(self, interaction : discord.Interaction, button):
                 self.ticket[\"{tag}\"] = \"{text}\"
                 await interaction.channel.send(\"You selected {text}\")
                 child = await {classname_from_label(label)}.create(interaction, self.ticket)
@@ -332,7 +332,7 @@ def geedka_frontend(config : File, label : int = -1):
 
 def main():
         print("Hello world")
-        config_filename : str = 'data_test.geedka'
+        config_filename : str = 'config.geedka'
         if not os.path.isfile(config_filename):
                 raise Exception(f"{config_filename} not found!")
 
