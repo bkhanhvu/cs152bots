@@ -1,5 +1,18 @@
-w|Would you like to begin reporting?
-        Report
-        i|What is your name?
-                name|residence
+s|Reason|We're here to help^Please select the reason for reporting this content
+        Harassment|Spam|Offensive Content|Imminent danger|Other
+        i|Provide content and detailed reason
+                Link to content|Reason for reporting
+        s|Type|Type of harassment^Please specify the type of harassment you are experiencing
+                Sextortion|Hate Speech|Encouraging self harm|Threats|Other
+                s|Sextortion kind|What kind of sextortion are you experiencing?^Please choose the most fitting description
+                        Content includes explicit images|Content is a threat to spread explicit images
+                        t
+                        t
                 t
+                t
+                t
+                t
+        t
+        t
+        t
+        t
