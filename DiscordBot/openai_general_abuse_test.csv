@@ -1,0 +1,310 @@
+,Line,Message,openai_flagged,sexual,hate,violence,self-harm,sexual/minors,hate/threatening,violence/graphic
+0,10,"""you might not get ya bitch back & that's that""",False,0.00019451116,0.00045315505,0.0062844562,7.0364137e-09,8.543961e-09,8.170954e-08,4.328195e-08
+1,20,"""bitches get cut off everyday B""",False,0.0010463892,0.16777276,0.009135279,4.9400505e-08,4.500156e-07,1.1139047e-05,7.0403617e-06
+2,45,"""pimps up pimps up hoes down""",False,0.0021277496,0.025619157,0.0029763454,8.415603e-10,6.2536947e-07,0.00012029995,9.5239585e-08
+3,150,"""In every cartoon theirs alway a @_nuffsaid15 savng these hoes lmao""",False,0.002782258,0.053086404,0.0009367736,2.1250294e-06,1.47376895e-05,4.861935e-05,2.2393588e-07
+4,186,"""LMFAOOOO I HATE BLACK PEOPLE""",True,7.3531805e-07,0.80192494,6.6591434e-05,7.09385e-08,2.7311904e-08,1.1605798e-06,1.591048e-09
+5,234,"""These catfish hoes thinking they slick""",True,0.028930984,0.501286,0.0026177121,2.8450313e-07,3.7214963e-07,4.8679726e-06,2.0456744e-06
+6,400,"""Nothin in life is free.. Some of you bitches need to write that""",False,0.00020629575,0.109836675,0.0036604463,6.316046e-07,7.87712e-07,4.783087e-06,1.6391065e-06
+7,446,"""Dumb bitches do dumb things""",False,0.00036518156,0.11003234,3.2059554e-05,4.864471e-09,4.9697164e-08,4.6477732e-07,5.935219e-09
+8,623,"""You look like little birds help you get dressed in the morning""",False,4.7781516e-05,9.693462e-05,6.018198e-06,4.2412836e-08,8.342543e-08,5.0970733e-10,1.9212465e-07
+9,662,"""when rappers say twat it makes me feel weird"" ",False,0.00054102216,0.00036895138,2.888919e-06,1.6407526e-08,1.1713362e-07,5.3700995e-09,1.2018349e-07
+10,21828,That bitch cur my hair way to short,False,0.00042068565,0.01921585,0.00022171065,3.5129965e-08,1.2724405e-06,5.552638e-07,1.8016023e-07
+11,3569,Id break that little bitches finger,False,0.0050699054,0.00039993855,0.09681944,1.8168566e-07,3.963776e-05,3.3735134e-07,1.0383475e-05
+12,5824,not that it matters but im proud of ur little ass! im n old southern bitch. hang n there baby!,False,0.008267089,0.04223077,0.0008532391,5.944758e-05,4.5352306e-05,6.1246334e-05,3.16471e-07
+13,460,"""HOW DO YOU KNOW MY TWITTER PASSWORD"" bitch please",False,2.2719254e-05,1.326793e-05,1.0357691e-05,3.7877026e-09,7.413504e-08,7.0934335e-11,1.5253141e-09
+14,14675, u ever kill a ant on the sidewalk and think damn what if that nigga was on his way to get some pussy,False,0.011379135,0.051698226,0.3228119,1.1233651e-05,1.0948371e-05,2.4573503e-05,9.887785e-06
+15,1091,Chillin' with My Homie Or What's Left Of Him. British Rapper Turned ISIS Jihadi Poses With Severed Head,True,0.00026568005,0.040649805,0.99459076,0.00070350536,3.9643273e-06,2.0647942e-06,0.96207166
+16,10106,"Hitting women is wrong morally but bitches get raped, kidknapped.beat up, an sold to be sex slaves, when they gonna end that?",True,0.9336637,0.78024536,0.8404405,1.5178482e-07,0.25734523,0.013579046,0.14778857
+17,3771,Not associate but ya nicca,False,1.2641114e-05,0.16920552,0.00024025087,1.2409951e-08,3.0357992e-09,1.1187663e-07,4.3773852e-08
+18,2740,then what the hell are the perks of being your hoe? This is some bullshit,False,0.00019807577,0.0036128515,0.00019523228,3.9189717e-07,1.9347719e-07,9.21735e-09,1.2023371e-07
+19,22203,These bitches smell like fish,False,0.00033635343,0.1890452,3.7529462e-05,9.507071e-10,1.5903166e-07,2.0079244e-07,9.16562e-08
+20,9581,Fucking bitches never hit a nigga back up,True,0.0012276354,0.7011184,0.0154575715,1.4598702e-07,1.67499e-07,0.00016288388,2.7821649e-08
+21,15137,"@Dory ""what are you twelve."" yeah on a scale from 1 to 10",False,0.0001425986,5.2132218e-05,0.00022803026,1.745725e-07,3.837372e-05,8.9302404e-08,3.0229654e-07
+22,3829," I want some.....I'm so damn tired of being in the fucking kitchen, a bitch is hot and needs a glass of wine and a back rub",False,0.03719072,0.0036556548,0.0046451585,1.1863607e-06,6.997729e-06,1.0762642e-05,4.6966125e-06
+23,11291,"I wan do a mixtape... ""pussy an cinnamon rolls""",False,0.08444367,9.88908e-05,0.0008245552,1.6626684e-07,8.620393e-06,4.94071e-07,2.9730427e-06
+24,10280,I already know Wilson gone hoe later on let me gone get my ammo,False,0.0005873028,0.0012864297,0.29799098,4.901214e-07,1.6620517e-06,1.0192708e-05,1.7192862e-06
+25,22345,They say I wouldn't make it now them same bitches is calling my cellular,False,0.004403047,0.1825658,0.0005909897,3.7395814e-05,2.040019e-06,5.851103e-05,9.713984e-07
+26,23974,Young bitches talk about their new man ALLLL DAY....as if anyone is really intrested in that shit lol,True,0.03556229,0.86387616,0.00024444528,1.7784443e-07,0.00059952127,1.2015703e-07,8.6226595e-07
+27,16183,There is a GIFT SHOP at the 9-11 museum? And they charge admission. It's a mass grave you fucking cunts. What a disgrace.,False,0.0001071055,0.060530297,0.0070062433,1.0041694e-05,5.95535e-08,1.0499774e-06,0.00017977328
+28,22176,These bitches aint playin'. A jealous woman does better research than the FBI.,True,0.001730793,0.49091545,0.0033248304,2.125735e-06,7.5018534e-06,2.6661708e-06,0.00018121097
+29,20070,"maybe yall hoe ass niggas should start considering girls feelings shiii, think about if a nigga is doing what you're doing",True,0.002410795,0.86701053,0.0015811967,1.734338e-06,3.2459327e-05,8.470447e-06,3.680711e-08
+30,11624,"I'm not defending Ray Rice but that double standard is a bitch, ain't it",False,1.3325552e-05,0.03852143,0.0721926,8.6153456e-08,2.5026509e-08,5.550129e-08,1.2566375e-05
+31,13510,Nah fuck Bungie they ain't givng me nNO drops. Stingy ass niggas,False,1.6691534e-05,0.082556814,0.00051533594,1.2834126e-06,5.0958224e-09,9.51431e-06,8.5085944e-08
+32,24688,lol stupid ass bitch I don't fuck w/ you,False,0.00824483,0.025709305,0.004275321,1.8403976e-07,1.6511966e-07,1.6747649e-07,2.4473725e-09
+33,24045,all my exes are bitches,False,0.0065872,0.07782248,2.0012674e-06,5.617662e-08,4.452451e-07,1.1850649e-08,1.7355652e-10
+34,5297, Being a flaming fag is a serious mental issue,True,1.8239031e-06,0.48684782,0.00014025338,9.547819e-07,3.4351544e-08,5.337893e-08,3.7393556e-06
+35,15741, All bitches is crazy.,True,6.277925e-05,0.8884281,1.2590106e-06,1.3759186e-09,2.888219e-08,5.473866e-08,1.0564495e-09
+36,23616,Yeah hoe.,False,0.00072581833,0.0046400176,0.0007185353,1.0614129e-05,6.822766e-05,7.8755573e-07,1.977007e-05
+37,12220,It's Friday bitch!!,False,2.7157474e-05,9.872393e-05,1.791415e-06,4.9191602e-11,1.607576e-08,8.282924e-09,4.74665e-09
+38,20628,if ya bitch mad tell ha I'll put ha own ,True,0.00062098907,0.000349692,0.87734216,2.1521434e-07,1.7918214e-06,1.9091738e-05,7.523877e-06
+39,6879,fight me you fucking obese niglet,True,1.2822938e-05,0.39646935,0.701895,9.449674e-06,1.8514804e-08,0.00039342535,5.4451885e-07
+40,13895,"Oh, bitch!!! #Scandal",False,0.0013076838,0.0011686761,0.0044639637,1.1341883e-08,8.68459e-08,3.96016e-07,2.5876852e-06
+41,638,"""but I love him"" nah bitch that ain't love.",False,7.069116e-05,0.004342081,7.5879e-05,4.7528372e-09,8.915379e-09,4.1232667e-10,3.961136e-09
+42,20205,AO got bitches at home scrolling IG like ...,False,0.016241523,0.053888034,5.2682353e-05,7.2761868e-09,2.331552e-06,2.1458557e-07,9.171688e-08
+43,10221,How's work bitch,False,0.00028877734,4.4238775e-05,4.4197586e-06,6.634318e-11,8.82564e-09,7.299452e-10,2.5032367e-09
+44,23600,Yea bitch. how dat shit feel,False,0.0013064276,0.0042108526,0.0027194717,2.356574e-10,1.3074336e-08,1.1513938e-07,1.7514928e-08
+45,23151,When a bitch all in ya mans face in public,False,0.0074992976,0.38000593,0.01651276,8.5541275e-11,8.9761136e-07,2.0523185e-05,1.3702182e-05
+46,21812, y'all diss hoes but praise nicki minaj everyday. I don't understand niggas man,False,7.610284e-05,0.30165964,0.0004355529,5.555071e-06,1.8770642e-08,1.9100312e-07,2.3599978e-07
+47,4043,you're a coon,False,8.330321e-07,0.39637116,1.0953945e-06,6.7206857e-10,4.9287613e-10,1.3983814e-08,3.8935835e-10
+48,13120,Me and my big ol titty bitch,True,0.86220276,0.0035738475,2.0001868e-05,4.3246633e-08,1.8229803e-05,1.0763767e-06,7.4121324e-08
+49,21829,That bitch filthy ,False,0.017061975,0.008500557,7.809748e-05,1.4433811e-09,3.812297e-07,3.1558965e-08,2.49602e-08
+50,10016,He was talking about I'm on one lol. How was that even possible when I was on a cruise ship with no phone service negro?,False,1.7595576e-05,0.01189613,4.1713083e-06,2.0308534e-07,2.5971863e-07,1.9436722e-08,1.1886909e-07
+51,14320,"Black bitches think its ok to clap they hands when they getting into an argument, bitch stfu before I steal yo purse",True,0.00014809426,0.733276,0.62343633,7.7572615e-08,2.8198774e-06,0.0010194213,3.5843152e-06
+52,19515,nigguh waldo had chipotle waiting for him at his house lucky soab lol,False,1.6922833e-05,0.04479163,0.0014394596,6.947585e-06,1.6869276e-08,5.9669296e-06,6.5533845e-07
+53,9996,"He hit me with "" if I tell you who I'm fucking you can't say shit bitch, but her head game on point """,False,0.13567556,0.00075131527,0.048484407,3.3835948e-07,5.4719894e-06,1.1942477e-06,9.402012e-06
+54,6609, and stop being a bitch made nigga and man up and show up for that ass whooping,True,0.00027609576,0.7693686,0.99597037,5.9076075e-07,1.1049446e-05,0.18165745,0.00012472946
+55,21637,Stop snitching faggot,True,4.1945885e-05,0.5419886,0.010625764,1.8427086e-07,1.9265802e-07,1.2696422e-05,4.7665207e-08
+56,5339,she remembers the dick lol and wants it again. I recommend you shoot a bitch if she show up. She might snap,True,0.04990075,0.007590283,0.94599384,9.074018e-07,1.3165383e-06,0.00042792177,0.00016800832
+57,10209,How you cry like a bitch every time me other Chiefs fans have friendly debates?????,False,1.2610493e-05,0.047038402,0.0037356047,1.816174e-06,1.8152472e-08,5.639757e-07,1.1587329e-06
+58,11246,I think a lot of bitches don't smile in their selfies because their breath stinks and they don't want to steam up their front cameras,True,0.00020152864,0.47457358,9.067632e-05,2.452234e-07,1.09563224e-07,3.7852496e-07,2.1284055e-07
+59,7857,All these hoes say that wanna be cuffed bitch cuff this dick,False,0.24470778,0.028577939,0.0009927929,2.1584042e-07,1.2748486e-05,1.4539734e-05,6.907233e-08
+60,16706,I got 11 nuggets this time bitch.,False,0.00014135419,0.00501231,0.000123438,4.1405453e-08,1.696553e-08,1.8572587e-07,1.5439343e-07
+61,12880,Load this bitch up with Kool Aid,False,0.000334277,0.0013841809,0.060410626,4.605571e-09,2.5838212e-06,1.3625211e-05,2.1374002e-07
+62,11344,when dem niccas told me dat shit,True,5.9293543e-06,0.57475436,2.9536552e-05,5.126905e-08,6.895781e-08,1.3598227e-06,1.8460209e-09
+63,6190,die in a car accident then faggot,True,0.00016463523,0.9325579,0.26578298,4.785676e-05,1.02674685e-05,0.04888318,0.00013198647
+64,13351,"My ex wanna work it out, bitch try yoga",False,2.8569879e-05,0.00047460382,0.001145784,3.557673e-07,8.515478e-08,1.8329636e-07,1.016465e-07
+65,6824," If you snipe, you're a fucking faggot. I fucking hope all of you snipers get fucking raped and suffer from cancer.",True,0.0031248487,0.9000575,0.98365664,4.132312e-06,1.969029e-06,0.8922721,0.00011069221
+66,117,Little stupid as bitch I don't fuck with yoooooouuuu..,False,0.002455843,0.010433943,0.008129748,6.08503e-08,2.415933e-08,3.2202385e-07,2.4145959e-09
+67,20491, idkmadz tbh I've seen you in recess at the monkey bars but I was too busy getting beat up lol ! we should talk more!,False,1.4011042e-06,3.262004e-05,8.743669e-05,8.961769e-07,4.837775e-07,7.068455e-09,1.4494546e-07
+68,10876,I just touched down on that pussy,True,0.9242672,0.0072332155,0.00036886416,1.7319992e-07,5.398848e-05,4.44035e-06,6.9678623e-07
+69,23296,"Who the fuck puts a block of cheese in they room without a refrigerator ghetto ass niggas eases, like that's just the thing to do wrong.",True,0.00044936832,0.9420496,0.0023990874,9.813269e-07,3.189598e-07,3.8850267e-06,2.566554e-06
+70,14411,"""what are you 15?"" yeah on a scale of one to ten, bitch",False,0.0005829617,0.00041615218,6.6642126e-05,1.8423075e-08,0.00012391468,2.2193632e-07,1.4975855e-08
+71,7584, nah Bama fans ain't finna have a nigger running the offense.,False,8.410166e-06,0.18504964,0.0025275047,3.9526702e-07,1.1334068e-07,1.1902013e-06,1.9660892e-07
+72,5905,nigga doing the duggy on dem dead hoes lol,True,0.0005211612,0.69692194,0.02267099,1.0839028e-05,6.498295e-08,0.0015507555,3.6337392e-06
+73,16971,"Here's how your ""suggestion"" plays out ",False,9.889538e-07,2.9391369e-05,0.00013623806,3.5202188e-09,4.0407213e-07,8.787242e-09,2.832635e-07
+74,11606,I'm lifted before I'm stiff out of this bitch,False,0.0018322695,0.0058361804,0.0014749813,8.817657e-07,4.535511e-08,2.9780313e-06,9.0881247e-07
+75,19396,Girl ugly denna hoe,False,0.010838199,0.07112902,5.17798e-05,1.0037605e-06,7.3952883e-06,3.9530242e-08,8.404045e-07
+76,4511,"yeah, us crackers are the devil.",False,7.0803645e-07,0.04667398,0.00018348324,8.1495365e-08,6.523012e-10,7.761773e-09,3.721356e-09
+77,21752,Taught me how to hate a bitch,False,6.708744e-05,0.20660505,0.15762515,9.565065e-08,1.4155529e-06,1.7820683e-05,1.0480626e-08
+78,13742,No wonder these ppl that call themselves niggas & thugs able to convince their hoes false ideas about men like me in our intellectual dress,True,0.00097521103,0.7786391,0.010591245,1.41681585e-05,3.263192e-07,6.949189e-06,1.4765727e-05
+79,24290,especially since Rick and Andrea are banging each other in the comics but the bitch died already,False,0.0057103024,0.0019297079,0.001318391,1.0282835e-06,3.5972805e-06,6.1023684e-09,1.9442714e-05
+80,20596,No man has ever aborted a baby even if he have her $ on it. Abortion bitches will soon meet god & they baby to face,True,0.0017875519,0.81165737,0.3022398,5.344564e-05,4.0992894e-05,0.00023006143,0.00019860982
+81,15683, Bitches be like Fuck ponies but ponies ve like Fuck bitches.,False,0.020461315,0.102612115,0.00022617329,1.5846304e-06,7.078879e-07,1.2160737e-07,1.7958573e-06
+82,16153, If a hoe give my lil Sista a eye like that she betta call me so we can go jump the bitch,False,0.015474831,0.065750115,0.10759437,1.6292702e-08,7.458126e-05,3.3743854e-05,2.3097166e-07
+83,2604, send them damn beaners back where they belong n the US aint it,True,2.4457322e-06,0.56249344,0.007958919,6.833312e-09,2.816615e-07,8.607096e-05,2.4163668e-07
+84,11855,If only you bitches REALLY knew,False,0.0008327077,0.19902578,0.0012446365,6.504913e-09,2.209761e-06,6.39318e-07,1.607837e-07
+85,17114," Black pussy remind me of roast beef, white pussy remind me of cheesecake and Mixed girl pussy remind me of Apple Pie..",True,0.6203295,0.35487002,2.3191082e-05,9.1253854e-10,1.3238785e-05,3.3520598e-06,1.1783751e-06
+86,7987,bitches b tweeting everything they see to b Relavent,False,0.0014752011,0.40425965,0.000758167,2.7014116e-07,6.826241e-05,2.2016977e-05,3.1837433e-06
+87,3374, fight or nah dumb bitch,False,0.00061465445,0.0054634027,0.003823452,2.4265483e-07,5.585972e-08,6.5178693e-07,4.4049408e-08
+88,17828,"choke on a cactus, bitch.",False,1.6170561e-05,0.00012246525,0.0011057669,3.9744195e-05,2.192614e-09,6.4777494e-09,7.536703e-06
+89,7063, if you hate men so much why you trying to look like one? Stupid little cunt,False,0.00026629807,0.10062896,0.00020860125,4.7464714e-06,6.614327e-08,6.1771392e-09,1.8627398e-07
+90,20528,a loyal girl really truly does come with a smart mouth and arguments. only a hoe will let you do as you please cause she ,False,0.0020225067,0.2460123,0.0012939009,5.9332806e-06,3.8470366e-06,6.1906235e-08,7.713794e-07
+91,14739, Real niggas move in silence bitch niggas make a scene cuz they not really wit the violence,True,0.0008120335,0.98386616,0.5463694,8.827352e-06,1.3756367e-06,0.044556197,8.088104e-06
+92,13808,My pussy been turned off lately.. I won't be fucking no time soon. Forever dry,True,0.9643118,0.00080322055,0.0001411924,1.1217733e-05,2.8431941e-05,1.0428626e-07,5.4522156e-06
+93,20933,Real niggas let real bitches come,True,0.03516596,0.51750326,0.0019003303,1.5638017e-07,2.1427899e-05,2.9062396e-05,4.8733884e-08
+94,17923, I just wanna spread your legs & kiss &amp; lick my way down to your pussy just so I can feel every bit of wetness on my tong,True,0.99980325,2.8920564e-05,0.00024001364,4.062296e-08,0.00086510554,8.561548e-07,7.8880055e-07
+95,1575,Better not have any bitch ass people in my classes tomorrow,True,4.364626e-07,0.7668174,0.004823153,7.4773876e-10,4.6743992e-08,6.0240145e-06,7.975736e-09
+96,22168,"Theres a girl in your avi, you must get so many bitches",False,0.044934284,0.025976805,9.354006e-05,6.139216e-08,1.5606785e-05,1.104731e-07,6.130916e-09
+97,20846,fell in love with pussy he never even got....,False,0.5322818,1.8952238e-05,7.990674e-06,2.5584259e-06,2.3644528e-05,3.4856302e-09,9.594753e-07
+98,15501, RT if you pledge allegiance to the pussy,True,0.5692309,0.019841919,0.0004695222,8.5786627e-07,7.949463e-06,4.4811e-06,3.7035247e-07
+99,13453,My playlist goes something like this smoke tracks for my niggas reggaeton/bachata for the bitches and slow jams for that lucky lady,False,0.0045029516,0.008486182,0.0053882767,6.687216e-08,2.9479236e-06,5.6807497e-05,4.455192e-06
+100,4423,fucking stupid crackers,False,0.00010320117,0.3480716,0.00069615466,2.6381384e-08,3.0342377e-08,1.4176414e-06,1.6273974e-08
+101,2982, see bro pussy changes you,True,0.58367515,0.00014192495,3.9099134e-05,3.7553666e-06,1.13299975e-05,6.8713177e-09,2.8413058e-07
+102,12257,It's lame that you can buy clothes that look like real military clothing. If you wear it I will make fun of you. You're a 4 star bitch.,False,2.0294915e-06,0.009153091,0.006659405,9.663593e-08,2.5216529e-09,3.5052574e-06,1.9010793e-07
+103,18856,me 2nite bitches,False,0.16858372,0.12885287,0.0020558448,1.8440359e-07,0.00016097917,6.747787e-05,4.548402e-08
+104,22832,Ugh I can't stand a bitch that smokes black & milds. They make me itch,False,7.9375695e-06,0.18115097,0.0002646801,5.236335e-06,6.5726597e-09,3.6325853e-06,2.934385e-08
+105,17959,I'd get a girlfriend if I had hoes tho. Lmaoo.,False,0.0039661354,0.032449204,3.4684264e-05,2.4493243e-06,6.683264e-06,1.3959091e-07,2.5862438e-08
+106,5177,bitches ain't shit but hoes and tricks #thuglife,True,0.012310568,0.94728065,2.0402138e-05,4.951144e-07,7.6611e-05,6.201926e-05,2.641028e-08
+107,5630,Shit I wish it was socially acceptable for me to beat some of these bitches asses. Lmao,True,0.0018408964,0.9501689,0.9875072,3.189786e-08,5.0598686e-07,0.3065144,4.3197356e-06
+108,11812,If a bitch choosin let her choose lmao that is all !,False,0.0002043054,0.20535977,0.0023500277,2.8666776e-08,2.9702434e-07,2.043132e-06,5.044537e-07
+109,22947,Want some cheese with that whine bitch ?!,False,8.772892e-05,0.00026700812,1.1179392e-05,7.806067e-11,1.2647227e-09,3.6245509e-09,1.5382275e-09
+110,14326,All yaw hoes want 2 thing Money & Dick,True,0.69637007,0.11682314,0.0003174694,1.438493e-07,0.00014692401,9.116018e-08,7.2441173e-07
+111,3719,lmao you're on my timeline it ain't spying hoe lol,False,0.00021029313,0.00087277626,4.953603e-05,7.1253635e-07,9.591579e-07,3.676102e-08,2.8159306e-09
+112,18156, Yo bag Gucci but you still ugly hoe shut up,False,3.750442e-05,0.077244714,0.017480591,8.7773294e-08,1.8113914e-07,7.4020245e-05,1.260134e-08
+113,399,*trys new things with bestfriend*,False,0.00065821584,1.2538582e-06,3.1680588e-07,8.124782e-08,1.4087075e-06,5.96085e-12,1.701589e-08
+114,10108,"Hmm.. Ass all chunky, brain is insanity.",False,5.9605896e-05,0.01034405,0.00040588807,1.3866315e-05,2.450016e-09,1.4557688e-07,7.043357e-06
+115,1135,_: I hate girls who get drunk & don't turn into hoes fvckin waste of alcohol,True,0.026610196,0.9645941,0.00036494946,2.871617e-07,3.5889261e-06,3.561139e-07,2.8426882e-07
+116,21541,"Sometimes ppl stay married cuz it's convenient. When u constantly bitch & complain &amp; sleep in separate rooms, it's time to reevaluate.",False,2.7069016e-05,0.0004254437,0.04038588,1.1406573e-06,1.01261804e-07,2.0568648e-07,8.716488e-05
+117,10029,Heard some good news today and all I gotta say is karma is a bitch,False,1.1622574e-05,0.007826661,0.0008699391,1.2020911e-08,5.740851e-09,3.0855617e-07,1.4725975e-07
+118,6744,Sick bitch nutjob,False,0.0030406902,0.021921003,0.0022332391,7.872667e-06,4.1777508e-08,3.9463925e-09,3.464958e-07
+119,1220,"I'm tired of her corny vines, ugly faces, and stupid voices my nigga ",True,8.286328e-06,0.6833321,0.00043511196,1.6822018e-07,7.368745e-08,5.6160516e-06,8.9854063e-07
+120,17456,Just barrass Meez ctfu um zoned out wit my fro out while um hitin hoes from da back #comebacktoreality,False,0.2613964,0.047502466,0.001400503,9.593014e-09,0.0001259268,0.00019892579,4.4600458e-07
+121,3768,You can't put the pussy on a pedestal,False,0.2968737,0.00826229,0.00036624057,4.6752793e-09,2.144578e-06,4.3777447e-08,1.6235056e-07
+122,23403,Why you worried bout that other hoe? Cuz that other hoe aint worried bout another hoe,False,0.003383934,0.0056840284,4.5457648e-05,1.4173663e-08,8.424467e-07,7.034133e-09,1.11582985e-07
+123,1703,"This hoe Mimi said ""I hurt my hand""",False,4.6203557e-05,5.8291124e-07,0.00010647231,0.0001332851,5.598461e-08,4.4208862e-10,3.3344666e-05
+124,16239,"The gay Chris bosh jokes are getting old now""""",False,1.667992e-06,0.068686746,6.4689207e-06,9.891e-09,4.935181e-08,2.5429637e-05,5.843082e-08
+125,17930,bitch get out dem feelings and get some new dick,True,0.7010641,0.06516813,0.041080907,5.5949777e-06,0.00033851567,9.174815e-05,5.68295e-06
+126,19019,u don't bitch u gone learn one day,False,2.6703423e-05,0.0001587161,5.0091585e-05,2.3200266e-09,1.1365871e-07,7.068104e-09,2.4026134e-10
+127,14848,"Unlike a lot of these bros, I actually care about my girl and I love her. It's not called being a pussy,",False,0.0006580668,0.00227414,1.4597586e-05,1.5565452e-07,2.8034348e-08,4.146384e-09,7.436872e-08
+128,131, Yall bitches wit no edges be doing the most talking ,False,0.021457285,0.39036933,0.0006303399,0.00027013975,0.00016175311,5.088998e-05,2.5673812e-06
+129,24063,and I gotta say I dont like this ashley brooks. omfg creepy psycho bitch,False,6.017405e-05,0.00046344704,0.0011982278,1.6678331e-06,3.6078127e-08,3.7031165e-09,3.930248e-06
+130,8208,Before I let a pussy cut my hair I just will let it grow,False,0.004488874,0.065056615,0.012102426,0.00010551928,3.9094826e-07,1.7019547e-06,1.5105865e-05
+131,4334,freeze bitch,False,0.010222506,0.005649559,2.8185223e-06,3.6715804e-09,2.7910443e-07,3.30188e-08,2.0580933e-09
+132,7651,"A knock on the door. ""Who could it be at this hour?!"" I shuffle down the hall. ""Who is it?"" I ask. It's a bad bitch and a burrito. The end.",False,8.195027e-05,4.7596328e-05,1.0412281e-05,1.0557968e-09,1.348961e-09,7.2748825e-09,2.526652e-07
+133,19982,Stop nuttin in these hoes,False,0.014951522,0.40543237,0.0018576591,7.155811e-10,1.3402414e-05,0.000108279775,5.0486232e-08
+134,16806,Coming soon on a bitch nigga!!!!!,True,3.0412331e-05,0.9779154,0.8656676,7.534944e-09,7.903414e-08,0.16689907,3.0035082e-07
+135,5291," just to remind yall, cuz hoes be acting like they don't know",False,0.0026684552,0.10221003,0.00014203759,1.6300929e-07,4.421871e-06,1.7464062e-07,1.2087362e-07
+136,1586, Ur ex girlfriend is a slut,False,0.0012634053,0.030115498,1.7891147e-05,6.235139e-10,2.2807108e-06,4.0592948e-10,4.183043e-09
+137,16309, Ps4=a big booty hoe with tig ol bitties. Xbox one=pancake booty hoe with pancake tits,True,0.8507006,0.0030411526,0.00020173166,9.158053e-08,8.0123755e-05,1.569554e-06,4.4028494e-07
+138,21393,"So bitch shoot me a look, it better be a blank stare, or get shanked in the pancreas",True,3.6609887e-05,0.00075612,0.9880706,8.916939e-05,4.7644665e-08,0.000102101825,0.09582305
+139,17182,"""I graduate next month"" word? Congrats! What in? ""safe food handling"" bitch...if you don't flee from me with ",False,4.302094e-05,0.0054624206,0.012334712,3.1795423e-07,2.629847e-06,3.0244728e-06,1.9477067e-05
+140,5402,one sick bitch,False,0.0007550565,0.00029009779,0.00027750395,9.4926556e-08,3.6812025e-08,1.1863473e-08,9.605139e-08
+141,12517,Karmas a bitch and so are you. You'll be getting along just fine real soon.,False,1.3345557e-06,0.0001808959,0.019403696,2.57203e-07,5.2064473e-09,2.0004227e-07,4.6655543e-07
+142,2500," I didnt call you a bitch, I just saiddd bitch. #Jeesh",False,1.2073704e-05,0.0002809809,9.004219e-06,7.5599316e-10,3.248515e-11,4.1154196e-09,1.9728352e-08
+143,20972,Rick is not a bitch.,False,0.00019518536,0.0018132862,8.560854e-07,5.5191114e-09,7.2762454e-08,5.9916444e-10,5.933442e-09
+144,11350,I was with a bitch with a mustash for a year and a half? Wtf is wrong itch me,False,0.00018696304,0.0019858151,0.00010288958,3.7936622e-06,3.507477e-07,7.4713924e-08,5.892393e-07
+145,6259,ayy might as well get. Fat hoes don't even like abs nomo they like balla bellys,False,0.006593153,0.23423088,4.3069426e-06,9.612727e-06,2.5862519e-06,2.8189635e-07,1.9939638e-07
+146,1077,"Niccas y'all need lives, money, pussy, hobbies, or sum guidance ... Bunch of Petty miserable dick n a booty ass Boys ...",True,0.0059342217,0.8127178,9.487372e-05,4.626423e-06,2.8879958e-06,1.3776743e-06,4.6913883e-07
+147,7654,A lot of I fucked up call me back this bitch is tripping .. Lol,False,0.0001765964,0.00017105324,5.2074487e-05,7.6133324e-07,5.122702e-08,3.1425376e-08,1.735312e-08
+148,16159,I just wanna know when are we gonna go fuck shit up & go fuck up bitches?????,True,0.005487242,0.65731686,0.993418,1.074129e-08,3.854003e-06,0.1029343,6.0946745e-06
+149,13463,My roommate is eating so obnoxiously I wanna fucking slit his throat,True,2.0402138e-05,0.00050039147,0.98987025,3.0881965e-05,1.890409e-07,8.800546e-06,0.06459317
+150,17051,Just annouced to my hoes who I'm drafting first round for cuffing season,False,0.0088563785,0.00017475433,0.00044875126,1.515539e-08,5.575047e-06,1.1366776e-06,4.2242047e-07
+151,12946,Long hair = pussy any time you want it,True,0.61873716,0.0006179211,0.00051705405,3.0032783e-08,4.212359e-05,3.0276598e-07,1.0710791e-07
+152,12485,Just watched the scene in zero dark thirty where they pop Osama's bitch ass,True,0.0010451,0.01844116,0.9361455,9.0963533e-07,2.0651112e-06,0.0015229341,0.0017944308
+153,7811,All my niggaz better have at least 3 ugly bitches number in their phone this summer.,False,0.0032325827,0.34732112,0.0008014418,5.6185837e-07,9.157489e-06,4.094593e-05,3.6145696e-08
+154,398,"I don't ever expose females like that.. That's childish.."" bitch nigga shiiii.....",True,0.00018922456,0.83067805,0.0039262963,2.0323918e-07,1.3705559e-06,9.058972e-06,9.465609e-08
+155,4608," letting people know you having relationship problems &amp; arguing on here, that's what them hoes like, so stop.",False,0.00016439913,0.08313981,1.27328e-05,1.2098987e-07,2.5945423e-07,2.8160487e-09,5.849171e-08
+156,17672,"Don't ever be ashamed of who you are, unless you a hoe.",False,1.7702572e-05,0.09484679,2.669156e-05,3.7467334e-08,2.1593949e-09,5.710992e-09,5.6973126e-10
+157,22264,These hoes gotta pay for my company!,False,0.0007090434,0.22569951,0.00024740217,3.6201033e-08,4.405424e-07,2.4047627e-06,9.901386e-08
+158,9656,"Get here! MT @NevadaPR: #Sierra #skiers, @VirginiaCity offers a fun break from the slopes. Sweet #deal",False,1.9574768e-06,2.5805805e-06,1.1310048e-05,1.4486601e-09,1.356116e-07,1.9362792e-08,2.490723e-06
+159,15858,"Allied soldiers mock Hitler atop his balcony at the Reich Chancellery, by Fred Ramage, 1945",False,5.662252e-06,0.010287413,0.012046343,2.52473e-07,1.0759867e-08,7.260819e-05,6.859555e-06
+160,5301, by trash I meant u lmaooo,False,3.7841232e-06,1.4777911e-05,2.0352276e-07,5.6347975e-09,5.25189e-08,1.6062257e-10,7.9505186e-10
+161,22894,Video: Charlie Baker campaign team denies contacting Gov. Patrick for meeting,False,1.029286e-05,2.278285e-06,3.1626732e-07,3.482558e-10,4.1778472e-07,8.3983015e-10,6.5706445e-08
+162,21868,That mocha colored chick doe. i think I fell in love,False,0.0018817731,0.0010659503,6.248557e-05,2.3000405e-07,1.2712325e-06,1.16340054e-07,9.0622585e-08
+163,10929,I learnt about birds as a child. Best time to learn @BBCRadio2,False,9.416801e-06,0.00031536416,1.545033e-05,1.11437075e-07,1.4331913e-06,5.542565e-08,5.5048366e-07
+164,21134,"Seriously, reading 'thriller' like books spook me more than most horror movies.",False,5.1298592e-08,4.0343743e-06,0.00018311689,5.74512e-07,2.376821e-09,1.145969e-09,1.2153449e-05
+165,19609,Most trash Halloween candy of all time. Don't debate me on this ,False,4.696088e-08,4.0737017e-05,9.729199e-05,8.9246e-09,6.4913417e-09,1.609696e-08,2.2024746e-05
+166,7912,Am I the only person that feels disrespected by the bird poop suddenly dropping on your front window:(ewww#annoying,False,8.9668043e-07,5.2548145e-05,7.607101e-06,8.116321e-09,1.2592324e-09,1.7188964e-09,9.763416e-08
+167,10877,I just wanna cuddle with my boyfriend under a fuzzy blanket & drink hot tea and have my hair played with so I can go to bed.,False,0.00029855306,1.5411451e-05,1.101977e-05,2.469735e-07,1.975848e-06,8.047524e-09,5.532468e-08
+168,4046,Or I'm vibing and they ask to see the aux cord knowing they bout to play some trash,False,2.128581e-06,6.9648784e-05,1.1648883e-05,2.6225128e-10,2.1815012e-09,6.172696e-10,1.8253923e-08
+169,14231,"Posted a new song: """"guala"""" ",False,2.5466563e-06,8.7143644e-07,2.4293335e-05,1.2618193e-09,3.691729e-08,3.355909e-10,4.478254e-06
+170,10421,I cannot express how infinitely better the book is to this trash.,False,0.00016960503,6.6872103e-06,0.00012573374,9.712419e-07,1.2804439e-07,1.661041e-11,8.7941535e-06
+171,4830,Ok. So for what reason did god make parasitic worms whose sole purpose is to burrow into the eye of a small African child?,False,8.866888e-06,0.00041076864,0.009156981,1.7981591e-07,1.4212504e-06,1.4380262e-08,0.0012015909
+172,22725,Trailor trash tina time,False,1.4427838e-05,9.797749e-05,8.257576e-07,1.3731867e-09,1.3012634e-06,1.44266e-09,5.5863444e-07
+173,6994,"Are we doing Mad Libs now? Cool. Uh... 
+Twinkie 35' long, DJ Pon3 cameo, Magic & Crystal Tree.",False,0.00020151136,9.049785e-07,5.9508948e-05,8.205794e-09,5.234195e-07,1.9635626e-08,0.00031043228
+174,3419,I wonder if the progs didn't relegate young black men to the ghettos to keep them away from harry reid's friends...,True,1.5137576e-05,0.8725493,0.004151579,2.2727893e-07,1.1725241e-05,2.0936322e-05,8.675924e-06
+175,7915,Am so high that birds and planes are my peers,False,0.000598818,0.0017744884,3.047987e-05,0.0003100726,1.9111353e-07,4.9684367e-08,1.4783344e-06
+176,15847,i am that horrible friend who reads your text then puts the phone down to do something and forgets to reply until 4 ho,False,2.6518448e-05,1.0411576e-05,1.5702737e-05,4.0907844e-06,2.4066043e-07,4.4937913e-08,9.6755805e-08
+177,11038,I miss Twinkies and Susie Qs. Tragic loss to society. What is next? Pixie Turtles?,False,2.0504635e-06,0.0002533068,0.0004142837,3.9405435e-07,2.762819e-07,5.5564044e-07,7.600291e-05
+178,11012,I love watching birds migrate. Wish I understood why it's such a peaceful sight.,False,4.72963e-10,2.7687827e-07,4.6560913e-07,4.5057016e-09,1.9360798e-12,5.3071863e-11,5.386133e-09
+179,3177,Minus all the retarded poor bots.,True,1.6613005e-05,0.71416134,0.002082831,3.4876468e-08,9.7271325e-08,0.0018175087,1.2839557e-07
+180,23278,"White kids, black kids, yellow kids hell even purple kids, if you carry yourselves like Daniel #Geale you will go far.",False,1.0576628e-06,0.0009268691,0.013311431,5.5630792e-08,4.1596223e-08,2.3082926e-06,9.709687e-07
+181,14161,Giving you that trailer park trash.,False,1.9706315e-06,0.00920803,3.4372372e-06,1.2650503e-10,1.4869121e-08,9.070537e-09,4.337258e-09
+182,20532,Buy me double stuffed Oreos and you can be my boyfriend,False,0.0029713998,5.2810672e-05,2.009103e-05,2.1049984e-06,1.1853997e-05,3.1398522e-09,6.617049e-09
+183,23262,Where would me life be without God and @levimitchell.....seriously I'd probably be living In a trash can haha!,False,6.1365795e-06,0.00010583863,2.1681842e-06,8.101931e-07,8.682178e-07,2.173365e-09,5.9143497e-07
+184,12772,Lilly just tried to climb up a tree after a bird and completely failed oh my god,False,4.5514267e-07,1.8678804e-05,7.770057e-05,8.7326987e-07,2.936739e-10,4.613851e-10,5.465319e-06
+185,7207," I assume so, the tranny went out this morning. I have a maxima.",False,1.623501e-06,0.0004281913,0.00016866368,1.6707473e-08,3.7391946e-08,1.23885e-08,1.6047076e-06
+186,2346, Hard to QA? Time is also a pain to mock out in unit tests...,False,6.2917644e-07,1.7226612e-05,4.829998e-05,2.1260667e-09,3.04878e-09,1.7955367e-08,3.0513293e-06
+187,20518,If a tree falls in the woods and nobody is around does it make any noise? If NJ blows away and only trash live the ...,False,1.9390501e-07,0.0007409542,0.0017806133,5.3851792e-08,1.6355244e-07,9.179788e-07,7.747395e-05
+188,3037,he's still a pogue though,False,8.526145e-07,0.0002740883,1.2994317e-06,9.0803315e-10,2.3422133e-09,4.2118767e-11,3.9211468e-08
+189,15376,Teixeira on point tonight. #Yankees,False,8.867766e-07,4.27989e-06,7.365045e-05,7.258773e-10,1.3279535e-07,9.359963e-10,1.025162e-06
+190,17792, Derek Jeter leaves baseball as one of the greatest Yankees ever.,False,3.1225466e-07,5.0259627e-07,5.888017e-07,2.3743107e-09,1.653029e-07,3.2644717e-11,9.822305e-07
+191,16372, babes we buy brazilian and Peruvian not Bengali,False,0.0050609945,0.00083630224,2.0459325e-05,1.039968e-08,1.1442638e-06,2.0743911e-07,1.1223522e-06
+192,6074,Quick game for Sox Yanks.....hope you get home soon,False,2.7878043e-05,0.0006267494,0.010088606,5.775479e-09,9.3928486e-07,3.1342148e-07,1.8398041e-06
+193,20233,"it's crazy. if a female cheats, it's so wrong. she's every type of hoe there is but if a guy cheats, there's all these justific",True,8.466438e-05,0.47829077,0.0034417391,2.0143048e-06,1.1452332e-06,3.5828457e-06,2.8262475e-06
+194,13275,My baby boy asleep with my monkey that I had since I was little! I love my son so much!,False,6.369941e-06,1.984542e-05,2.1060598e-07,1.9494316e-11,1.672591e-06,3.3245095e-12,1.6211859e-08
+195,2423,clams to be a comedy writer. #untrue,False,9.2606047e-07,3.6134144e-05,2.6233943e-06,1.1839776e-09,4.859037e-09,3.174199e-09,7.648469e-08
+196,24667,"White Mike was on BET, he can't be trash",False,4.2739535e-07,0.0061492436,3.507078e-05,3.0326322e-10,1.1057103e-09,5.195991e-09,6.8406534e-09
+197,10837,I hope the trash I talk abt @CNN's poor product doesn't hurt my chances of getting hired as a legal correspondent. I was jk CNN.,False,5.2934074e-06,0.00021283882,3.860135e-05,1.12800564e-07,2.3069926e-08,9.27578e-09,2.6036791e-06
+198,8948,"Despite the zebra red rocket special, portland beats those jersey shore floppers.",False,1.0525265e-05,0.006967229,0.0017625382,3.0054792e-07,3.4240608e-07,5.92607e-07,3.4950954e-05
+199,2782, trash you know trouble w ACA is in GOP gov states but like @60 @LaraLogan_News you report lies anyway,False,2.6934244e-05,0.017992832,0.00014147177,8.2629487e-07,5.263217e-07,1.0200463e-07,8.75915e-06
+200,5336,about the beanies but steal my description but u aren't salty or fake,False,1.0577555e-06,1.9854353e-05,1.5810325e-05,2.3834138e-08,5.7100524e-10,1.5174184e-09,4.2614744e-08
+201,341,Jihadi patron Hajjaj al-Ajmi is arrested at Kuwait airport,False,8.649528e-06,0.00062713394,2.5191403e-05,3.663332e-06,1.4497809e-06,3.4161864e-08,4.022535e-07
+202,757,Great White - Once Bitten Twice Shy on ,False,0.007094604,8.495625e-05,0.0007278136,1.4783329e-07,7.670749e-06,1.8572173e-08,0.0003196729
+203,20149,Free bird!!!,False,3.7228556e-08,7.504713e-08,2.1681412e-08,7.38546e-12,7.480421e-11,2.2219034e-12,2.9096626e-11
+204,16267, when you die on flappy bird ,False,2.6527388e-07,6.6642406e-06,6.0754148e-05,1.241623e-07,2.0706171e-10,7.3767953e-10,9.125043e-06
+205,13792,"Not ya grandma brownies, wink wink",False,4.2129053e-05,2.3711931e-05,6.745819e-06,1.1658559e-08,1.5076429e-06,5.0816316e-09,3.1108705e-08
+206,2398,Just watched the Llewyn Davis doc. Warm fuzzies abound,False,1.2642391e-05,1.3613314e-05,0.000105897794,1.7846995e-08,1.1663957e-07,4.5345145e-09,2.621633e-05
+207,22491,This car has two registration tags. Both yellow. One for 2014 & one for 2005,False,5.299289e-07,2.9240011e-06,3.969177e-05,3.4626186e-08,2.0244212e-08,1.6736019e-08,1.576893e-05
+208,18042,"What you see is what you get! I'm a guy with a love of adventure and a need for speed, Charlie Brown!",False,4.5087963e-05,5.0548173e-05,2.201087e-06,1.2808788e-07,1.1655139e-07,6.3469354e-09,1.2105359e-07
+209,4534,Just getting in! I hope so. Cause they stunk it up last night.,False,4.2507413e-06,0.0006446455,8.79698e-06,5.385842e-10,6.41726e-07,4.526055e-09,8.185554e-08
+210,1090, [TS3]Fairy Tail - Satan Soul Mirajane Strauss made with The Sims 3. Happy...,False,1.6940596e-05,3.264279e-05,2.6166526e-05,1.173779e-08,3.156177e-07,7.923001e-09,5.341364e-05
+211,15403,Video: Charlie Baker campaign team denies contacting Gov. Patrick for meeting,False,1.0293351e-05,2.2784086e-06,3.1628605e-07,3.4828834e-10,4.1780902e-07,8.3990864e-10,6.571046e-08
+212,16348,"The #Cardinals are #MLB's gold standard, and there isn't even a close silver.",False,3.43389e-08,7.184657e-06,0.00011979089,9.708717e-10,2.1809812e-09,1.3039637e-09,6.145979e-06
+213,2301,moke up,False,2.1715925e-05,5.2022684e-09,7.81156e-08,3.1751255e-09,4.067078e-09,5.1024403e-11,8.2278884e-10
+214,182,"Stay tuned to @MLBNetwork for an update on the report that @Yankees 1B @teixeiramark25 will be out 8-10 weeks"" @dliming35 #bum",False,1.1337025e-06,7.8254125e-06,0.00020782501,6.0898917e-09,2.843588e-08,1.3922073e-08,0.00021297057
+215,8937,Delusional #teabagger thinks he can stop #gay marriage in #Wisconsin,False,0.00017971672,0.012687826,4.174015e-05,2.332322e-08,2.3170766e-07,1.5825016e-08,4.555339e-08
+216,1173, Oxtails and yellow rice is blasphemy,False,1.6314127e-08,0.0003159555,1.6949469e-05,5.6984545e-10,3.7013279e-10,2.8145775e-09,2.27208e-08
+217,9090,Name a rapper that alot of people like...but you think is trash,False,4.1011177e-07,4.3237775e-05,1.2937487e-06,2.2033398e-11,1.3340803e-08,1.5055546e-10,2.4063613e-09
+218,4951,where are the birds at? Wasn't it Port where birds were all over?,False,7.464413e-08,3.0313884e-05,1.5797083e-06,5.809982e-10,2.5783506e-10,3.1095626e-10,1.2675132e-07
+219,2942,Waco is ghetto hahaha. Wait til we go pick up nat in Austin tomorrow,False,1.8175187e-07,0.12001878,0.00010431962,1.0236827e-08,6.842861e-08,1.1443123e-07,1.10681896e-07
+220,13365,My hair is trash. I need to put a masque on it.. But that takes so much energy that I don't have.,False,5.690412e-08,4.448692e-06,3.083128e-06,4.9077954e-07,1.5272734e-09,4.823818e-09,8.6714145e-08
+221,13964,"Once the brainwork is done on pacemakers at medical device companies, they call in the contract tinker toy engineers like SC_Troll",False,4.818491e-06,0.00072181446,0.012769986,4.195663e-07,9.4019114e-08,1.002427e-06,0.0003249144
+222,12126,International law enforcement operation disrupts Shylock banking malware - PCWorld: International law enforcem...,False,2.7725136e-07,4.8180045e-06,9.3373244e-05,8.3223195e-10,9.631125e-10,2.3994656e-07,8.880691e-06
+223,5887, I'll chug my tall can . but homegirl won't approve lol,False,4.7460276e-06,2.351328e-05,4.0705796e-05,2.9479436e-08,2.891762e-09,3.971356e-09,1.814008e-08
+224,8332,"Black guy in class: *attempts to throw a paper ball into the trash* *misses* Mrs. Mundy: ""You're a disgrace to your race, Marcus""
+",False,2.7453632e-06,0.0373806,0.00092670793,1.5652176e-07,1.14744985e-07,1.8701839e-07,3.3447776e-07
+225,21116,Seeing another baseball team just makes me wanna book my @Yankees trip right now.,False,1.6108284e-07,1.3151654e-06,1.5972978e-06,6.6076214e-11,3.831854e-09,1.285732e-10,1.4151485e-08
+226,3969, I volunteer to be guinea pig and help test it out,False,1.0728584e-06,4.883126e-06,3.7014193e-05,1.1182602e-06,1.07049296e-07,6.197497e-09,1.1507269e-06
+227,242,"""@SportsCenter: Eli Manning just threw his NFL-leading 27th interception of the season."" Lmao trash",False,3.020389e-07,5.6386783e-05,0.00014388138,3.180176e-07,1.264882e-09,4.14743e-08,4.8284687e-06
+228,5380,@YoungJeezy got me feelin like #trappin ain't dead. Got me ready to call the #guala! #Salute da truth! #SeenItAll #SeenItAllTheAutobiography,False,0.00014945271,0.00024766463,3.3217457e-05,2.8238384e-08,3.0832573e-06,7.0840336e-08,5.702515e-07
+229,3700,BEST NAME ON TWITTER EVER!!,False,3.570958e-06,5.29448e-07,3.1440127e-08,1.0409335e-10,1.3140864e-08,4.678406e-11,3.7861186e-10
+230,24214,"cleaned all the bird nests out of the downspouts and ready for more rain, the baby birds are out now. respect the birds.....and bees (:",False,9.700619e-08,0.00013579748,9.676374e-06,1.6911407e-09,3.9386476e-09,3.2311816e-11,2.1865478e-07
+231,20082,np big nig nig,False,0.003308104,0.029863158,0.00055026985,1.4875525e-06,4.4507397e-05,1.8024684e-06,3.8912714e-07
+232,12175,Islamic Jihadis run away to Pakistan,False,2.7866457e-05,0.013548543,0.00035309407,4.4973945e-05,5.54753e-07,8.8379545e-07,9.886342e-07
+233,9791,Got chunky marmalade today of a greatful customer for my service over the past 2 yrs #PostieTweet #ServiceMatters,False,9.289933e-05,2.2701536e-06,1.974021e-06,2.243211e-09,2.6252367e-09,6.224955e-10,1.9672648e-06
+234,5227,Don't you have a trash can?,False,3.223885e-08,1.8634004e-06,2.0692441e-07,2.2655346e-10,6.1496636e-10,1.7849965e-11,8.5074054e-09
+235,2224," Yes indeed! Camels, ostriches and zebras! ",False,1.05145496e-07,3.2249116e-06,2.2994267e-07,9.508629e-10,2.1229737e-10,1.8932607e-10,6.397584e-08
+236,13502,"NYC Media last week: LOL, look at the flyover peckerwoods freaking out. NYC Media now: BRING OUT YOUR DEAD.",False,1.5407043e-06,0.07109038,0.18655361,6.687948e-07,4.340534e-07,0.0003209784,0.011547982
+237,7161,hey it's hillbilly jim and Greg the hammer valentine #pffttt,False,9.713153e-06,0.00014871676,0.00010075617,6.323882e-08,1.3537473e-07,1.4925315e-07,6.7079293e-07
+238,22926,Wait a minute... Bowyer causing a yellow in a Chase race RT,False,1.19774395e-05,0.017854858,0.0051865187,1.1092986e-06,1.125525e-08,5.806453e-07,3.9016754e-06
+239,23148,When Robinson Cano left the Yankees they were selling his jersey for $25. When Aaron Hernandez went to jail they sold his for $10.,False,1.9106416e-07,1.2551871e-05,0.00016491693,2.3860075e-06,3.8375076e-09,7.424789e-10,7.113901e-06
+240,1126,are you kidding me,False,3.4339467e-07,8.8216716e-08,1.6272788e-09,2.325091e-12,1.5103153e-09,2.1974242e-13,5.143168e-10
+241,4248,closet muzzie,False,0.0013190662,0.19428584,8.562523e-06,7.8031164e-08,6.8518005e-07,1.2523727e-06,1.3061044e-09
+242,21557,Sooo my first aid/cpr certification came in handy tonight. Glad I didn't lose my monkey ,False,1.0437566e-06,3.225198e-05,4.6435904e-05,1.6841825e-07,8.062515e-10,2.308418e-09,7.6271494e-06
+243,16464,"You know how in superhero stories the best insult for superheroes dumb mooks can come up with is ""do-gooder?""",False,2.4864912e-07,4.074615e-05,0.00078968686,4.746523e-09,6.725507e-10,1.3338742e-08,6.125505e-06
+244,3315,"Whoo? A new attraction in Virginia City, birds of prey. Meet this owl famous for his role in Harry Potter. ",False,4.0820055e-07,8.0423774e-07,4.063101e-06,1.0898475e-09,1.4814711e-08,2.1902262e-10,1.6880524e-05
+245,21275,Shut up birds it's bed time.,False,3.4337281e-06,0.00034795117,0.0005619946,3.126214e-10,1.6991979e-07,2.9694103e-08,2.669748e-07
+246,21634,Stop rt'ing Celtics trash please,False,1.1149814e-05,0.00067907624,5.0399294e-06,3.4685744e-08,4.0669832e-07,9.68158e-08,2.481182e-08
+247,848,#drunk #trash #trashed #wasted ,False,0.00010151486,6.451667e-05,1.1277243e-06,3.694483e-08,5.356363e-08,7.480868e-10,2.0849026e-07
+248,19027,lol have u seen when ike and his kindergarten teacher start having a sexual relationship,True,0.9948619,0.0016358125,0.00037963712,1.3922173e-06,0.9883549,4.0672933e-07,7.9920765e-06
+249,22143,There is a trash bag in my hall thats been there for like 2 wks. Weird thing: it changes consistency every few days,False,5.6917895e-07,8.521173e-06,6.2133395e-06,2.0492184e-08,5.3714517e-09,1.9196535e-09,1.0359768e-06
+250,6110,We hate them more than the Cowboys and Yankees.,False,1.1233662e-05,0.0050235065,0.0007978102,4.4833635e-07,2.761309e-08,4.0250207e-08,9.027976e-07
+251,24232,damn lol,False,6.401054e-05,1.0880641e-05,4.4109624e-06,2.8922034e-09,2.7982801e-07,6.446042e-11,4.405563e-08
+252,15693,Conan O'Brien mocks the new Call of Duty game while getting killed repeatedly.,False,1.3917904e-05,7.2306498e-06,0.00902274,1.4537754e-06,1.3129425e-10,1.7400737e-07,3.72544e-05
+253,19399,"When the Yanks and Sox get together, things usually go smoothly ",False,1.5725655e-06,0.0006793351,0.0008071117,5.2259995e-08,6.9527026e-08,4.0788768e-07,3.0803535e-06
+254,13916,"Okay, so maybe not every in #LosAngeles is evil. But I would 80% of the people I've encountered have been trash, another 10% barely human.",True,3.095568e-07,0.8063511,0.000107148815,7.432345e-09,9.296573e-09,4.0458797e-08,3.9380598e-06
+255,18325,Republicans Want to Yank Food Stamps from the Hungry: ,False,2.1275063e-07,0.0005546504,4.0332918e-05,4.1502627e-08,2.3616565e-08,8.916734e-10,1.0806898e-05
+256,9617,GM....don't be the bird that didn't get the worm today #GoStampsGo84,False,1.1285699e-05,0.002485003,0.0005861159,9.5656304e-08,6.0387116e-08,1.1272566e-06,7.070896e-05
+257,20884,"where are all the thinkpieces on why kids call themselves ""trash"" and ""garbage"" these days",False,2.5445922e-07,0.0011005077,1.3391005e-05,1.1799564e-08,9.829436e-07,3.833448e-09,8.1379943e-07
+258,4848,there is a bird here on the ground and it's still alive I can't believe it,False,9.075414e-10,7.4263886e-07,0.00011288174,3.4070295e-09,6.896478e-12,4.8048693e-11,9.761469e-06
+259,23636,Yellow jackets at gas station trash cans are THE worst,False,1.5519852e-08,2.8342496e-05,2.5437655e-06,1.4965168e-09,2.6648886e-10,9.370358e-10,1.0929689e-07
+260,7038,"Whoa easy Amy, don't slag the Canucks too much with such a generalization",False,1.9778101e-05,0.0002848219,0.0002539907,4.180642e-09,1.0690361e-07,5.486533e-09,1.7846437e-06
+261,4232,"Oh, me, too! Pain meds just made my brain fuzzy and though Banjo Kazooie for a sec.",False,8.7970284e-07,6.444428e-07,1.812918e-05,9.073386e-06,4.3634082e-11,6.699163e-09,8.5066205e-07
+262,21452,"So, about this flappy bird game then.",False,2.410406e-07,1.9512127e-06,3.898327e-05,1.2892792e-08,3.210868e-09,2.1855036e-09,7.65006e-06
+263,18948,Charlie Baker!!!,False,3.7019782e-07,2.4089127e-06,1.5570226e-08,2.8463278e-12,5.8001604e-10,8.3871556e-11,3.6405243e-11
+264,22956,WashPost Describes Charlie Crist's Bizarre Obsession With Fan Between Legs To Stop Sweat When Asked/Answering Questions! DoG,False,0.012916685,0.0035885964,7.037228e-05,2.471343e-05,9.822148e-06,1.7067572e-08,3.3292615e-06
+265,18583,If I had a dollar for every time I died on flappy bird,False,1.1911574e-06,1.15413895e-05,0.00023439022,1.7768854e-05,8.2573653e-10,1.8727835e-08,1.1242965e-05
+266,21902,That was trash. I'm just gonna put my phone down. Goodnight,False,4.552109e-06,7.107326e-05,0.0008346778,1.1914909e-07,6.085981e-08,2.7661008e-08,2.065714e-06
+267,12850,Lmaoooooo @ Supreme being trash. Guess Bape is trash to huh?,False,2.3034042e-06,0.0016093625,0.0010678931,1.1540262e-08,1.1586423e-08,1.1647335e-08,9.548815e-06
+268,11159,I sho do miss my Uncle Tom,False,6.806507e-05,0.00066719495,4.275443e-06,1.8748983e-07,7.41829e-07,1.647388e-08,1.5967464e-07
+269,9216,"Even though Lil Wayne's music has turned into trash, No Ceilings and I Am Not A Human Being will always be my favorites.",False,1.0703917e-05,8.680604e-05,4.020908e-06,3.2642555e-10,1.8648426e-07,2.1043163e-10,4.7758576e-08
+270,23345,Why do peeps gotta be mad ghetto nowadays? Smh pull up your pants!,False,1.1933638e-07,0.013306178,2.7339895e-05,2.5653368e-10,1.0183808e-10,1.8670919e-07,5.1447993e-09
+271,14548,"If you honk your horn .4 seconds after the light turns green, I will shut off my car, lay on the hood, and feed bird",False,7.3457915e-05,3.9444207e-05,0.0033395896,3.3169617e-06,1.01193066e-07,1.959055e-08,4.226895e-06
+272,8548,Can someone get me cheese and crackers,False,1.3655418e-07,7.426088e-06,1.243646e-05,8.2910123e-10,3.0005112e-09,2.0298884e-08,7.384052e-08
+273,9847,Guess I'll have to add Robin Williams right next to Charlie Chaplin.Now Adam Sandler remains my only favorite comedian left.,False,1.4984662e-06,4.9035487e-05,5.5612887e-05,6.3796284e-07,2.4109111e-08,9.277708e-09,4.672546e-06
+274,16689,"Big night at WCVB. Martha Coakley-Charlie Baker debate here at 7, Bruins-Minnesota WIld, World Series Game #6.",False,1.3542083e-05,9.049102e-07,0.000502398,1.226537e-08,9.995584e-06,2.703452e-08,0.00020269126
+275,7110,"right, so the link would be your trash bin",False,1.1502317e-05,0.00029891788,3.647701e-05,5.1343715e-08,1.2040593e-07,5.225566e-10,1.4069329e-05
+276,17779,Saw a man in a yellow hat at the Grand Canyon today. He was hanging out next to a curious gorge.,False,8.300228e-08,6.7471447e-06,7.473764e-07,1.5322524e-07,2.5537517e-10,1.1451672e-09,3.718658e-07
+277,5181,I didn't make to any games last season. Just looked it up. Astros open up with the Yankees 1st of April,False,5.0404924e-07,8.820529e-05,0.0008245183,2.8528882e-08,6.605338e-08,9.006648e-09,3.4929838e-06
+278,19852,Tornado sirens.... Atleast I'll be dying with you guys ,False,1.4375371e-07,2.1404023e-05,0.0018399917,1.0769127e-06,6.208411e-11,1.8587134e-07,1.5367248e-05
+279,5897, i want it! I love her gooks! she is awesome where did you get it?,False,2.014356e-05,2.3608749e-05,6.963697e-06,3.8599428e-08,5.112087e-07,1.5887645e-09,3.2889875e-06
+280,11274,"I took 2 ""Rebel vs. Yankee"" tests (40 questions, accents, word usage) and scored a total % of 47.5% Rebel vs. 52.5% Yankee in southern Pa.",False,4.802994e-07,6.080916e-05,4.8303842e-05,2.2934787e-09,4.0615196e-09,2.0656726e-08,6.0855677e-06
+281,19813,"Buzzfeed males who live in the city and buy meat under plastic, mock girls who use guns and go hunting. Who is more manly?",False,1.9055487e-05,0.012828983,0.061358176,6.7805246e-08,1.3267879e-06,1.6261525e-05,0.003330364
+282,14015,Only in my hick town can you walk into a national sports bar and get Busch light in a can. SMH,False,4.494374e-08,0.0034064874,2.628585e-05,3.141519e-08,1.761582e-10,6.0633305e-08,3.3881605e-07
+283,3270,Marshall Law! Whatever you coon,False,0.0001303234,0.32317904,0.032391805,3.464541e-08,6.8090365e-08,4.775876e-06,6.887053e-07
+284,13996,Only Blood Can Satisfy The Hungry Flames Of Charlie Brown,False,0.0012064449,0.00020463076,0.029739378,4.596662e-06,1.7606435e-05,3.065301e-07,0.019045139
+285,23891,You said you be smoking strong but your wrong you been smoking trash it's not in my lungs if it ain't that pressure.,False,7.4587224e-06,0.00010881542,8.45059e-06,1.6564438e-07,3.0209446e-08,1.8951838e-09,3.3856608e-07
+286,22799,Tyrese trash,False,1.6557693e-05,0.0007175338,2.063611e-06,4.0422737e-10,9.0750206e-07,4.193708e-09,6.035914e-08
+287,14328,"Jihadi Killed #BrendanTevlin In N.J. W/ At Least 2 Others,Part Of Terrorist Ring 10 Yrs Ago",False,3.353056e-07,0.0010438,0.04886324,4.7230313e-07,3.8875985e-08,1.8622688e-05,0.00051898445
+288,11914,"If you are descended from anything less than European nobility and/or royalty, then you are non-titled common gutter trash.",True,9.835075e-08,0.9123207,8.566248e-06,5.0048573e-11,9.0060936e-10,2.8129367e-08,2.39204e-07
+289,2895," Hi Charlie, have a great day",False,3.568448e-08,1.18197e-06,8.826634e-09,6.786541e-12,4.6953574e-10,7.080592e-11,6.0873306e-11
+290,7005, red and yellow it should be then,False,1.01736106e-07,5.515015e-07,4.5259497e-07,2.978266e-11,4.895041e-11,1.9586281e-09,2.6885447e-08
+291,4533,I miss the pizza! The passion.,False,1.5339457e-06,5.5246325e-08,3.3089418e-07,8.156756e-11,6.5770456e-10,1.0336542e-11,3.594652e-08
+292,13465,My shift won't be over no time so in the mean time im doing what I have to go to get by. And if it means tweeting trash I will,False,8.876651e-06,1.9927345e-05,0.00048003384,1.0281506e-07,1.40421e-07,6.7921455e-09,1.7692888e-07
+293,646,,False,0.0012786741,1.1308379e-06,1.06959696e-07,1.14148774e-10,9.382517e-07,1.0386567e-10,2.8616174e-09
+294,1683, My Lakers are going to be so trash this season I can't wait ,False,1.0900626e-07,0.001449653,4.418321e-05,5.5207823e-07,1.5832926e-08,7.622183e-08,3.1003324e-08
+295,11315,I want some monkey bread ,False,3.2727752e-07,1.2294875e-07,8.390231e-07,4.5908846e-11,6.101783e-10,3.2709474e-11,4.7196412e-08
+296,Me,"shit girl, you look great",False,0.00012490716,0.0012167715,5.8564825e-07,1.8611527e-09,3.7624818e-07,2.4336777e-09,1.8799262e-09
+297,Me,bitch you did great,False,0.0002607273,1.6805256e-05,3.0742656e-05,4.17514e-11,2.0628683e-09,1.5151128e-10,6.333255e-10
+298,Me,omg no fucking way congrats,False,3.9775547e-05,0.00010096469,9.790172e-07,7.316646e-08,1.1488477e-08,9.915366e-09,4.4340055e-08
+299,Me,you are the GOAT,False,9.795787e-06,7.13331e-06,3.4769002e-08,3.3734397e-11,6.8334116e-10,2.6507629e-12,4.7849686e-11
+300,Me,LMFAO I'm dying,False,1.521196e-05,1.2281825e-05,1.9876563e-06,7.8758454e-08,4.118812e-09,4.832576e-09,9.827724e-08
+301,Me,what the fuck bro,False,3.2594136e-05,1.5124329e-05,5.858449e-08,3.2138088e-09,9.9404e-09,4.25743e-11,6.326615e-10
+302,Me,I am so excited sksjsksjjksdkdk,False,9.924629e-05,2.9474733e-05,4.490627e-06,2.9056353e-06,8.733332e-07,1.3469717e-08,4.9535526e-08
+303,Me,you slayed!!!! A fucking queen!,False,4.0726878e-05,0.00018770398,0.004681136,4.687676e-08,6.0815547e-10,4.1180053e-07,4.749596e-06
+304,Me,fuck yessss!!!!!,False,0.005969755,0.00070338364,0.00014361959,1.0330132e-08,6.178586e-07,3.12701e-08,1.0035901e-08
+305,Me, I always lose my shit it's so bad,False,1.4137437e-06,6.3918365e-06,5.139971e-07,4.3150667e-06,1.506991e-10,2.9584273e-11,1.8470071e-09
+306,Me,I fucking love y'all,False,0.00026228657,7.5659635e-05,1.8543842e-06,1.9062447e-09,1.4704911e-07,2.6131006e-10,2.076547e-09

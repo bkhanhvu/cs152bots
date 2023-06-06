@@ -3,3 +3,4 @@ DiscordBot/tokens.json
 TABot/tokens.json
 DiscordBot/apikeys.py
 DiscordBot/testapi.py
+DiscordBot/node_modules
