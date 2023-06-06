@@ -1,0 +1,202 @@
+s|report_reason|b|We're here to help^Please select the reason for reporting this content
+        Harassment|Spam|Offensive Content|Imminent danger|Other
+        i|Provide content and detailed reason
+                Link to content|Reason for reporting
+        s|harassment_type|b|Type of harassment^Please specify the type of harassment you are experiencing
+                Sextortion|Hate Speech|Encouraging self harm|Threats|Other
+                s|sextortion_kind|d|What kind of sextortion are you experiencing?^Please choose the most fitting description
+                        Content includes explicit images|Content is a threat to spread explicit images
+                        y|knows_harasser|d|Identifying the harassser^Do you personally know the user responsible?
+                                w|Image ownership|Image ownership^Are these images of you or someone else?
+                                        Me|Someone else
+                                        y|Shared images|Shared images^Have you shared explicit images with this user?
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                m|Disclaimer^If you have not provided images to this user, it is possible that they may be lying and trying to extort you. You may have also been hacked.
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                        y|Knows other|Know other?^Do you know this other person?
+                                                i|Enter username
+                                                        username
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                w|Image ownership|Image ownership^Are these images of you or someone else?
+                                        Me|Someone else
+                                        y|Shared images|Shared images^Have you shared explicit images with this user?
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                m|Disclaimer^If you have not provided images to this user, it is possible that they may be lying and trying to extort you. You may have also been hacked.
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                        y|Knows other|Know other?^Do you know this other person?
+                                                i|Enter username
+                                                        username
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                i|Enter username
+                                                        username
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                w|Image ownership|Image ownership^Are these images of you or someone else?
+                                        Me|Someone else
+                                        y|Shared images|Shared images^Have you shared explicit images with this user?
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                m|Disclaimer^If you have not provided images to this user, it is possible that they may be lying and trying to extort you. You may have also been hacked.
+                                                y|Known images|Known images^Do you know what images this user has?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                        y|Knows other|Know other?^Do you know this other person?
+                                                i|Enter username
+                                                        username
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                y|Other posted explicit|Posted explicit?^Did the user post an explicit image?
+                                                        m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spread. https://takeitdown.ncmec.org
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                                                        y|Block|Block^Would you like to block this user?
+                                                                m|Done^[Username] has been blocked.
+                                                                        t
+                                                                t
+                y|First time|Some background^Is this the first time you see abusive content from this user?
+                        t
+                        t
+                y|First time|Some background^Is this the first time you see abusive content from this user?
+                        t
+                        t
+                y|First time|Some background^Is this the first time you see abusive content from this user?
+                        t
+                        t
+                y|First time|Some background^Is this the first time you see abusive content from this user?
+                        t
+                        t
+        i|Provide content and reasoning
+                Offending content|Reason for reporting
+                t
+        i|Provide content and reasoning
+                Offending content|Reason for reporting
+                t
+        i|Provide content and reasoning
+                Offending content|Reason for reporting
+                t
+        i|Provide content and reasoning
+                Offending content|Reason for reporting
+                t

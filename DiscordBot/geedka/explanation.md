@@ -20,13 +20,13 @@ There are several kinds of supported nodes:
 * Yes/No -- a message with yes/no options (shorthand for a binary)
 * User input boxes (modals) -- a popup that asks for user input
 
-There are also two special features:
+There are also several special features:
 * Terminals -- the end of a reporting flow.
         This is manually implemented by the technical team.
         All reporting flows must end in a terminal
-
 * Embeds -- these are specified within the description of a message.
-
+* Data collection specifications --
+        these allow you to specify whether a given selection or switch will lead to a divergence in the tree or merely to data collection.
 
 ## Geedka syntax
 
@@ -48,7 +48,7 @@ The "tag" of a question is the name its entry in the ticket will have.
 `m|[your message here]`
 
 ### Selections
-`s|[tag]|[selection description]`
+`s|[tag]|[data collect spec]|[selection description]`
 
 `       option1|option2|` and so on
 
@@ -56,7 +56,7 @@ The "tag" of a question is the name its entry in the ticket will have.
 and so on
 
 ### Switches
-`w|[tag]|[switch description]`
+`w|[tag]|[data collect spec]|[switch description]`
 
 `       option1|option2|` and so on
 
@@ -65,7 +65,7 @@ and so on
 
 
 ### Yes/No Selections
-`y|[tag]|[question]`
+`y|[tag]|[data collect spec]|[question]`
 
 Note that the options for a yes/no selection do not need to be enumerated,
 so all of its children follow immediately after it.
@@ -92,6 +92,11 @@ Second, within each field, the title and value of a field must be split by the `
 Therefore, for an embed with two fields, the specification would look as follows:
 
 `Coincidence?^I do not think so\Mystery?^Maybe\Hotel?^Trivago.`
+
+### Data collect specs
+There are two variants for data collect specs:
+* `b`, meaning *branch*. This means there is a separate moderation flow following this question depending on the answer to it.
+* `d`, meaning *data*. This means that the answer to the question is recorded and moderation flow continues all the same regardless of the answer.
 
 ### Ordering
 The description file for Geedka should be ordered such that the children of a node
