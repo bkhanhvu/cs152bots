@@ -20,7 +20,7 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
 
     if interaction:
         await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid)], ephemeral=True)
-    if embeds is None:
+    if embeds is None or len(embeds) == 0:
         mod_channel = bot.mod_channels[bot.guilds[0].id]
         embed = await create_completionEmbed(bot, tid)
         embed.title = f"** Report Ticket ID: {tid} **"
@@ -30,6 +30,7 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
                 explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
                 embed.description = explicit_warning
                 embed.color = discord.Color.red()
+        embeds.append(embed) # Ensure that the context embed is displayed when a user blocks/not
 
     nextMessageDescript = '### Please proceed by choosing action toward reported user.'
     if autoBanned == True:
@@ -186,8 +187,8 @@ class HarassmentSelection(discord.ui.View):
             await interaction.followup.send(view=SextortionTypeSelection(self.bot, self.tid),
                     ephemeral=True)
         else:
-            await interaction.followup.send("Would you like to block this user?",
-                view=blockUserSelection(self.bot, self.tid), ephemeral=True)
+            await interaction.followup.send("Is this the first time you've seen abusive content from this user?",
+                view=previouslySeenSelection(self.bot, self.tid), ephemeral=True)
 
 
 def BinaryOption(label_1 : str, label_2 : str):
@@ -376,6 +377,20 @@ class ImageRemovalEmbed(discord.Embed):
     def __init__(self):
         super().__init__(title='Removal/Prevention Resources', url='https://takeitdown.ncmec.org/')
         self.add_field(name="Please click on the link above.", value="These instructions will help get your image removed and stop their spread", inline=False)
+
+"""
+Prompt: Is this the first time you've seen abusive content from this user?
+"""
+def previouslySeenSelection(bot, tid: int):
+      return YesNoOption(bot, tid, handle_prev_seen, handle_no_prev_seen)
+
+async def handle_prev_seen(bot, tid : int, interaction : Interaction, button : Button):
+        await interaction.response.send_message("Would you like to block this user?",
+                view=blockUserSelection(bot, tid), ephemeral=True)
+
+async def handle_no_prev_seen(bot, tid : int, interaction : Interaction, button : Button):
+        await interaction.response.send_message("Would you like to block this user?",
+                view=blockUserSelection(bot, tid), ephemeral=True)
 
 """
 Embed to more elegantly display block URL
