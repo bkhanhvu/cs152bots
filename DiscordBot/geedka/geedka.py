@@ -38,6 +38,9 @@ class {classname}(discord.ui.View):
         async def create(cls, i : discord.Interaction):
                 await i.channel.send(\"`This Geedka moderation flow has been completed`\")
                 return None
+
+        def __init__(self):
+                super().__init__()
         """)
 
 def message_gen(config : File, tokens : list[str], label : int) -> None:
@@ -57,8 +60,9 @@ class {classname}(discord.ui.View):
         async def create(cls, i : discord.Interaction):
                 await i.channel.send(\"{tokens[0]}\")
                 child = await {child_classname}.create(i)
-                if (child != None):
-                        await i.send(view = child)
+                
+                return child
+
 
         def __init__(self):
                 super().__init__()
@@ -81,11 +85,12 @@ def get_button_def(text : str, label : int) -> str:
         return f"""
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
         async def callback{label}(self, interaction : discord.Interaction, button):
-                await interaction.channel.send(\"You selected {text}\")
+                await interaction.response.send_message(\"You selected {text}\")
                 child = await {classname_from_label(label)}.create(interaction)
 
-                if (child != None):
+                if child != None:
                         await interaction.channel.send(view = child)
+                self.stop()
         """
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
@@ -216,6 +221,7 @@ class {classname}(discord.ui.View):
                 child = ModalImpl()
                 await i.response.send_modal(child)
                 await child.wait()
+                return None
 
         def __init__(self):
                 super().__init__()
@@ -228,7 +234,6 @@ def geedka_frontend(config : File, label : int = -1):
         if (label == -1):
                 label = lp.get_label()
         tokens : list[str] = config.readline().strip().split('|')
-        print(f"Got token of type {tokens[0]}")
         match tokens[0]:
                 case 'm':
                         return message_gen(config, tokens[1:], label)
@@ -248,7 +253,7 @@ def geedka_frontend(config : File, label : int = -1):
 
 def main():
         print("Hello world")
-        config_filename : str = 'config.geedka'
+        config_filename : str = 'colors.geedka'
         if not os.path.isfile(config_filename):
                 raise Exception(f"{config_filename} not found!")
 
