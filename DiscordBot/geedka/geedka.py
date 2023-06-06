@@ -114,7 +114,8 @@ def get_button_def(tag : str, text : str, label : int) -> str:
                 if child != None:
                         await interaction.channel.send(view = child)
                 try:
-                        await interaction.response.defer()
+                        if not interaction.response.is_done():
+                                await interaction.response.defer()
                 except:
                         return
         """
@@ -209,7 +210,8 @@ class {classname}(discord.ui.View):
 {get_cases(child_names, child_labels)}
 
                 try:
-                        await interaction.response.defer()
+                        if not interaction.response.is_done():
+                                await interaction.response.defer()
                 except:
                         return
                         
