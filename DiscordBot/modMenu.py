@@ -30,9 +30,12 @@ class DeletionView(discord.ui.View):
     
     @discord.ui.button(label='Yes', style=discord.ButtonStyle.red)
     async def YesButton(self, interaction : Interaction, button : Button):
-        await tickets[self.tid].bot_msg.delete()
+        if tickets[self.tid].bot_msg:
+            await tickets[self.tid].bot_msg.delete()
+            await interaction.response.send_message(f"Ticket {self.tid}:  ```Content has been deleted```.")
+        else:
+            await interaction.response.send_message(f"Ticket {self.tid}:  ```Content has already been deleted for safety. Image will be added to hash and will not be flagged in the future.```")
             
-        await interaction.response.send_message(f"Ticket {self.tid}:  ```Content has been deleted```.")
         tickets[self.tid].status = 'Complete'
         await interaction.followup.send(f"\nTicket {self.tid} is now marked as: Complete.")
 

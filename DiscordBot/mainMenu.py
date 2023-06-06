@@ -62,7 +62,7 @@ async def create_completionEmbed(bot, tid):
 
 
     for key, value in tickets[tid]:
-        print(key, value)
+        # print(key, value)
         if key in ['status', 'type', 'bot_msg']:
                 continue
         embed.add_field(name=key, value=value)

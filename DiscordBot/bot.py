@@ -177,8 +177,8 @@ class ModBot(commands.Bot):
             else:
                 file_spoiler = f"||{url}||"
                 time.sleep(1)
-                message_str = "*This message has been flagged for abuse* \n" + f"**{message.author.name}**:\n{file_spoiler}"
-                bot_image = await message.reply(message_str)
+                message_str = "*This message has been flagged for abused and has been removed.* \n"
+                await message.reply(message_str)
                 await message.delete()
             
                 embed.set_thumbnail(url='https://community.appinventor.mit.edu/uploads/default/2ad031bc25a55c4d3f55ff5ead8b2de63cdf28bf')
@@ -189,7 +189,7 @@ class ModBot(commands.Bot):
                 embed.add_field(name='Safe Search', value=safe_search_str)
                 embed.add_field(name='Image URL', value=url, inline=False)
             
-                await self.process_automatic_ticket(message, bot_image, True, [embed])
+                await self.process_automatic_ticket(message, None, True, [embed])
                 
             return
                 # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
@@ -322,8 +322,8 @@ class ModBot(commands.Bot):
         response = requests.request("POST", url, headers=headers, data=payload)
 
         response_dict = json.loads(response.text)
-        for key, value in response_dict.items():
-            print(f"key={key}\nvalue={value}")
+        # for key, value in response_dict.items():
+        #     print(f"key={key}\nvalue={value}")
 
         return response_dict
     
@@ -413,7 +413,7 @@ class ModBot(commands.Bot):
 
                     # print(f"type={abuse['type']}, severity={abuse['severity']}, text={abuse['text']}, explanation={abuse['text'] if 'text' in abuse else ''}")
             if 'tags' in response:
-                print(f"tags= {response['tags']}")
+                # print(f"tags= {response['tags']}")
                 embed.add_field(name='tags', value=response['tags'].join(', '))
 
             expi = 1
