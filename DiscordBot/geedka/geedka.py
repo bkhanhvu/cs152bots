@@ -29,11 +29,8 @@ def get_embed_gen(description : str) -> str:
         embed_elements : list[str] = [elem.strip() for elem in description.split("\\")]
         embed_specific : list[list[str]] = []
         for elem in embed_elements:
-                inner_list : list[str] = [x for x in elem.split('^')]
+                inner_list : list[str] = [x for x in elem.strip().split('^')]
                 embed_specific += [inner_list]
-                        # print(k)
-                        # print(v)
-                        # embed_specific += [[k, v]]
 
         embed_addfields : str = '\n'.join([get_embed_addfield(l[0], l[1]) for l in embed_specific])
         return f"""

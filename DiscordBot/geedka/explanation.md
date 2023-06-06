@@ -20,10 +20,12 @@ There are several kinds of supported nodes:
 * Yes/No -- a message with yes/no options (shorthand for a binary)
 * User input boxes (modals) -- a popup that asks for user input
 
-There is also one special feature:
+There are also two special features:
 * Terminals -- the end of a reporting flow.
         This is manually implemented by the technical team.
         All reporting flows must end in a terminal
+
+* Embeds -- these are specified within the description of a message.
 
 
 ## Geedka syntax
@@ -36,6 +38,11 @@ so you can indent however much or little you would like.
 However, it is likely bad style to not indent.
 Additionally, Geedka is sensitive to newlines --
 multiline node specifications are on the TODO list but low priority.
+
+Note that wherever a description or message is mentioned below,
+it must be in the embed specification format.
+
+The "tag" of a question is the name its entry in the ticket will have.
 
 ### Messages
 `m|[your message here]`
@@ -72,6 +79,19 @@ Note that modals cannot be the first node in a Geedka moderation flow.
 
 ### Terminals
 `t`
+
+### Embed descriptions
+Embeds must be separated in two ways:
+
+First, the top-level separation, delimited by the `\` character.
+
+`[field]\[field]\` and so on
+
+Second, within each field, the title and value of a field must be split by the `^` character.
+
+Therefore, for an embed with two fields, the specification would look as follows:
+
+`Coincidence?^I do not think so\Mystery?^Maybe\Hotel?^Trivago.`
 
 ### Ordering
 The description file for Geedka should be ordered such that the children of a node
