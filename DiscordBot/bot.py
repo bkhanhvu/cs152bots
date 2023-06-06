@@ -103,8 +103,11 @@ class ModBot(commands.Bot):
             image_prep = image.content
             image_content = Image.open(io.BytesIO(image_prep))
             hash = imagehash.average_hash(image_content)
-            client = MongoClient("mongodb+srv://modBot:<2YYEd8xrgxbdwadw>@discordbot.k1is1nj.mongodb.net/?retryWrites=true&w=majority")   
-            db = client.image_hashes
+            CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
+            client = MongoClient(CONNECTION_STRING)
+            db = client.name 
+            collection = db.info 
+            collection.insert_one({'hi': 10})
             print(db)
             #results = db.image_hashes.find({'hash': hash})
 
