@@ -19,8 +19,7 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
     mod_channel = bot.mod_channels[bot.guilds[0].id]
 
     if interaction:
-        await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid), \
-                                                await create_BlockingHelpEmbed(bot, tid)])
+        await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid)])
     if embeds is None:
         mod_channel = bot.mod_channels[bot.guilds[0].id]
         embed = await create_completionEmbed(bot, tid)
@@ -142,7 +141,8 @@ class ReportSelection(discord.ui.View):
         if selection.values[0] == 'Harassment':
             await interaction.followup.send("You selected: Harassment", view=HarassmentSelection(self.bot, self.tid), ephemeral=True)
         else:
-            await send_completionEmbed(interaction, self.bot, self.tid)
+            await interaction.followup.send("Would you like to block this user?",
+                view=blockUserSelection(self.bot, self.tid), ephemeral=True)
 
 
 class ExplanationModal(discord.ui.Modal):
@@ -186,7 +186,8 @@ class HarassmentSelection(discord.ui.View):
             await interaction.followup.send(view=SextortionTypeSelection(self.bot, self.tid),
                     ephemeral=True)
         else:
-            await send_completionEmbed(interaction, self.bot, self.tid)
+            await interaction.followup.send("Would you like to block this user?",
+                view=blockUserSelection(self.bot, self.tid), ephemeral=True)
 
 
 def BinaryOption(label_1 : str, label_2 : str):
@@ -280,7 +281,8 @@ async def others_images_callback(bot, tid : int, interaction : Interaction, butt
         # await interaction.response.send_message(embed=await create_completionEmbed(self.bot, self.tid), ephemeral=True)
         await response_message("No.", interaction)
         await shared_explicit_warning(interaction)
-        await send_completionEmbed(interaction, bot, tid)
+        await interaction.followup.send("Would you like to block this user?",
+                view=blockUserSelection(bot, tid), ephemeral=True)
 
 """
 Prompt: "Have you shared explicit images with this user?"
@@ -290,11 +292,12 @@ def SharedExplicitSelection(bot, tid : int):
 
 async def know_image_callback(bot, tid : int, interaction:Interaction, button:Button):
         tickets[tid].know_image = button.label
-        await send_completionEmbed(interaction, bot, tid)
+        await interaction.followup.send("Would you like to block this user?",
+                view=blockUserSelection(bot, tid), ephemeral=True)
 
 async def handle_know_image(bot, tid : int, interaction : Interaction, button : Button):
         # await response_message("Yes.", interaction)
-        await interaction.response.send_message('You responded: Yes.', embed=ImageRemovalEmbed())
+        await interaction.response.send_message('You responded: Yes.', embed=ImageRemovalEmbed(), ephemeral=True)
         time.sleep(5)
         await know_image_callback(bot, tid, interaction, button)
 
@@ -347,8 +350,9 @@ class UsernameInputModal(discord.ui.Modal, title='Enter Username'):
         self.stop()
 
 async def post_explicit_callback(bot, tid : int, interaction : Interaction, button : Button):
-        await send_completionEmbed(interaction, bot, tid)
-        tickets[tid].post_explicit = button.label
+        tickets[tid].post_explicit = button.label # was previously doing this after awaiting, moved before
+        await interaction.followup.send("Would you like to block this user?",
+                view=blockUserSelection(bot, tid), ephemeral=True)
 
 async def handle_post_explicit(bot, tid : int, interaction : Interaction, button : Button):
         await interaction.response.send_message('You responded: Yes.', embed=ImageRemovalEmbed(),
@@ -372,6 +376,32 @@ class ImageRemovalEmbed(discord.Embed):
     def __init__(self):
         super().__init__(title='Removal/Prevention Resources', url='https://takeitdown.ncmec.org/')
         self.add_field(name="Please click on the link above.", value="These instructions will help get your image removed and stop their spread", inline=False)
+
+"""
+Embed to more elegantly display block URL
+"""
+class newBlockEmbed(discord.Embed):
+    def __init__(self):
+        super().__init__(title='Blocking a User', url='https://support.discord.com/hc/en-us/articles/217916488-Blocking-Privacy-Settings-#:~:text=In%20your%20DM%20chat%2C%20clicking,let%20you%20block%20the%20user')
+
+"""
+Prompt: "Would you like to block this user?"
+"""
+def blockUserSelection(bot, tid: int):
+      return YesNoOption(bot, tid, handle_block_user, handle_dont_block_user)
+
+async def handle_block_user(bot, tid : int, interaction : Interaction, button : Button):
+        link = tickets[tid].message_link.split('/')
+        offendingMessage = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
+        username = offendingMessage.author.display_name
+        blockMessage = username + " has been blocked."
+        await interaction.response.send_message(blockMessage, ephemeral=True)
+        await send_completionEmbed(interaction, bot, tid)
+
+async def handle_dont_block_user(bot, tid : int, interaction : Interaction, button : Button):
+        instructions = "If you later decide you want to block this user, refer to the link below for detailed instructions."
+        await interaction.response.send_message(instructions, ephemeral=True, embed=newBlockEmbed())
+        await send_completionEmbed(interaction, bot, tid)
 
 class MainMenuEmbed(discord.Embed):
     def __init__(self):
