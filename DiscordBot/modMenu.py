@@ -22,7 +22,25 @@ Button = discord.ui.Button
 
 # TODO: Implement consequence verdict message forwarding to the user who violated 
 # Create embed/modal/etc. to allow user to appeal verdict
+class DeletionView(discord.ui.View):
+    def __init__(self, bot, tid):
+        super().__init__()
+        self.bot = bot
+        self.tid = tid
+    
+    @discord.ui.button(label='Yes', style=discord.ButtonStyle.red)
+    async def YesButton(self, interaction : Interaction, button : Button):
+        await tickets[self.tid].bot_msg.delete()
+            
+        await interaction.response.send_message(f"Ticket {self.tid}:  ```Content has been deleted```.")
+        tickets[self.tid].status = 'Complete'
+        await interaction.followup.send(f"\nTicket {self.tid} is now marked as: Complete.")
 
+    @discord.ui.button(label='No', style=discord.ButtonStyle.red)
+    async def NoButton(self, interaction : Interaction, button : Button):
+        await interaction.response.send_message(f"Ticket {self.tid}:  ```Content will remain in chat```.")
+        await interaction.followup.send(f"\nTicket {self.tid} is now marked as: Complete.")
+  
 class ConsequenceActionButtons(discord.ui.View):
     def __init__(self, bot, tid):
         super().__init__()
@@ -46,7 +64,7 @@ class ConsequenceActionButtons(discord.ui.View):
         user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
         return user
 
-    @discord.ui.button(label="Disapprove User Label", style=discord.ButtonStyle.gray)
+    @discord.ui.button(label="Disapprove Label", style=discord.ButtonStyle.gray)
     async def disapproveBtn(self, interaction: Interaction, button:Button):
         currentStatus = tickets[self.tid].status
         if currentStatus == 'Complete':
@@ -54,7 +72,8 @@ class ConsequenceActionButtons(discord.ui.View):
         else:
             tickets[self.tid].status = 'Complete'
             await interaction.response.send_message(f"\nTicket {self.tid} dismissed, marked as: Complete.")
-            await self.notifyReporterCallback(interaction, button)
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
     
     @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
     async def callbackBtn(self, interaction: Interaction, button:Button):
@@ -78,11 +97,12 @@ class ConsequenceActionButtons(discord.ui.View):
             message = "This message being sent to you indicates that you've been banned."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=SummaryEmbed(self.tid, button, description=abuser_summary_description))
-            await self.notifyReporterCallback(interaction, button)
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
             message = f"Banned {username} from server."
             if not alreadyComplete:
                 message += f"\nTicket {self.tid} is marked as: Complete."
-            await interaction.response.send_message(message)
+                await interaction.response.send_message('```Would you like to delete the content of the message?```', view=DeletionView(self.bot, self.tid))
         else:
             await interaction.response.send_message("No User Specified.")
     
@@ -96,7 +116,8 @@ class ConsequenceActionButtons(discord.ui.View):
         message = "[ATTENTION] You have been kicked from the channel for an inappropriate action/behavior."
         tickets[self.tid].status = 'Complete'
         await user.send(content=message, embed=SummaryEmbed(self.tid, button, description=abuser_summary_description))
-        await self.notifyReporterCallback(interaction, button)
+        if tickets[self.tid].type == 'Manual':
+            await self.notifyReporterCallback(interaction, button)
 
         if user is not None:
             if username not in userStatuses:
@@ -106,9 +127,9 @@ class ConsequenceActionButtons(discord.ui.View):
             status.prevKicked = True
             userStatuses.update({username : status})
             message = f"{tickets[self.tid].msg_user_id} has been kicked from server."
-            if not alreadyComplete:
-                message += f"\n Ticket {self.tid} is marked as: Complete."
             await interaction.response.send_message(message)
+            if not alreadyComplete:
+                await interaction.followup.send('```Would you like to delete the content of the message?```', view=DeletionView(self.bot, self.tid))
         else:
             message = f"{tickets[self.tid].msg_user_id} not found in server. Were they kicked previously?"
             if not alreadyComplete:
@@ -132,13 +153,14 @@ class ConsequenceActionButtons(discord.ui.View):
             message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=SummaryEmbed(self.tid, button, abuser_summary_description))
-            await self.notifyReporterCallback(interaction, button)
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
 
             userStatuses[username].strikeCounter = strikeCount
             message = f"Warning message sent to {username}."
-            if not alreadyComplete:
-                message += f"\nTicket {self.tid} is marked as: Complete."
             await interaction.response.send_message(message)
+            if not alreadyComplete:
+                await interaction.followup.send('```Would you like to delete the content of the message?```', view=DeletionView(self.bot, self.tid))
             return
 
         await interaction.response.send_message("\n",

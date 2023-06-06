@@ -1,11 +1,14 @@
 # bot.py
 import discord
-import imagehash
+import uuid
+# import imagehash
 from PIL import Image
 from discord.ext import commands
 import os
+import time
 import json
 import logging
+import asyncio
 import re
 import requests
 from report import Report
@@ -17,7 +20,9 @@ import os
 import openai
 import requests
 import json
-from apikeys import TISANE_KEY, OPENAI_KEY, OPENAI_ORGANIZATION
+from ticket import Ticket, tickets, Interaction, Button
+from apikeys import TISANE_KEY, OPENAI_KEY
+# from apikeys import OPENAI_ORGANIZATION
 from googleapi_detection import detect_label_safe_search_uri 
 
 # const { EmbedBuilder } = require.('discord.js')
@@ -48,9 +53,10 @@ class ModBot(commands.Bot):
         self.non_mod_text_channels = {}
         self.reports = {} # Map from user IDs to the state of their report
     
-    async def on_ready(self,):
+    async def on_ready(self):
         print(f'{self.user.name} has connected to Discord! It is these guilds:')
         for guild in self.guilds:
+            
             print(f' - {guild.name}')
         print('Press Ctrl-C to quit.')   
         
@@ -135,7 +141,7 @@ class ModBot(commands.Bot):
         if self.reports[author_id].report_complete():
             self.reports.pop(author_id)
 
-    async def handle_channel_message(self, message):
+    async def handle_channel_message(self, message: discord.Message):
         # Only handle messages sent in the "group-#" channel
         if not message.channel.name == f'group-{self.group_num}':
             return
@@ -165,19 +171,28 @@ class ModBot(commands.Bot):
                     safe_search_str += f'> content = {key}, likelihood = {value}\n'
 
                 print(f"{key}: {value}")
-            
+                
             if not flagged:
                 embed.color = discord.Color.green()
+            else:
+                file_spoiler = f"||{url}||"
+                time.sleep(1)
+                message_str = "*This message has been flagged for abuse* \n" + f"**{message.author.name}**:\n{file_spoiler}"
+                bot_image = await message.reply(message_str)
+                await message.delete()
             
-            embed.set_image(url=url)
-            embed.set_thumbnail(url='https://community.appinventor.mit.edu/uploads/default/2ad031bc25a55c4d3f55ff5ead8b2de63cdf28bf')
+                embed.set_thumbnail(url='https://community.appinventor.mit.edu/uploads/default/2ad031bc25a55c4d3f55ff5ead8b2de63cdf28bf')
 
-            embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=True)
-            embed.add_field(name='flagged', value=str(f'`{flagged}`'), inline=False)
-            embed.add_field(name='Labels', value=label_str)
-            embed.add_field(name='Safe Search', value=safe_search_str)
-            await message.channel.send(embed=embed)
-            return 
+                embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=True)
+                embed.add_field(name='flagged', value=str(f'`{flagged}`'), inline=False)
+                embed.add_field(name='Labels', value=label_str)
+                embed.add_field(name='Safe Search', value=safe_search_str)
+                embed.add_field(name='Image URL', value=url, inline=False)
+            
+                await self.process_automatic_ticket(message, bot_image, True, [embed])
+                
+            return
+                # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
 
             
         if message.content == "trigger":
@@ -189,28 +204,107 @@ class ModBot(commands.Bot):
             await message.channel.send(embed=embed, view=view)
             return
             # await interaction.response.send_modal(MyModal())
-
         # Forward the message to the mod channel
         mod_channel = self.mod_channels[message.guild.id]
         # await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
         # response = self.process_text_tisane(message.content) if 'tisane' in message.content else self.eval_text(message.content)
         # print(response)
-        openaiCheck = message.content[0:6]
-        if 'tisane' in message.content:
-            response = self.process_text_tisane(message.content)
-            await self.code_format(response, message, tisane=True, openAiChatCompletion=False)
-        elif openaiCheck == 'openai':
-            # Misleading -- this is chatgpt, not the openai API
-            realMessage = message.content[7:]
-            response = self.openai_completion_eval_text(realMessage)
-            await self.code_format(response, message, tisane=False, openAiChatCompletion=True)
-        else:
-            # self.eval_text(message.content)
-            response = self.eval_text(message.content)
-            await self.code_format(response, message, tisane=False, openAiChatCompletion=False)
+        
+        # openaiCheck = message.content[0:6]
+        flags = {'tisane_flagged': False, 'openaimod_flagged': False, 'chatgpt_flagged': False}
+        responses = {'tisane': None, 'openaimod': None, 'chatgpt': None}
+        embeds = []
+        tisane_response = self.process_text_tisane(message.content)
+        responses['tisane'] = tisane_response
+        if 'abuse' in tisane_response:
+            for abuse in tisane_response['abuse']:
+                    if abuse['severity'] in ['medium', 'high', 'extreme']:
+                        flags['tisane_flagged'] = True
+                        embeds.append(await self.code_format(tisane_response, message, tisane=True, openAiChatCompletion=False, openAiModerator=False))
+                        break
+        
+        # if 'tisane' in message.content:
+        #     response = self.process_text_tisane(message.content)
+        #     await self.code_format(response, message, tisane=True, openAiChatCompletion=False)
+        
+        # openai_mod evaluation
+        openaimod_response = self.eval_text(message.content)
+        responses['openaimod'] = openaimod_response
+
+        # openaimod_flagged = False
+        for category, score  in openaimod_response['category_scores'].items():
+            if score > 0.05:
+                flags['openaimod_flagged'] = True
+                embeds.append(await self.code_format(openaimod_response, message, tisane=False, openAiChatCompletion=False, openAiModerator=True))
+                break
+        
+        #chatgpt sextortion check
+        chatgpt_response = int(self.openai_completion_eval_text(message.content))
+        responses['chatgpt'] = chatgpt_response
+        if chatgpt_response > 19 and chatgpt_response != 101:
+            flags['chatgpt_flagged'] = True
+            if chatgpt_response > 80:
+                await message.author.send('*** ALERT: __You have been banned from the server.__ ***')
+            else:
+                await message.author.send('*** ALERT: __You have been kicked from the server.__ ***')
+            
+            embeds.append(await self.code_format(chatgpt_response, message, tisane=False, openAiChatCompletion=True, openAiModerator=False))
+        
+        if True in flags.values():
+            message_str = "*This message has been flagged for abuse* \n" + f"**{message.author.name}**:" + "||" + str('```') + \
+                f'{message.content}\n' + str('```') + "||"
+            
+            bot_message = await message.reply(message_str)
+            await message.delete()
+            await message.author.send(embeds=embeds)
+            
+            # time.sleep(1)
+            # await bot_message.delete()
+
+        # if chatgpt_flagged or openaimod_flagged or tisane_flagged:
+        #     await self.process_automatic_ticket(message)
+        
+        # elif openaiCheck == 'openai':
+        #     # Misleading -- this is chatgpt, not the openai API
+        #     realMessage = message.content[7:]
+        #     response = self.openai_completion_eval_text(realMessage)
+        #     await self.code_format(response, message, tisane=False, openAiChatCompletion=True)
+        # else:
+        #     # self.eval_text(message.content)
+        #     response = self.eval_text(message.content)
+        #     await self.code_format(response, message, tisane=False, openAiChatCompletion=False)
         # print(response_formatted)
         # await message.channel.send(response_formatted['verdict'], embed=response_formatted['embed'])
+            await self.process_automatic_ticket(message, bot_message)
+    
+    async def process_automatic_ticket(self, message:discord.Message, bot_message, image=False, embeds=None):
+        embeds = embeds if embeds else []
+        tid = uuid.uuid4()
+        ticket = Ticket()
+        tickets[tid] = ticket
+        ticket.message = message.attachments[0].url if image else '||' + message.content + '||'
+        ticket.msg_user_id = message.author
+        ticket.status = 'Pending'
+        ticket.type = 'Automated'
+        ticket.bot_msg = bot_message
+        
+        embed=await mainMenu.create_completionEmbed(self, tid)
+        embed.color = discord.Color.red()
 
+        explicit_warning = str("""```css\n**[Explicit Warning!]** \nWe've detected content that could be harmful or disturbing! Please act with caution.```""")
+        embed.description = explicit_warning
+        # for key, value in tickets[tid]:
+        #     print(key, value)
+        #     if key == 'status' or 'type':
+        #         continue
+        
+            # embed.add_field(name=key, value=value)
+        embeds.append(embed)
+        await mainMenu.send_completionEmbed(None, self, tid, embeds=embeds)
+        # await mod_channel.send('Message has been flagged and is awaiting review.', embed=embed, )
+        
+        
+        
     def process_text_tisane(self, message):
         url = "https://api.tisane.ai/parse"
         msg_content = message[(message).find('tisane') + len('tisane') + 1:]
@@ -235,7 +329,7 @@ class ModBot(commands.Bot):
     
     def openai_completion_eval_text(self, message):
         # Misleading -- this is chatgpt
-        openai.organization = OPENAI_ORGANIZATION
+        # openai.organization = OPENAI_ORGANIZATION
         openai.api_key = OPENAI_KEY
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -259,7 +353,7 @@ class ModBot(commands.Bot):
         TODO: Once you know how you want to evaluate messages in your channel, 
         insert your code here! This will primarily be used in Milestone 3. 
         '''
-        openai.organization = OPENAI_ORGANIZATION
+        # openai.organization = OPENAI_ORGANIZATION
         openai.api_key = OPENAI_KEY
 
         response = openai.Moderation.create(
@@ -269,24 +363,26 @@ class ModBot(commands.Bot):
         return output
 
     
-    async def code_format(self, response, message:discord.Message, tisane:bool, openAiChatCompletion:bool):
+    async def code_format(self, response, message:discord.Message, tisane:bool, openAiChatCompletion:bool, openAiModerator:bool):
         ''''
         TODO: Once you know how you want to show that a message has been 
         evaluated, insert your code here for formatting the string to be 
         shown in the mod channel. 
         '''
         flagged = False
+        if tisane or openAiChatCompletion or openAiModerator:
+            flagged = True
         title = 'Tisane Abuse Report' if tisane else 'OpenAI Abuse Report'
         embed = discord.Embed(title=title)
 
         if tisane:
-            flagged = True if 'abuse' in response else False
+            # flagged = True if 'abuse' in response else False
             embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/926300904399220737/JXJgzUm5_400x400.jpg')
         elif openAiChatCompletion:
-            flagged = True if int(response) > 80 else False
+            # flagged = True if int(response) > 20 else False
             embed.set_thumbnail(url='https://static.thenounproject.com/png/2486994-200.png')
         else:
-            flagged = True if response['flagged'] else False
+            # flagged = True if response['flagged'] else False
             embed.set_thumbnail(url='https://static.thenounproject.com/png/2486994-200.png')
 
         if flagged:
@@ -298,24 +394,21 @@ class ModBot(commands.Bot):
 
         embed.add_field(name='username', value=str(f'`{message.author.name}`'), inline=False)
 
-        message_content = message.content if len(message.content) < 500 else (message.content[:500] + '....')
-        print(message_content)
         if tisane == False:
             if openAiChatCompletion == False:
-                embed.add_field(name='message_content', value=str(f'`{message_content}`'), inline=False)
+                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
                 for category, score  in response['category_scores'].items():
 
                     # temporary threshold of 0.5
-                    score_str = str(f'__**{str(score)}**__') if (score > 0.5) else str(score)
+                    score_str = str(f'__**{str(score)}**__') if (score > 0.03) else str(score)
                     
                     embed.add_field(name=category, value=score_str)
             else:
-                
-                embed.add_field(name='message_content', value=str(f'`{message_content}`'), inline=False)
+                embed.add_field(name='message_content', value=str(f'`{message.content}`'), inline=False)
                 embed.add_field(name="Sextortion", value=response)
                 
         else:
-            embed.add_field(name='message_content', value=str(f"`{message_content}`"), inline=False)
+            embed.add_field(name='message_content', value=str(f"`{response['text']}`"), inline=False)
     
 
                     # print(f"type={abuse['type']}, severity={abuse['severity']}, text={abuse['text']}, explanation={abuse['text'] if 'text' in abuse else ''}")
@@ -326,21 +419,20 @@ class ModBot(commands.Bot):
             expi = 1
             if 'sentiment_expressions' in response:
                 for sentiment_expression in response['sentiment_expressions']:
-                    if sentiment_expression['polarity'] == 'negative':
-                        explanation = sentiment_expression['explanation'] if 'explanation' in sentiment_expression else ''
-                        embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
-                                        value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {explanation}"), inline=False)
+                    explanation = sentiment_expression['explanation'] if 'explanation' in sentiment_expression else ''
+                    embed.add_field(name=f"expression_{expi}, sentiment = {sentiment_expression['polarity']}", \
+                                    value=str(f"> text_fragment = *{sentiment_expression['text']}* \n> reason: {explanation}"), inline=False)
 
             if flagged:
                 for abuse in response['abuse']:
                     abuse_type = abuse['type']
                     abuse_tags = ', '.join(abuse['tags']) if 'tags' in abuse else 'None'
                     abuse_explanation= abuse['explanation'] if 'explanation' in abuse else 'None'
-                    abuse_text = abuse['text'] if len(abuse['text']) < 1024 else (abuse['text'][:500] + '....')
-                    abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse_text}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
+                    abuse_value = str(f"```\nseverity={abuse['severity']}\ntext={abuse['text']}\nexplanation={abuse_explanation}\ntags={abuse_tags}```")
                     embed.add_field(name=abuse_type, value=abuse_value, inline=False)
         
-        await message.channel.send("Abuse Detected:" "'" + str(flagged) + "'", embed=embed)
+        return embed
+        # await message.channel.send("Abuse Detected:" "'" + str(flagged) + "'", embed=embed)
         # return {'verdict': "Abuse Detected:" "'" + str(flagged) + "'", 'embed': embed}
 
     

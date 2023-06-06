@@ -28,6 +28,8 @@ class Ticket:
         user_id_requester  : str = "" # user_id of individual who initiated and sent ticket
         msg_user_id        : str = "" # user_id of user who sent message being reported
         message            : str = "" # message being reported
+        type               : str = "Manual" # Automated or Manual
+        bot_msg            : discord.Message = None # Message sent by bot after message has been flagged
 
 
         def __iter__(self):

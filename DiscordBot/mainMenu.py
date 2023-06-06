@@ -14,27 +14,31 @@ Button = discord.ui.Button
 def get_drop_down_options(elems : dict[str, str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description=d) for l, d in elems.items()]
 
-async def send_completionEmbed(interaction, bot, tid):
-    await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid), \
-                                           await create_BlockingHelpEmbed(bot, tid)])
-
+async def send_completionEmbed(interaction, bot, tid, embeds=None):
+    embeds  = embeds if embeds else []
     mod_channel = bot.mod_channels[bot.guilds[0].id]
-    embed = await create_completionEmbed(bot, tid)
-    embed.title = f"** Report Ticket ID: {tid} **"
-    
-    # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
-    if tickets[tid].sextortion_content == "Content includes explicit images":
-        explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
-        embed.description = explicit_warning
-        embed.color = discord.Color.red()   
+
+    if interaction:
+        await interaction.followup.send(embeds=[await create_completionEmbed(bot, tid), \
+                                                await create_BlockingHelpEmbed(bot, tid)])
+    if embeds is None:
+        mod_channel = bot.mod_channels[bot.guilds[0].id]
+        embed = await create_completionEmbed(bot, tid)
+        embed.title = f"** Report Ticket ID: {tid} **"
+        
+        # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
+        if tickets[tid].sextortion_content == "Content includes explicit images":
+                explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
+                embed.description = explicit_warning
+                embed.color = discord.Color.red()   
 
     next_step_embed = discord.Embed(title = ' **__Next Steps__**', description='### Please proceed by choosing action toward reported user.')
-    
     next_step_embed.add_field(name='Disapprove User Label', value='Dismiss the report and take no action against the user.', inline=False)
     next_step_embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
     next_step_embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
     next_step_embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
-    await mod_channel.send(embeds=[embed, next_step_embed], view=ConsequenceActionButtons(bot, tid))
+    embeds.append(next_step_embed)
+    await mod_channel.send(embeds=embeds, view=ConsequenceActionButtons(bot, tid))
 
 
 async def create_completionEmbed(bot, tid):
@@ -44,15 +48,23 @@ async def create_completionEmbed(bot, tid):
         # link = 'https://discord.com/channels/1103033282779676743/1103033287250804838/1109919564701126787'
         try:
             link = tickets[tid].message_link.split('/')
+            if tickets[tid].type == 'Manual':
+                message = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
+                tickets[tid].message = message.content
+                tickets[tid].msg_user_id = message.author
+                
+            link = tickets[tid].message_link.split('/')
             message = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
             tickets[tid].message = message.content
             tickets[tid].msg_user_id = message.author
         except:
             tickets[tid].message = 'Could not identify.'
 
+
     for key, value in tickets[tid]:
-        if key == 'status':
-              continue
+        print(key, value)
+        if key in ['status', 'type', 'bot_msg']:
+                continue
         embed.add_field(name=key, value=value)
     
     return embed
@@ -79,6 +91,7 @@ class CompletionEmbed(discord.Embed):
                 '"Thank you. We will investigate further. \
                 Please expect a response within the next 36 hours."'
         self.add_field(name='Ticket ID', value=tid)
+        self.add_field(name='Ticket Type', value=tickets[tid].type, inline=False)
         self.add_field(name='Status', value='In Progress', inline=False)
         tickets[tid].status = 'In Progress'
 
