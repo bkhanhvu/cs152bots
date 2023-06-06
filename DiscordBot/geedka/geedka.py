@@ -138,7 +138,6 @@ def button_impl(config : File, tokens : list[str], label : int, \
 
         child_labels : list[int] =  [lp.get_label()] * len(child_names) \
                 if data_collect else [lp.get_label() for _ in child_names]
-        print(child_labels)
 
         child_buttons : list[str] = [get_button_def(response_tag, n, l) for n, l \
                 in zip(child_names, child_labels)]
@@ -146,8 +145,6 @@ def button_impl(config : File, tokens : list[str], label : int, \
         import_statement : str = get_import_statement(child_labels[0]) \
                 if data_collect else ''.join(get_imports(child_labels)) 
 
-        print(child_names)
-        
         write_class_def_to_file(filename, \
         f"""
 import discord 
@@ -188,18 +185,36 @@ def get_cases(child_names : list[str], child_labels : list[int]) -> str:
                 zip(child_names, child_labels)])
 
 def select_gen(config : File, tokens : list[str], label : int) -> None:
+        
+        response_tag : str = tokens[0]
+        message_spec : str = tokens[2]
+        data_collect : bool = tokens[1] == 'd'
 
         classname, filename = class_and_filename(label)
         child_names : list[str] = get_child_names(config)
-        child_labels : list[int] = [lp.get_label() for _ in child_names]
-        
+        child_labels : list[int] = [lp.get_label()] * len(child_names) \
+                if data_collect else [lp.get_label() for _ in child_names]
+
+        child_case_handling : str = f"""
+                child = await geedka_impl_class{child_labels[0]}.create(interaction, self.ticket)
+                if (child != None):
+                        await interaction.channel.send(view=child)
+        """ \
+        if data_collect else \
+        f"""
+                match selection.values[0]:
+{get_cases(child_names, child_labels)}
+        """
+
+        imports : str = get_import_statement(child_labels[0]) \
+                if data_collect else ''.join(get_imports(child_labels)) 
         # TODO: get better ticket labeling
         
         write_class_def_to_file(filename, \
         f"""
 import discord 
 import asyncio 
-{''.join(get_imports(child_labels))} 
+{imports}
 
 def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description="Description") \\
@@ -208,7 +223,7 @@ def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-{get_embed_gen(tokens[1])}
+{get_embed_gen(message_spec)}
                 await i.channel.send(embed=impl_embed)
                 self = {classname}(ticket)
                 return self
@@ -221,11 +236,10 @@ class {classname}(discord.ui.View):
                 options=get_dropdown_options({child_names}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
-                self.ticket[\"{tokens[0]}\"] = selection.values[0]
+                self.ticket[\"{response_tag}\"] = selection.values[0]
                 await interaction.channel.send( \\
                         f\"You selected {{selection.values[0]}}\")
-                match selection.values[0]:
-{get_cases(child_names, child_labels)}
+{child_case_handling}
 
                 try:
                         if not interaction.response.is_done():
@@ -235,8 +249,10 @@ class {classname}(discord.ui.View):
                         
         """)
 
-        for l in child_labels:
-                geedka_frontend(config, l)
+        if data_collect:
+                geedka_frontend(config, child_labels[0])
+        else:
+                [geedka_frontend(config, l) for l in child_labels]
 
 def get_input_label(name : str) -> str:
         return f"""
