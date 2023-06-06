@@ -6,12 +6,8 @@ from label_provider import LabelProvider
 from dataclasses import dataclass
 
 # TYPE ALIASES
-File            : typing.TypeAlias = typing.TextIO
-Interaction     : typing.TypeAlias = discord.Interaction
-Embed           : typing.TypeAlias = discord.Embed
-Selection       : typing.TypeAlias = discord.SelectOption
+File    : typing.TypeAlias = typing.TextIO
 # END TYPE ALIASES
-
 lp = LabelProvider()
 
 def classname_from_label(label : int) -> str:
@@ -23,6 +19,28 @@ def class_and_filename(label : int) -> tuple[str, str]:
 def write_class_def_to_file(filename : str, content : str) -> None:
         with open(filename, 'w') as writer:
                 writer.write(content)
+
+def get_embed_addfield(key : str, val : str) -> str:
+        return f"""
+                impl_embed.add_field(name = \"{key}\", value = \"{val}\")
+        """
+
+def get_embed_gen(description : str) -> str:
+        embed_elements : list[str] = [elem.strip() for elem in description.split("\\")]
+        embed_specific : list[list[str]] = []
+        for elem in embed_elements:
+                inner_list : list[str] = [x for x in elem.split('^')]
+                embed_specific += [inner_list]
+                        # print(k)
+                        # print(v)
+                        # embed_specific += [[k, v]]
+
+        embed_addfields : str = '\n'.join([get_embed_addfield(l[0], l[1]) for l in embed_specific])
+        return f"""
+                impl_embed = discord.Embed()
+
+{embed_addfields}
+        """
 
 # TODO: make this not shit
 def terminal_gen(label : int) -> None:
@@ -64,7 +82,8 @@ from {child_classname} import {child_classname}
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}):
-                await i.channel.send(\"{tokens[0]}\")
+{get_embed_gen(tokens[0])}
+                await i.channel.send(embed=impl_embed)
                 child = await {child_classname}.create(i, ticket)
                 
                 return child
@@ -123,7 +142,7 @@ import asyncio
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-                await i.channel.send(\"{tokens[0]}\")
+                await i.channel.send(\"{tokens[1]}\")
                 self = {classname}(ticket)
                 return self
 
@@ -169,7 +188,7 @@ def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-                await i.channel.send(\"{tokens[0]}\")
+                await i.channel.send(\"{tokens[1]}\")
                 self = {classname}(ticket)
                 return self
 
@@ -181,6 +200,7 @@ class {classname}(discord.ui.View):
                 options=get_dropdown_options({child_names}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
+                await interaction.response.defer()
                 self.ticket[\"{tokens[0]}\"] = selection.values[0]
                 await interaction.channel.send( \\
                         f\"You selected {{selection.values[0]}}\")
