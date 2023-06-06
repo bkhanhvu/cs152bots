@@ -36,7 +36,6 @@ import asyncio
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str]):
-                await i.channel.send(\"`This Geedka moderation flow has been completed`\")
                 resulting_ticket = discord.Embed()
                 [resulting_ticket.add_field(name=key, value=val) for key, val in ticket.items()]
                 resulting_ticket.title = \"Your Report\"
@@ -174,7 +173,7 @@ class {classname}(discord.ui.View):
                 self = {classname}(ticket)
                 return self
 
-        def __init__(self):
+        def __init__(self, ticket : dict[str, str]):
                 super().__init__()
                 self.ticket = ticket
         
@@ -182,8 +181,8 @@ class {classname}(discord.ui.View):
                 options=get_dropdown_options({child_names}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
-                self.ticket[{tokens[0]}] = selection.values[0]
-                await interaction.channel.send_message( \\
+                self.ticket[\"{tokens[0]}\"] = selection.values[0]
+                await interaction.channel.send( \\
                         f\"You selected {{selection.values[0]}}\")
                 match selection.values[0]:
 {get_cases(child_names, child_labels)}
@@ -271,7 +270,7 @@ def geedka_frontend(config : File, label : int = -1):
 
 def main():
         print("Hello world")
-        config_filename : str = 'colors.geedka'
+        config_filename : str = 'colors2.geedka'
         if not os.path.isfile(config_filename):
                 raise Exception(f"{config_filename} not found!")
 
