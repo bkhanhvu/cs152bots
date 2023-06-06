@@ -31,7 +31,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 
-
+print("hello world")
 # const { EmbedBuilder } = require.('discord.js')
 # Set up logging to the console
 logger = logging.getLogger('discord')
@@ -107,9 +107,16 @@ class ModBot(commands.Bot):
             client = MongoClient(CONNECTION_STRING)
             db = client.name 
             collection = db.info 
-            collection.insert_one({'hi': 10})
+            #results = collection.find({'hash': hash})
+            results = collection.countDocuments({'hash': hash})
+            if (results == 0):
+                print("nothing found")
+            else:
+                print("there was a match")
+           
+            #collection.insert_one({'hash': hash})
             print(db)
-            #results = db.image_hashes.find({'hash': hash})
+    
 
             
         # Ignore messages from the bot 
