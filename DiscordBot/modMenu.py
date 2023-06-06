@@ -43,7 +43,136 @@ class DeletionView(discord.ui.View):
     async def NoButton(self, interaction : Interaction, button : Button):
         await interaction.response.send_message(f"Ticket {self.tid}:  ```Content will remain in chat```.")
         await interaction.followup.send(f"\nTicket {self.tid} is now marked as: Complete.")
-  
+
+class ConsequenceActionButtonsAutoBanned(discord.ui.View):
+    def __init__(self, bot, tid):
+        super().__init__()
+        self.bot = bot
+        self.tid = tid
+
+    def getUserFromTicket(self, interaction: Interaction, reporter=False):
+        guild_id = interaction.client.guilds[0].id
+        guild = interaction.client.get_guild(guild_id)
+
+        if reporter is True:
+            username = str(tickets[self.tid].user_id_requester)
+        else:
+            username = str(tickets[self.tid].msg_user_id)
+
+        usernameParts = username.split('#')
+        user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
+        return user
+
+    @discord.ui.button(label="Disapprove Label", style=discord.ButtonStyle.gray)
+    async def disapproveBtn(self, interaction: Interaction, button:Button):
+        username = str(tickets[self.tid].msg_user_id)
+        user = self.getUserFromTicket(interaction)
+        if user is not None:
+            if username not in userStatuses:
+                userStatuses.update({username : UserStatus()})
+                userStatuses[username].isBanned = False
+                message = "The moderators overruled the automated decision, and you have been unbanned."
+                await user.send(content=message, embed=SummaryEmbed(self.tid, button, description=abuser_summary_description))
+                message = f"User {username} unbanned."
+                await interaction.response.send_message(message)
+        else:
+            await interaction.response.send_message("No User Specified.")
+        
+class ConsequenceActionButtonsAutoKicked(discord.ui.View):
+    def __init__(self, bot, tid):
+        super().__init__()
+        self.bot = bot
+        self.tid = tid
+
+    async def notifyReporterCallback(self, interaction, button):
+        user = self.getUserFromTicket(interaction, reporter=True)
+        await user.send("We've finished processing your report ticket.", embed=SummaryEmbed(self.tid, button, description=reporter_summary_description))
+
+    def getUserFromTicket(self, interaction: Interaction, reporter=False):
+        guild_id = interaction.client.guilds[0].id
+        guild = interaction.client.get_guild(guild_id)
+
+        if reporter is True:
+            username = str(tickets[self.tid].user_id_requester)
+        else:
+            username = str(tickets[self.tid].msg_user_id)
+
+        usernameParts = username.split('#')
+        user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
+        return user
+
+    @discord.ui.button(label="Disapprove Label", style=discord.ButtonStyle.gray)
+    async def disapproveBtn(self, interaction: Interaction, button:Button):
+        currentStatus = tickets[self.tid].status
+        if currentStatus == 'Complete':
+            await interaction.response.send_message(f"\nTicket {self.tid} is already marked as complete.")
+        else:
+            tickets[self.tid].status = 'Complete'
+            await interaction.response.send_message(f"\nTicket {self.tid} dismissed, marked as: Complete.")
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
+    
+    @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
+    async def callbackBtn(self, interaction: Interaction, button:Button):
+        username = str(tickets[self.tid].msg_user_id)
+        user = self.getUserFromTicket(interaction)
+        if user is not None:
+            alreadyComplete = (tickets[self.tid].status == 'Complete')
+            if username not in userStatuses:
+                userStatuses.update({username : UserStatus()})
+            elif userStatuses[username].isBanned == True:
+                # Relevant in case multiple reports come in about the same user
+                tickets[self.tid].status = 'Complete'
+                message = f"User {username} is already banned."
+                if not alreadyComplete:
+                    message += f"\nTicket {self.tid} is marked as: Complete."
+                await interaction.response.send_message(message)
+                return
+            # Instead of actually banning the user, log that they've been banned...
+            userStatuses[username].isBanned = True
+            # ...and send them a message
+            message = "This message being sent to you indicates that you've been banned."
+            tickets[self.tid].status = 'Complete'
+            await user.send(content=message, embed=SummaryEmbed(self.tid, button, description=abuser_summary_description))
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
+            message = f"Banned {username} from server."
+            if not alreadyComplete:
+                message += f"\nTicket {self.tid} is marked as: Complete."
+                await interaction.response.send_message('```Would you like to delete the content of the message?```', view=DeletionView(self.bot, self.tid))
+        else:
+            await interaction.response.send_message("No User Specified.")
+        
+    @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
+    async def callback3Btn(self, interaction: Interaction, button:Button):
+        username = str(tickets[self.tid].msg_user_id)
+        user = self.getUserFromTicket(interaction)
+
+        alreadyComplete = (tickets[self.tid].status == 'Complete')
+
+        if user is not None:
+            if username not in userStatuses:
+                userStatuses.update({username : UserStatus()})
+
+            strikeCount = userStatuses[username].strikeCounter + 1
+
+            # TODO: write real message
+            message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
+            tickets[self.tid].status = 'Complete'
+            await user.send(content=message, embed=SummaryEmbed(self.tid, button, abuser_summary_description))
+            if tickets[self.tid].type == 'Manual':
+                await self.notifyReporterCallback(interaction, button)
+
+            userStatuses[username].strikeCounter = strikeCount
+            message = f"Warning message sent to {username}."
+            await interaction.response.send_message(message)
+            if not alreadyComplete:
+                await interaction.followup.send('```Would you like to delete the content of the message?```', view=DeletionView(self.bot, self.tid))
+            return
+
+        await interaction.response.send_message("\n",
+                                                view=None)
+
 class ConsequenceActionButtons(discord.ui.View):
     def __init__(self, bot, tid):
         super().__init__()
@@ -109,8 +238,7 @@ class ConsequenceActionButtons(discord.ui.View):
         else:
             await interaction.response.send_message("No User Specified.")
     
-    @discord.ui.button(label="Kick User", style=discord.ButtonStyle.red)
-    # TODO: Kick user from channel -- don't need to actually 
+    @discord.ui.button(label="Kick User", style=discord.ButtonStyle.red) 
     async def callback2Btn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
         user = self.getUserFromTicket(interaction)

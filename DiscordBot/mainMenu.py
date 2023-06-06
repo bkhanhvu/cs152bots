@@ -3,7 +3,7 @@ import discord
 from myModal import MyModal
 import uuid
 import time
-from modMenu import ConsequenceActionButtons
+from modMenu import ConsequenceActionButtons, ConsequenceActionButtonsAutoBanned, ConsequenceActionButtonsAutoKicked
 from ticket import Ticket, tickets, Interaction, Button
 
 # =========== TYPE ALIASES ==============
@@ -14,7 +14,7 @@ Button = discord.ui.Button
 def get_drop_down_options(elems : dict[str, str]) -> list[discord.SelectOption]:
         return [discord.SelectOption(label=l, description=d) for l, d in elems.items()]
 
-async def send_completionEmbed(interaction, bot, tid, embeds=None):
+async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=False, autoKicked=False):
     embeds  = embeds if embeds else []
     mod_channel = bot.mod_channels[bot.guilds[0].id]
 
@@ -30,15 +30,30 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None):
         if tickets[tid].sextortion_content == "Content includes explicit images":
                 explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
                 embed.description = explicit_warning
-                embed.color = discord.Color.red()   
+                embed.color = discord.Color.red()
 
-    next_step_embed = discord.Embed(title = ' **__Next Steps__**', description='### Please proceed by choosing action toward reported user.')
-    next_step_embed.add_field(name='Disapprove User Label', value='Dismiss the report and take no action against the user.', inline=False)
-    next_step_embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
-    next_step_embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
-    next_step_embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
+    nextMessageDescript = '### Please proceed by choosing action toward reported user.'
+    if autoBanned == True:
+        nextMessageDescript += " (Note that this user was automatically banned for this message.)"
+    elif autoKicked == True:
+        nextMessageDescript += " (Note that this user was automatically kicked for this message.)"
+    next_step_embed = discord.Embed(title = ' **__Next Steps__**', description=nextMessageDescript)
+    disapproveLabelText = 'Dismiss the report and take no action against the user.'
+    if autoBanned == True:
+          disapproveLabelText += " The user will be unbanned."
+    next_step_embed.add_field(name='Disapprove User Label', value=disapproveLabelText, inline=False)
+    if autoBanned == False:
+        next_step_embed.add_field(name='Ban User', value='User and associated IP will be permanently removed from guild.', inline=False)
+        if autoKicked == False:
+                next_step_embed.add_field(name='Kick User', value='User will be removed from guild/channel and can only rejoin by invite.', inline=False)
+        next_step_embed.add_field(name='Warn User', value='User will be warned of their behavior. If this is a re-offense, the user will be kicked.', inline=False)
     embeds.append(next_step_embed)
-    await mod_channel.send(embeds=embeds, view=ConsequenceActionButtons(bot, tid))
+    if autoBanned:
+        await mod_channel.send(embeds=embeds, view=ConsequenceActionButtonsAutoBanned(bot, tid))
+    elif autoKicked:
+        await mod_channel.send(embeds=embeds, view=ConsequenceActionButtonsAutoKicked(bot, tid))  
+    else:
+        await mod_channel.send(embeds=embeds, view=ConsequenceActionButtons(bot, tid))
 
 
 async def create_completionEmbed(bot, tid):

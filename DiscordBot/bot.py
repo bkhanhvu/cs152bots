@@ -241,12 +241,16 @@ class ModBot(commands.Bot):
         #chatgpt sextortion check
         chatgpt_response = int(self.openai_completion_eval_text(message.content))
         responses['chatgpt'] = chatgpt_response
+        autoBanned = False
+        autoKicked = False
         if chatgpt_response > 19 and chatgpt_response != 101:
             flags['chatgpt_flagged'] = True
             if chatgpt_response > 80:
                 await message.author.send('*** ALERT: __You have been banned from the server.__ ***')
+                autoBanned = True
             else:
                 await message.author.send('*** ALERT: __You have been kicked from the server.__ ***')
+                autoKicked = True
             
             embeds.append(await self.code_format(chatgpt_response, message, tisane=False, openAiChatCompletion=True, openAiModerator=False))
         
@@ -275,9 +279,9 @@ class ModBot(commands.Bot):
         #     await self.code_format(response, message, tisane=False, openAiChatCompletion=False)
         # print(response_formatted)
         # await message.channel.send(response_formatted['verdict'], embed=response_formatted['embed'])
-            await self.process_automatic_ticket(message, bot_message)
+            await self.process_automatic_ticket(message, bot_message, autoBanned=autoBanned, autoKicked=autoKicked)
     
-    async def process_automatic_ticket(self, message:discord.Message, bot_message, image=False, embeds=None):
+    async def process_automatic_ticket(self, message:discord.Message, bot_message, image=False, embeds=None, autoBanned=False, autoKicked=False):
         embeds = embeds if embeds else []
         tid = uuid.uuid4()
         ticket = Ticket()
@@ -300,7 +304,7 @@ class ModBot(commands.Bot):
         
             # embed.add_field(name=key, value=value)
         embeds.append(embed)
-        await mainMenu.send_completionEmbed(None, self, tid, embeds=embeds)
+        await mainMenu.send_completionEmbed(None, self, tid, embeds=embeds, autoBanned=autoBanned, autoKicked=autoKicked)
         # await mod_channel.send('Message has been flagged and is awaiting review.', embed=embed, )
         
         
