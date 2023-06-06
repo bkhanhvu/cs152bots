@@ -108,12 +108,15 @@ def get_button_def(tag : str, text : str, label : int) -> str:
         @discord.ui.button(label=\"{text}\", style=discord.ButtonStyle.red)
         async def callback{label}(self, interaction : discord.Interaction, button):
                 self.ticket[\"{tag}\"] = \"{text}\"
-                await interaction.response.defer()
                 await interaction.channel.send(\"You selected {text}\")
                 child = await {classname_from_label(label)}.create(interaction, self.ticket)
 
                 if child != None:
                         await interaction.channel.send(view = child)
+                try:
+                        await interaction.response.defer()
+                except:
+                        return
         """
 
 def switch_gen(config : File, tokens : list[str], label : int) -> None:
@@ -139,7 +142,8 @@ import asyncio
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-                await i.channel.send(\"{tokens[1]}\")
+{get_embed_gen(tokens[1])}
+                await i.channel.send(embed=impl_embed)
                 self = {classname}(ticket)
                 return self
 
@@ -185,7 +189,8 @@ def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
-                await i.channel.send(\"{tokens[1]}\")
+{get_embed_gen(tokens[1])}
+                await i.channel.send(embed=impl_embed)
                 self = {classname}(ticket)
                 return self
 
@@ -197,12 +202,16 @@ class {classname}(discord.ui.View):
                 options=get_dropdown_options({child_names}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
-                await interaction.response.defer()
                 self.ticket[\"{tokens[0]}\"] = selection.values[0]
                 await interaction.channel.send( \\
                         f\"You selected {{selection.values[0]}}\")
                 match selection.values[0]:
 {get_cases(child_names, child_labels)}
+
+                try:
+                        await interaction.response.defer()
+                except:
+                        return
                         
         """)
 
@@ -287,7 +296,7 @@ def geedka_frontend(config : File, label : int = -1):
 
 def main():
         print("Hello world")
-        config_filename : str = 'colors2.geedka'
+        config_filename : str = 'config.geedka'
         if not os.path.isfile(config_filename):
                 raise Exception(f"{config_filename} not found!")
 
