@@ -1,0 +1,6 @@
+# Ignore generated files
+geedka_impl*
+
+# Ignore Vim swap files
+*.swp
+*.swo
