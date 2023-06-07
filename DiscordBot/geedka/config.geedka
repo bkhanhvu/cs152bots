@@ -1,14 +1,14 @@
 w|initial_interaction|d|Main Menu Report\Report^Click this to report\Help^Click this to receive more information\Talk to Moderator^Click this to request a private conversation with a moderator
         Report|Talk to Mod|Help
-s|content_type|b|Please select the reason for reporting this content.
+s|reason|b|Please select the reason for reporting this content.
         Harassment\User is repetitively making unwanted contact and sending threatening or unwanted sexual messages|Spam\Message promotes suspicious or fraudulent activity|Offensive content\Displays disturbing content|Imminent danger\Threatening self-harm or harm to others|Other\Unlisted abusive behavior
-        i|Provide content and reason
-                content|reason
+        i|Provide content, reason, and link to content
+                content|reasoning|message_link
                 s|harassment_type|b|What kind of harassment are you experiencing?
                         Sextortion\The user is threatening to spread or has spread sexually explicit images|Hate speech\Targeted attack toward a group or individual|Encouraging self-harm\Prompting other user to harm themselves|Threats\User is threatening violence or doxxing|Other\Abuse type not listed
-                        w|sextortion_type|d|What kind of sextortion are you experiencing?
+                        w|sextortion_content|d|What kind of sextortion are you experiencing?
                                 Content includes explicit images|Content is threat to spread explicit images
-                        y|know_harasser|d|Do you personally know the user responsible?
+                        y|know_responsible|d|Do you personally know the user responsible?
                         w|image_owner|b|Are these images of you or someone else?
                                 Me|Someone else
                                 y|shared_explicit|b|Have you shared explicit images with this user?
@@ -28,7 +28,7 @@ s|content_type|b|Please select the reason for reporting this content.
                                 y|know_other|b|Do you know this other person?
                                         i|Enter username
                                                 username
-                                        y|posted_explicit|b|Did the user post an explicit image?
+                                        y|post_explicit|b|Did the user post an explicit image?
                                                 m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spared. https://takeitdown.ncmec.org
                                                 y|block|b|Would you like to block this user?
                                                         m|Done^[Username] has been blocked.
@@ -38,7 +38,7 @@ s|content_type|b|Please select the reason for reporting this content.
                                                         m|Done^[Username] has been blocked.
                                                                 t
                                                         t
-                                        y|posted_explicit|b|Did the user post an explicit image?
+                                        y|post_explicit|b|Did the user post an explicit image?
                                                 m|Takedown^Please click on the link below. These instructions will help get your image removed and stop their spread. Upload any explicit images that you believe the user may have or has spared. https://takeitdown.ncmec.org
                                                 y|block|b|Would you like to block this user?
                                                         m|Done^[Username] has been blocked.
@@ -57,14 +57,14 @@ s|content_type|b|Please select the reason for reporting this content.
                         y|repeated_abuse|d|Is this the first time you see abusive content from this user?
                                 t
         i|Provide content and reason
-                content|reason
+                content|reason|message_link
                 t
         i|Provide content and reason
-                content|reason
+                content|reason|message_link
                 t
         i|Provide content and reason
-                content|reason
+                content|reason|message_link
                 t
         i|Provide content and reason
-                content|reason
+                content|reason|message_link
                 t

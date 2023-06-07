@@ -71,7 +71,7 @@ class ConsequenceActionButtonsAutoBanned(discord.ui.View):
     @discord.ui.button(label="Disapprove Label", style=discord.ButtonStyle.gray)
     async def disapproveBtn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
-        user = self.getUserFromTicket(interaction)
+        user = await self.getUserFromTicket(interaction)
         if user is not None:
             if username not in userStatuses:
                 userStatuses.update({username : UserStatus()})
@@ -215,17 +215,22 @@ class ConsequenceActionButtons(discord.ui.View):
         self.tid = tid
 
     async def notifyReporterCallback(self, interaction, button):
-        user = self.getUserFromTicket(interaction, reporter=True)
+        user = await self.getUserFromTicket(interaction, reporter=True)
         await user.send("We've finished processing your report ticket.", embed=SummaryEmbed(self.tid, button, description=reporter_summary_description))
 
-    def getUserFromTicket(self, interaction: Interaction, reporter=False):
+    async def getUserFromTicket(self, interaction: Interaction, reporter=False):
         guild_id = interaction.client.guilds[0].id
         guild = interaction.client.get_guild(guild_id)
 
         if reporter is True:
             username = str(tickets[self.tid].user_id_requester)
         else:
-            username = str(tickets[self.tid].msg_user_id)
+            if tickets[self.tid].msg_user_id:
+                username = str(tickets[self.tid].msg_user_id)
+            else:
+                link = tickets[self.tid].message_link.split('/')
+                message = await self.bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
+                username = str(message.author)
 
         usernameParts = username.split('#')
         user = discord.utils.get(guild.members, name=usernameParts[0], discriminator=usernameParts[1])
@@ -266,7 +271,7 @@ class ConsequenceActionButtons(discord.ui.View):
         #     collection = db.info 
         #     collection.insert_one({'hash': str(hash)})
 
-        user = self.getUserFromTicket(interaction)
+        user = await self.getUserFromTicket(interaction)
         if user is not None:
             alreadyComplete = (tickets[self.tid].status == 'Complete')
             if username not in userStatuses:
@@ -307,7 +312,7 @@ class ConsequenceActionButtons(discord.ui.View):
     @discord.ui.button(label="Kick User", style=discord.ButtonStyle.red) 
     async def callback2Btn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
-        user = self.getUserFromTicket(interaction)
+        user = await self.getUserFromTicket(interaction)
 
         alreadyComplete = (tickets[self.tid].status == 'Complete')
         message = "[ATTENTION] You have been kicked from the channel for an inappropriate action/behavior."
@@ -336,7 +341,7 @@ class ConsequenceActionButtons(discord.ui.View):
     @discord.ui.button(label="Warn User", style=discord.ButtonStyle.red)
     async def callback3Btn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
-        user = self.getUserFromTicket(interaction)
+        user = await self.getUserFromTicket(interaction)
 
         alreadyComplete = (tickets[self.tid].status == 'Complete')
 

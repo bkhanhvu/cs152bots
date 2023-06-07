@@ -13,8 +13,8 @@ import re
 import requests
 from report import Report
 import pdb
-import mainMenu
-from myModal import MyModal
+# import mainMenu
+# from myModal import MyModal
 from reportButton import ReportButton
 import os
 import openai
@@ -247,7 +247,11 @@ class ModBot(commands.Bot):
             print("Tripped the message detector!")
             # if geedka_bot is discord.ui.View:
             await message.channel.send("`Welcome to Geedka`")
-            geedka_view = await geedka_impl_class0.create(message, self.mod_channels[self.guilds[0].id])
+            geedka_view = await geedka_impl_class0.create(message, \
+                self.mod_channels[self.guilds[0].id], \
+                self, \
+                {"user_id_requester" : f"{message.author.name}#{message.author.discriminator}"})
+            print(message.author.name)
             await message.channel.send(view=geedka_view)
             return
 
