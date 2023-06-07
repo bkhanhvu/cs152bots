@@ -33,7 +33,7 @@ def get_embed_gen(description : str) -> str:
         embed_elements : list[str] = [elem.strip() for elem in description.split("\\")]
         if len(embed_elements) == 1 and embed_elements[0].find('^') == -1:
                 return f"""
-                impl_embed = discord.Embed(description=\"{embed_elements[0]}\")
+                impl_embed = discord.Embed(color=discord.Color.dark_green(), description=\"{embed_elements[0]}\")
                 """
         embed_specific : list[list[str]] = []
         for elem in embed_elements:
@@ -42,7 +42,7 @@ def get_embed_gen(description : str) -> str:
 
         embed_addfields : str = '\n'.join([get_embed_addfield(l) for l in embed_specific])
         return f"""
-                impl_embed = discord.Embed()
+                impl_embed = discord.Embed(color=discord.Color.dark_green())
 
 {embed_addfields}
         """
@@ -58,14 +58,16 @@ import asyncio
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, i : discord.Interaction, ticket : dict[str, str]):
-                resulting_ticket = discord.Embed()
+        async def create(cls, i : discord.Interaction, mod_channel, ticket : dict[str, str]):
+                resulting_ticket = discord.Embed(color=discord.Color.dark_green())
                 [resulting_ticket.add_field(name=key, value=val) for key, val in ticket.items()]
                 resulting_ticket.title = \"Your Report\"
                 resulting_ticket.set_author(name=\"Geedka\")
                 # This isn't necessary but it makes me happy.
                 resulting_ticket.set_thumbnail(url=\"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Adansonia_grandidieri04.jpg/1200px-Adansonia_grandidieri04.jpg\")
                 await i.channel.send(embed = resulting_ticket)
+                resulting_ticket.title = \"Summary of Report Request\"
+                await mod_channel.send(embed = resulting_ticket)
                 return None
 
         def __init__(self):
@@ -86,10 +88,10 @@ from {child_classname} import {child_classname}
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}):
+        async def create(cls, i : discord.Interaction, mod_channel, ticket : dict[str, str] = {{}}):
 {get_embed_gen(tokens[0])}
                 await i.channel.send(embed=impl_embed)
-                child = await {child_classname}.create(i, ticket)
+                child = await {child_classname}.create(i, mod_channel, ticket)
                 
                 return child
 
@@ -117,7 +119,7 @@ def get_button_def(tag : str, text : str, label : int) -> str:
         async def callback{text.replace(" ", "_")}{label}(self, interaction : discord.Interaction, button):
                 self.ticket[\"{tag}\"] = \"{text}\"
                 await interaction.channel.send(\"You selected {text}\")
-                child = await {classname_from_label(label)}.create(interaction, self.ticket)
+                child = await {classname_from_label(label)}.create(interaction, self.mod_channel, self.ticket)
 
                 if child != None:
                         await interaction.channel.send(view = child)
@@ -161,15 +163,18 @@ import asyncio
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
+        async def create(cls, i, mod_channel, ticket : dict[str, str] = {{}}): 
 {get_embed_gen(message_spec)}
+
                 await i.channel.send(embed=impl_embed)
-                self = {classname}(ticket)
+
+                self = {classname}(mod_channel, ticket)
                 return self
 
-        def __init__(self, ticket):
+        def __init__(self, mod_channel, ticket):
                 super().__init__()
                 self.ticket = ticket
+                self.mod_channel = mod_channel
 
 {''.join(child_buttons)} 
 """)
@@ -183,7 +188,7 @@ class {classname}(discord.ui.View):
 def get_case(name : str, label : int) -> str:
         return f"""
                         case \"{name}\":
-                                child = await geedka_impl_class{label}.create(interaction, self.ticket)
+                                child = await geedka_impl_class{label}.create(interaction, self.mod_channel, self.ticket)
                                 if (child != None):
                                         await interaction.channel.send(view=child)
         """
@@ -204,7 +209,7 @@ def select_gen(config : File, tokens : list[str], label : int) -> None:
                 if data_collect else [lp.get_label() for _ in child_names]
 
         child_case_handling : str = f"""
-                child = await geedka_impl_class{child_labels[0]}.create(interaction, self.ticket)
+                child = await geedka_impl_class{child_labels[0]}.create(interaction, self.mod_channel, self.ticket)
                 if (child != None):
                         await interaction.channel.send(view=child)
         """ \
@@ -230,23 +235,25 @@ def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, i : discord.Interaction, ticket : dict[str, str] = {{}}): 
+        async def create(cls, i, mod_channel, ticket : dict[str, str] = {{}}): 
 {get_embed_gen(message_spec)}
+
                 await i.channel.send(embed=impl_embed)
-                self = {classname}(ticket)
+
+                self = {classname}(mod_channel, ticket)
                 return self
 
-        def __init__(self, ticket : dict[str, str]):
+        def __init__(self, mod_channel, ticket : dict[str, str]):
                 super().__init__()
                 self.ticket = ticket
+                self.mod_channel = mod_channel
         
         @discord.ui.select(placeholder=\"Select one\", \\
                 options=get_dropdown_options({child_names}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
                 self.ticket[\"{response_tag}\"] = selection.values[0]
-                await interaction.channel.send( \\
-                        f\"You selected {{selection.values[0]}}\")
+                await interaction.channel.send(f\"You selected {{selection.values[0]}}\")
 {child_case_handling}
 
                 try:
@@ -290,22 +297,24 @@ import asyncio
 from {child_classname} import {child_classname}
 
 class ModalImpl(discord.ui.Modal):
-        def __init__(self, ticket : dict[str, str]):
+        def __init__(self, mod_channel, ticket : dict[str, str]):
                 super().__init__(title = \"{tokens[0]}\")
                 self.ticket = ticket
+                self.mod_channel = mod_channel
+
 {get_input_labels(options)}
 
         async def on_submit(self, interaction : discord.Interaction):
                 {get_modal_ticket_saves(options)}
-                child = await {child_classname}.create(interaction, self.ticket)
+                child = await {child_classname}.create(interaction, self.mod_channel, self.ticket)
                 if child != None:
                         await interaction.channel.send(view = child)
                 self.stop()
                 
 class {classname}(discord.ui.View):
         @classmethod
-        async def create(cls, i : discord.Interaction, ticket : dict[str, str]): 
-                child = ModalImpl(ticket)
+        async def create(cls, i : discord.Interaction, mod_channel, ticket : dict[str, str]): 
+                child = ModalImpl(mod_channel, ticket)
                 await i.response.send_modal(child)
                 await child.wait()
                 return None
