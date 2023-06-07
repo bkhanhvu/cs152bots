@@ -80,18 +80,36 @@ Note that modals cannot be the first node in a Geedka moderation flow.
 ### Terminals
 `t`
 
+The actual effects of a terminal are manually programmed,
+but for our purposes, you can assume they are given.
+
 ### Embed descriptions
-Embeds must be separated in two ways:
+I have intentionally provided as much flexibility as possible in embed specification,
+so messages to users are flexible.
+
+#### The simplest possible embed
+`The quick brown fox jumps over the lazy dog`
+
+No extra work and a pretty embed is shown with your message.
+
+#### More complex embeds
+
+Embeds may be separated in two ways:
 
 First, the top-level separation, delimited by the `\` character.
 
 `[field]\[field]\` and so on
 
-Second, within each field, the title and value of a field must be split by the `^` character.
+Second, within each field, the name and value of a field must be split by the `^` character.
 
 Therefore, for an embed with two fields, the specification would look as follows:
 
 `Coincidence?^I do not think so\Mystery?^Maybe\Hotel?^Trivago.`
+
+#### Titles
+
+If a field is provided but is not split by `^` characters,
+it is assumed to be a title. I have not checked to see what happens if you try to put multiple titles, but it's likely best if you don't.
 
 ### Data collect specs
 There are two variants for data collect specs:
