@@ -30,7 +30,7 @@ class Ticket:
         message            : str = "" # message being reported
         type               : str = "Manual" # Automated or Manual
         bot_msg            : discord.Message = None # Message sent by bot after message has been flagged
-
+        hash_attachment    : str = "" # contain attachments?
 
         def __iter__(self):
                 return iter([(f.name, getattr(self, f.name)) \

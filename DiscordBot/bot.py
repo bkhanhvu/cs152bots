@@ -47,6 +47,33 @@ with open(token_path) as f:
     tokens = json.load(f)
     discord_token = tokens['discord']
 
+def check_image_hash(message, add=False):
+    
+    attach = message.attachments[0].url
+    image = requests.get(attach)
+    image_prep = image.content
+    image_content = Image.open(io.BytesIO(image_prep))
+    hash = imagehash.average_hash(image_content)
+    CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
+    client = MongoClient(CONNECTION_STRING)
+    db = client['name']
+    collection = db['info'] 
+    if add:
+        collection.insert_one({'hash': str(hash)})
+        print("this image is now added into the abuse database.")
+        return
+        
+    size = collection.count_documents({'hash': str(hash)})
+    if size != 0:
+        # await message.channel.purge(limit = 1)
+        return True, str(hash)
+        # print('we should delete this message')
+        # print(size)
+    else:
+        print("this image is not in the abuse database.")
+        collection.insert_one({'hash': str(hash)})
+        return False, str(hash)
+        
 class ModBot(commands.Bot):
     def __init__(self): 
         intents = discord.Intents.default()
@@ -104,24 +131,6 @@ class ModBot(commands.Bot):
 
            
         # Need to check whether message contains an image and compare to anything stored in hash database - Emily
-        if message.attachments:
-            print('An image was sent')
-            attach = message.attachments[0].url
-            image = requests.get(attach)
-            image_prep = image.content
-            image_content = Image.open(io.BytesIO(image_prep))
-            hash = imagehash.average_hash(image_content)
-            CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
-            client = MongoClient(CONNECTION_STRING)
-            db = client['name']
-            collection = db['info'] 
-            size = collection.count_documents({'hash': str(hash)})
-            if size != 0:
-                await message.channel.purge(limit = 1)
-                print('we should delete this message')
-                print(size)
-            else:
-                print("this image is fine")
 
         # Ignore messages from the bot 
         if message.content.startswith('.'):
@@ -178,6 +187,11 @@ class ModBot(commands.Bot):
             return
 
         if message.attachments:
+            in_hash, hash = check_image_hash(message)
+            if in_hash:
+                await message.reply("```This image has previously been flagged for abuse and will now be removed.```")
+                await message.delete()
+                return
             url = message.attachments[0].url
             print(f"url={url}")
             embed = discord.Embed(title = ' __Image Abuse Detection__', description='*### Reporting image labels and abuse detection.*')
@@ -206,7 +220,7 @@ class ModBot(commands.Bot):
             if not flagged:
                 embed.color = discord.Color.green()
             else:
-                file_spoiler = f"||{url}||"
+                # file_spoiler = f"||{url}||"
                 time.sleep(1)
                 message_str = "*This message has been flagged for abused and has been removed.* \n"
                 await message.reply(message_str)
@@ -219,8 +233,8 @@ class ModBot(commands.Bot):
                 embed.add_field(name='Labels', value=label_str)
                 embed.add_field(name='Safe Search', value=safe_search_str)
                 embed.add_field(name='Image URL', value=url, inline=False)
-            
-                await self.process_automatic_ticket(message, None, True, [embed])
+
+                await self.process_automatic_ticket(message, None, True, [embed], hash=hash)
                 
             return
                 # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
@@ -310,7 +324,7 @@ class ModBot(commands.Bot):
         # await message.channel.send(response_formatted['verdict'], embed=response_formatted['embed'])
             await self.process_automatic_ticket(message, bot_message, autoBanned=autoBanned, autoKicked=autoKicked)
     
-    async def process_automatic_ticket(self, message:discord.Message, bot_message, image=False, embeds=None, autoBanned=False, autoKicked=False):
+    async def process_automatic_ticket(self, message:discord.Message, bot_message, image=False, embeds=None, autoBanned=False, autoKicked=False, hash=False):
         embeds = embeds if embeds else []
         tid = uuid.uuid4()
         ticket = Ticket()
@@ -320,6 +334,8 @@ class ModBot(commands.Bot):
         ticket.status = 'Pending'
         ticket.type = 'Automated'
         ticket.bot_msg = bot_message
+        if message.attachments:
+            ticket.hash_attachment = hash
         
         embed=await mainMenu.create_completionEmbed(self, tid)
         embed.color = discord.Color.red()
@@ -335,7 +351,6 @@ class ModBot(commands.Bot):
         embeds.append(embed)
         await mainMenu.send_completionEmbed(None, self, tid, embeds=embeds, autoBanned=autoBanned, autoKicked=autoKicked)
         # await mod_channel.send('Message has been flagged and is awaiting review.', embed=embed, )
-        
         
         
     def process_text_tisane(self, message):
