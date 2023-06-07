@@ -105,17 +105,13 @@ class ModBot(commands.Bot):
             hash = imagehash.average_hash(image_content)
             CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
             client = MongoClient(CONNECTION_STRING)
-            db = client.name 
-            collection = db.info 
-            #results = collection.find({'hash': hash})
-            results = collection.countDocuments({'hash': hash})
-            if (results == 0):
-                print("nothing found")
-            else:
-                print("there was a match")
-           
-            #collection.insert_one({'hash': hash})
-            print(db)
+            db = client['name']
+            collection = db['info'] 
+            size = collection.count_documents({'hash': str(hash)})
+            if size != 0:
+                print('we should delete this message')
+                print(size)
+        
     
 
             
