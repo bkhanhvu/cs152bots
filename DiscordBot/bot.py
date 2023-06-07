@@ -48,7 +48,6 @@ with open(token_path) as f:
     discord_token = tokens['discord']
 
 def check_image_hash(message, add=False):
-    
     attach = message.attachments[0].url
     image = requests.get(attach)
     image_prep = image.content
@@ -71,7 +70,7 @@ def check_image_hash(message, add=False):
         # print(size)
     else:
         print("this image is not in the abuse database.")
-        collection.insert_one({'hash': str(hash)})
+        # collection.insert_one({'hash': str(hash)})
         return False, str(hash)
         
 class ModBot(commands.Bot):
