@@ -1,9 +1,11 @@
+w|initial_interaction|d|Main Menu Report\Report^Click this to report\Help^Click this to receive more information\Talk to Moderator^Click this to request a private conversation with a moderator
+        Report|Talk to Mod|Help
 s|content_type|b|Please select the reason for reporting this content.
-        Harassment|Spam|Offensive content|Imminent danger|Other
+        Harassment\User is repetitively making unwanted contact and sending threatening or unwanted sexual messages|Spam\Message promotes suspicious or fraudulent activity|Offensive content\Displays disturbing content|Imminent danger\Threatening self-harm or harm to others|Other\Unlisted abusive behavior
         i|Provide content and reason
                 content|reason
                 s|harassment_type|b|What kind of harassment are you experiencing?
-                        Sextortion|Hate speech|Encouraging self-harm|Threats|Other
+                        Sextortion\The user is threatening to spread or has spread sexually explicit images|Hate speech\Targeted attack toward a group or individual|Encouraging self-harm\Prompting other user to harm themselves|Threats\User is threatening violence or doxxing|Other\Abuse type not listed
                         w|sextortion_type|d|What kind of sextortion are you experiencing?
                                 Content includes explicit images|Content is threat to spread explicit images
                         y|know_harasser|d|Do you personally know the user responsible?

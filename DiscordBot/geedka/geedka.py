@@ -23,7 +23,7 @@ def write_class_def_to_file(filename : str, content : str) -> None:
 def get_embed_addfield(elems : list[str]) -> str:
         if len(elems) == 1:
                 return f"""
-                impl_embed.add_title({elems[0]})
+                impl_embed.title = \"{elems[0]}\"
                 """
         return f"""
                 impl_embed.add_field(name = \"{elems[0]}\", value = \"{elems[1]}\")
@@ -204,7 +204,9 @@ def select_gen(config : File, tokens : list[str], label : int) -> None:
         data_collect : bool = tokens[1] == 'd'
 
         classname, filename = class_and_filename(label)
-        child_names : list[str] = get_child_names(config)
+        raw_child_names : list[str] = get_child_names(config)
+        child_splits : list[list[str]] = [n.split("\\") for n in raw_child_names]
+        child_names : list[str] = [l[0] for l in child_splits]
         child_labels : list[int] = [lp.get_label()] * len(child_names) \
                 if data_collect else [lp.get_label() for _ in child_names]
 
@@ -230,7 +232,8 @@ import asyncio
 {imports}
 
 def get_dropdown_options(elems : list[str]) -> list[discord.SelectOption]:
-        return [discord.SelectOption(label=l, description="Description") \\
+        return [discord.SelectOption(label=l[0], description=l[1]) \\
+                if len(l) == 2 else discord.SelectOption(label=l[0]) \\
                 for l in elems]
 
 class {classname}(discord.ui.View):
@@ -249,7 +252,7 @@ class {classname}(discord.ui.View):
                 self.mod_channel = mod_channel
         
         @discord.ui.select(placeholder=\"Select one\", \\
-                options=get_dropdown_options({child_names}))
+                options=get_dropdown_options({child_splits}))
         async def select_callback(self, interaction : discord.Interaction,
                 selection : discord.ui.Select):
                 self.ticket[\"{response_tag}\"] = selection.values[0]
