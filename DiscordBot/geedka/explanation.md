@@ -55,6 +55,19 @@ The "tag" of a question is the name its entry in the ticket will have.
 `               [node specification for child generated at option1] `
 and so on
 
+#### A note on options
+
+The option names for a dropdown can be of two forms.
+The simpler form is just a list of `|`-delimited words or phrases.
+This will generate a dropdown with these words.
+One can also provide a description for some or all of the options,
+by following the label with a `\` and then providing the description.
+
+Some examples:
+* Just labels: `Huey|Dewey|Louie`
+* Labels with descriptions: `Huey\Wears red|Dewey\Wears blue|Louie\Wears green`
+* Mixed, some with descriptions and some without: `Mickey Mouse|Donald Duck|Barbossa\Technically a Disney character because Disney owns Pirates of the Caribbean`
+
 ### Switches
 `w|[tag]|[data collect spec]|[switch description]`
 
@@ -151,7 +164,7 @@ We would represent this in Geedka as follows:
 
 ```
 m|      Let's play a guessing game
-w|      What is my favorite color?
+w|fav|b|What is my favorite color?
         Red | Green | Blue
         m|Wrong!
                 t
