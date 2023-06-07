@@ -24,6 +24,11 @@ from ticket import Ticket, tickets, Interaction, Button
 from apikeys import TISANE_KEY, OPENAI_KEY
 # from apikeys import OPENAI_ORGANIZATION
 from googleapi_detection import detect_label_safe_search_uri 
+import imagehash
+import io
+import pymongo
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 # const { EmbedBuilder } = require.('discord.js')
 # Set up logging to the console
@@ -96,6 +101,27 @@ class ModBot(commands.Bot):
         # if message.attachments: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
         #     attach = message.attachments[0]
         #     hash = imagehash.average_hash(Image.open(attach.fp))
+
+           
+        # Need to check whether message contains an image and compare to anything stored in hash database - Emily
+        if message.attachments:
+            print('An image was sent')
+            attach = message.attachments[0].url
+            image = requests.get(attach)
+            image_prep = image.content
+            image_content = Image.open(io.BytesIO(image_prep))
+            hash = imagehash.average_hash(image_content)
+            CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
+            client = MongoClient(CONNECTION_STRING)
+            db = client['name']
+            collection = db['info'] 
+            size = collection.count_documents({'hash': str(hash)})
+            if size != 0:
+                await message.channel.purge(limit = 1)
+                print('we should delete this message')
+                print(size)
+            else:
+                print("this image is fine")
 
         # Ignore messages from the bot 
         if message.content.startswith('.'):

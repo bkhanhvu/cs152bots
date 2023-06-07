@@ -1,6 +1,11 @@
 import discord
 from ticket import Ticket, tickets
 from userStatus import UserStatus, userStatuses
+import imagehash
+import requests
+from PIL import Image
+import io
+from pymongo.mongo_client import MongoClient
 # from bot import ModBot
 
 blacklist = set()
@@ -115,6 +120,27 @@ class ConsequenceActionButtonsAutoKicked(discord.ui.View):
     @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
     async def callbackBtn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
+        link = tickets[self.tid].message_link #accessing message link
+
+        parts = link.split("/")
+        if len(parts) >= 7:
+            channel_id = int(parts[-2])
+            message_id = int(parts[-1])
+
+            channel = interaction.client.get_channel(channel_id)
+            message = await channel.fetch_message(message_id)
+            attach = message.attachments[0].url
+            image = requests.get(attach)
+            image_prep = image.content
+            image_content = Image.open(io.BytesIO(image_prep))
+            hash = imagehash.average_hash(image_content)
+
+            CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
+            client = MongoClient(CONNECTION_STRING)
+            db = client.name 
+            collection = db.info 
+            collection.insert_one({'hash': str(hash)})
+       
         user = self.getUserFromTicket(interaction)
         if user is not None:
             alreadyComplete = (tickets[self.tid].status == 'Complete')
@@ -210,6 +236,28 @@ class ConsequenceActionButtons(discord.ui.View):
     @discord.ui.button(label="Ban User", style=discord.ButtonStyle.red)
     async def callbackBtn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
+        link = tickets[self.tid].message_link #accessing message link
+
+        parts = link.split("/")
+        if len(parts) >= 7:
+            channel_id = int(parts[-2])
+            message_id = int(parts[-1])
+
+            channel = interaction.client.get_channel(channel_id)
+            message = await channel.fetch_message(message_id)
+            attach = message.attachments[0].url
+            image = requests.get(attach)
+            image_prep = image.content
+            image_content = Image.open(io.BytesIO(image_prep))
+            hash = imagehash.average_hash(image_content)
+
+            CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
+            client = MongoClient(CONNECTION_STRING)
+            db = client.name 
+            collection = db.info 
+            collection.insert_one({'hash': str(hash)})
+
+
         user = self.getUserFromTicket(interaction)
         if user is not None:
             alreadyComplete = (tickets[self.tid].status == 'Complete')
