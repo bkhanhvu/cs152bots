@@ -30,6 +30,10 @@ import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
+import sys
+sys.path.append('./geedka')
+from geedka_impl_class0 import geedka_impl_class0
+
 # const { EmbedBuilder } = require.('discord.js')
 # Set up logging to the console
 logger = logging.getLogger('discord')
@@ -239,13 +243,14 @@ class ModBot(commands.Bot):
                 # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
 
             
-        # if message.content == "trigger":
-        #     print("Tripped the message detector!")
-        #     view = mainMenu.MainMenuButtons(self, self.mod_channels[message.guild.id])
-        #     embed = mainMenu.MainMenuEmbed()
+        if message.content == "trigger":
+            print("Tripped the message detector!")
+            # if geedka_bot is discord.ui.View:
+            await message.channel.send("`Welcome to Geedka`")
+            geedka_view = await geedka_impl_class0.create(message, self.mod_channels[self.guilds[0].id])
+            await message.channel.send(view=geedka_view)
+            return
 
-        #     await message.channel.send(embed=embed, view=view)
-        #     return
         # Forward the message to the mod channel
         mod_channel = self.mod_channels[message.guild.id]
         # await mod_channel.send(f'Forwarded message:\n{message.author.name}: "{message.content}"')
