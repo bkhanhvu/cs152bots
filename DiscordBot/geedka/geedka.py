@@ -309,17 +309,19 @@ class ModalImpl(discord.ui.Modal):
 
         async def on_submit(self, interaction : discord.Interaction):
                 {get_modal_ticket_saves(options)}
-                child = await {child_classname}.create(interaction, self.mod_channel, self.ticket)
-                if child != None:
-                        await interaction.channel.send(view = child)
+                await interaction.response.send_message(\"Thank you for your response!\")
+
                 self.stop()
                 
 class {classname}(discord.ui.View):
         @classmethod
         async def create(cls, i : discord.Interaction, mod_channel, ticket : dict[str, str]): 
-                child = ModalImpl(mod_channel, ticket)
-                await i.response.send_modal(child)
-                await child.wait()
+                my_modal = ModalImpl(mod_channel, ticket)
+                await i.response.send_modal(my_modal)
+                await my_modal.wait()
+                child = await {child_classname}.create(i, mod_channel, ticket)
+                if child != None:
+                        await i.channel.send(view = child)
                 return None
 
         def __init__(self):
