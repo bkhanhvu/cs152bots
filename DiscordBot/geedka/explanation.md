@@ -17,7 +17,7 @@ There are several kinds of supported nodes:
 * Messages -- a simple message with text shown to the user
 * Selections -- a dropdown with several options
 * Switches -- a message with several buttons
-* Yes/No -- a message with yes/no options (shorthand for a binary)
+* Yes/No -- a message with yes/no options (shorthand for a switch)
 * User input boxes (modals) -- a popup that asks for user input
 
 There are also several special features:
@@ -38,6 +38,7 @@ so you can indent however much or little you would like.
 However, it is likely bad style to not indent.
 Additionally, Geedka is sensitive to newlines --
 multiline node specifications are on the TODO list but low priority.
+**Keep in mind that if you add any stray newlines, the program will not work!**
 
 Note that wherever a description or message is mentioned below,
 it must be in the embed specification format.
