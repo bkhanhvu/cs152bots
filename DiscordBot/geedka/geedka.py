@@ -20,19 +20,27 @@ def write_class_def_to_file(filename : str, content : str) -> None:
         with open(filename, 'w') as writer:
                 writer.write(content)
 
-def get_embed_addfield(key : str, val : str) -> str:
+def get_embed_addfield(elems : list[str]) -> str:
+        if len(elems) == 1:
+                return f"""
+                impl_embed.add_title({elems[0]})
+                """
         return f"""
-                impl_embed.add_field(name = \"{key}\", value = \"{val}\")
+                impl_embed.add_field(name = \"{elems[0]}\", value = \"{elems[1]}\")
         """
 
 def get_embed_gen(description : str) -> str:
         embed_elements : list[str] = [elem.strip() for elem in description.split("\\")]
+        if len(embed_elements) == 1 and embed_elements[0].find('^') == -1:
+                return f"""
+                impl_embed = discord.Embed(description=\"{embed_elements[0]}\")
+                """
         embed_specific : list[list[str]] = []
         for elem in embed_elements:
                 inner_list : list[str] = [x for x in elem.strip().split('^')]
                 embed_specific += [inner_list]
 
-        embed_addfields : str = '\n'.join([get_embed_addfield(l[0], l[1]) for l in embed_specific])
+        embed_addfields : str = '\n'.join([get_embed_addfield(l) for l in embed_specific])
         return f"""
                 impl_embed = discord.Embed()
 
