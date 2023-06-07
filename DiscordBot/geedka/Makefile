@@ -1,8 +1,8 @@
 make:
-	python geedka.py
+	python3 geedka.py
 
 run:
-	python bot.py
+	python3 bot.py
 
 clean:
 	rm geedka_impl_class*.py

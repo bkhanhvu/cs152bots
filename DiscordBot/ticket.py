@@ -36,5 +36,12 @@ class Ticket:
                 return iter([(f.name, getattr(self, f.name)) \
                         for f in dataclasses.fields(self) \
                         if getattr(self, f.name) != ""])
+                
+        def __getitem__(self, key):
+                return getattr(self, key)
+
+        def __setitem__(self, key, value):
+                setattr(self, key, value)
+                
 
 tickets : dict[int, Ticket] = {}
