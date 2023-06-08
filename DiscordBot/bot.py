@@ -117,23 +117,12 @@ class ModBot(commands.Bot):
         print(synced)
                 
         
-        # print(self.guilds[0].id)
-        # print(f"mod channels = {self.mod_channels}")
-        
 
     async def on_message(self, message):
         '''
         This function is called whenever a message is sent in a channel that the bot can see (including DMs). 
         Currently the bot is configured to only handle messages that are sent over DMs or in your group's "group-#" channel. 
         '''
-
-        # Need to check whether message contains an image and compare to anything stored in hash database - Emily
-        # if message.attachments: # TODO: @Emily I was getting errors about this line and False and'ed it out -- Matthew
-        #     attach = message.attachments[0]
-        #     hash = imagehash.average_hash(Image.open(attach.fp))
-
-           
-        # Need to check whether message contains an image and compare to anything stored in hash database - Emily
 
         # Ignore messages from the bot 
         if message.content.startswith('.'):
@@ -154,16 +143,6 @@ class ModBot(commands.Bot):
 
     async def handle_dm(self, message):
         # Handle a help message
-        # if message.content == Report.HELP_KEYWORD:
-        #     view = SelectMenu()
-
-        #     await message.channel.send(view=view)
-
-            # reply =  "Use the `report` command to begin the reporting process.\n"
-            # reply += "Use the `cancel` command to cancel the report process.\n"
-            # await message.channel.send(reply)
-            # return
-
         author_id = message.author.id
         responses = []
 
@@ -240,8 +219,6 @@ class ModBot(commands.Bot):
                 await self.process_automatic_ticket(message, None, True, [embed], hash=hash)
                 
             return
-                # await mainMenu.send_completionEmbed(None, self, tid, embed=embed)
-
             
         if message.content == "trigger":
             print("Tripped the message detector!")

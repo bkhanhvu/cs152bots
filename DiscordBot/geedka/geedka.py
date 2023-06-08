@@ -48,7 +48,6 @@ def get_embed_gen(description : str) -> str:
 {embed_addfields}
         """
 
-# TODO: make this not shit
 def terminal_gen(label : int) -> None:
         classname, filename = class_and_filename(label)
 
@@ -238,7 +237,6 @@ def select_gen(config : File, tokens : list[str], label : int) -> None:
 
         imports : str = get_import_statement(child_labels[0]) \
                 if data_collect else ''.join(get_imports(child_labels)) 
-        # TODO: get better ticket labeling
         
         write_class_def_to_file(filename, \
         f"""
@@ -347,7 +345,6 @@ class {classname}(discord.ui.View):
 
 
 def geedka_frontend(config : File, label : int = -1):
-# TODO: figure out a way to render multiple elements that aren't directly connected
         if (label == -1):
                 label = lp.get_label()
         tokens : list[str] = config.readline().strip().split('|')

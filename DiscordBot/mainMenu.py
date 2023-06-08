@@ -25,7 +25,6 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
         embed = await create_completionEmbed(bot, tid)
         embed.title = f"** Report Ticket ID: {tid} **"
         
-        # TODO: policy team needs to provide tips; be sure to test this and make sure it looks okay with the amount of text you add
         if tickets[tid].sextortion_content == "Content includes explicit images":
                 explicit_warning = str("""```css\n**[Explicit Warning!]** \nThis content is explicit! Please act with caution.```""")
                 embed.description = explicit_warning
@@ -59,7 +58,6 @@ async def send_completionEmbed(interaction, bot, tid, embeds=None, autoBanned=Fa
 
 async def create_completionEmbed(bot, tid):
     embed = CompletionEmbed(bot, tid)
-    # TODO: change this to something better
     if tickets[tid].message_link != "":
         # link = 'https://discord.com/channels/1103033282779676743/1103033287250804838/1109919564701126787'
         try:
@@ -173,7 +171,6 @@ class HarassmentSelection(discord.ui.View):
             'Sextortion'                : 'The user is threatening to spread or has spread sexually explicit images.',
             'Hate Speech'               : 'Targeted attack toward a group or individual',
             'Encouraging Self-harm'     : 'Prompting other user to harm themselves',
-            # TODO fill this description out
             'Threats'                   : 'User is threatening violence or doxxing',
             'Other'                     : 'Abuse type not listed'
         })
@@ -193,7 +190,6 @@ class HarassmentSelection(discord.ui.View):
 
 def BinaryOption(label_1 : str, label_2 : str):
         class Impl(discord.ui.View):
-                # TODO: tighten up argument types on these callables
                 def __init__(self, bot, tid : int, opt_1 : callable, opt_2 : callable):
                         super().__init__()
                         self.tid = tid

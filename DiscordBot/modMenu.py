@@ -22,11 +22,6 @@ Interaction = discord.Interaction
 Button = discord.ui.Button
 # ========= END TYPE ALIASES ===========
 
-# TODO: Implement functionality to Complete ticket, update status in ticket database and forward progress 
-# to requester of ticket
-
-# TODO: Implement consequence verdict message forwarding to the user who violated 
-# Create embed/modal/etc. to allow user to appeal verdict
 class DeletionView(discord.ui.View):
     def __init__(self, bot, tid):
         super().__init__()
@@ -121,25 +116,6 @@ class ConsequenceActionButtonsAutoKicked(discord.ui.View):
     async def callbackBtn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
         link = tickets[self.tid].message_link #accessing message link
-
-        # parts = link.split("/")
-        # if len(parts) >= 7:
-        #     channel_id = int(parts[-2])
-        #     message_id = int(parts[-1])
-
-        #     channel = interaction.client.get_channel(channel_id)
-        #     message = await channel.fetch_message(message_id)
-        #     attach = message.attachments[0].url
-        #     image = requests.get(attach)
-        #     image_prep = image.content
-        #     image_content = Image.open(io.BytesIO(image_prep))
-        #     hash = imagehash.average_hash(image_content)
-
-        #     CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
-        #     client = MongoClient(CONNECTION_STRING)
-        #     db = client.name 
-        #     collection = db.info 
-        #     collection.insert_one({'hash': str(hash)})
        
         user = self.getUserFromTicket(interaction)
         if user is not None:
@@ -191,7 +167,6 @@ class ConsequenceActionButtonsAutoKicked(discord.ui.View):
 
             strikeCount = userStatuses[username].strikeCounter + 1
 
-            # TODO: write real message
             message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=SummaryEmbed(self.tid, button, abuser_summary_description))
@@ -251,25 +226,6 @@ class ConsequenceActionButtons(discord.ui.View):
     async def callbackBtn(self, interaction: Interaction, button:Button):
         username = str(tickets[self.tid].msg_user_id)
         # link = tickets[self.tid].message_link #accessing message link
-
-        # parts = link.split("/")
-        # if len(parts) >= 7:
-        #     channel_id = int(parts[-2])
-        #     message_id = int(parts[-1])
-
-        #     channel = interaction.client.get_channel(channel_id)
-        #     message = await channel.fetch_message(message_id)
-        #     attach = message.attachments[0].url
-        #     image = requests.get(attach)
-        #     image_prep = image.content
-        #     image_content = Image.open(io.BytesIO(image_prep))
-        #     hash = imagehash.average_hash(image_content)
-
-        #     CONNECTION_STRING = "mongodb+srv://modBot:2YYEd8xrgxbdwadw@discordbot.k1is1nj.mongodb.net/retryWrites=true&w=majority"
-        #     client = MongoClient(CONNECTION_STRING)
-        #     db = client.name 
-        #     collection = db.info 
-        #     collection.insert_one({'hash': str(hash)})
 
         user = await self.getUserFromTicket(interaction)
         if user is not None:
@@ -351,7 +307,6 @@ class ConsequenceActionButtons(discord.ui.View):
 
             strikeCount = userStatuses[username].strikeCounter + 1
 
-            # TODO: write real message
             message = "[WARNING] You have been reported for an inappropriate action/behavior. \nYou now have " + str(strikeCount) + " strikes."
             tickets[self.tid].status = 'Complete'
             await user.send(content=message, embed=SummaryEmbed(self.tid, button, abuser_summary_description))

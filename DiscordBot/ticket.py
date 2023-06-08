@@ -7,9 +7,7 @@ Interaction = discord.Interaction
 Button = discord.ui.Button
 # ========= END TYPE ALIASES ===========
 
-# TODO: some of these fields can be changed to enums
-# TODO: determine if all of these fields are truly necessary. I have just copied
-# the keys used but this is much redundancy, at least judging from field names.
+
 @dataclasses.dataclass
 
 class Ticket:
